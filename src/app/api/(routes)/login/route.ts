@@ -1,6 +1,6 @@
 import UserModel from "@/db/models/UserModel";
 import { comparePassword } from "@/utils/bcrypt";
-import errorHandler from "@/utils/errorHandler";
+import errorHandler from "@/lib/errorHandler";
 import { signToken } from "@/utils/jwt";
 import { cookies } from "next/headers";
 

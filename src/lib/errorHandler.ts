@@ -1,4 +1,4 @@
-import { CustomeError } from "@/types";
+import { CustomeError } from "@/types/types";
 import { ZodError } from "zod";
 
 export default function errorHandler(error: unknown) {
@@ -10,5 +10,5 @@ export default function errorHandler(error: unknown) {
         message = error.errors.map((el) => `${el.message}`).join(", ");
     }
 
-    return Response.json({ message,}, { status, });
+    return Response.json({ message, }, { status, });
 }

@@ -1,5 +1,5 @@
 import UserModel from "@/db/models/UserModel";
-import errorHandler from "@/utils/errorHandler";
+import errorHandler from "@/lib/errorHandler";
 
 
 export async function POST(request: Request) {

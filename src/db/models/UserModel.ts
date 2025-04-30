@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { database } from "../config/mongodb";
-import { NewUser, UserType } from "@/types";
+import { NewUser, UserType } from "@/types/types";
 import { hashPassword } from "@/utils/bcrypt";
 import { ObjectId } from "mongodb";
 
@@ -26,7 +26,7 @@ class UserModel {
 
     static async create(newUser: NewUser) {
         UserSchema.parse(newUser);
-        const user = await this.collection().findOne({ 
+        const user = await this.collection().findOne({
             $or: [{ name: newUser.name }, { email: newUser.email }],
         });
 
@@ -35,7 +35,7 @@ class UserModel {
         }
 
         newUser.password = hashPassword(newUser.password);
-        
+
         await this.collection().insertOne(newUser);
         return "User created successfully";
     }
