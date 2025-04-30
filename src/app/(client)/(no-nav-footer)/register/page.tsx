@@ -3,6 +3,8 @@
 import GoBackButton from '@/components/layout/GoBackButton';
 import { FormEvent, useEffect, useState } from 'react';
 import {useRouter} from 'next/navigation';
+import { Bounce, ToastContainer, toast } from 'react-toastify';
+
 import dynamic from 'next/dynamic';
 
 //disable ssr to avoid error
@@ -23,7 +25,7 @@ export default function RegisterPage(){
 
   //succes and error state
   const [success, setSuccess] = useState('')
-  const [error, setError] = useState('')
+  const [errors, setError] = useState('')
 
   const router = useRouter();
 
@@ -67,14 +69,54 @@ export default function RegisterPage(){
       setProvince('-')
       setRegency('-')
 
+      toast.success(success, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
+
       router.push('/login')
+
 
     } catch (error:unknown) {
       if(error instanceof Error) {
         setError(error.message)
+        const errorMessage = error.message.split(',')
+        
+        errorMessage.map((message) => {
+          toast.error(message, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            transition: Bounce
+            });
+        })
+        
       }
       else{
         setError('Something went wrong!')
+        toast.error('Something went wrong!', {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          transition: Bounce,
+          });
       }
     }
   }
@@ -157,6 +199,8 @@ export default function RegisterPage(){
         <p className='text-center text-sm text-gray-700'>Already have an account?<br/> <a href='/login' className='text-blue-700'>Sign in</a></p> 
         </div>
       </section>
+
+      <ToastContainer limit={5}/>
     </>
   );
 };
