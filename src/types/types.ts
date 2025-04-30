@@ -31,3 +31,8 @@ export type CustomeError = {
     message: string;
     status: number;
 }
+
+export type GeocodeResult = {
+    province: string | null;
+    regency: string | null;
+  };
