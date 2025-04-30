@@ -15,7 +15,7 @@ export async function POST(request: Request) {
         const isValidPassword = comparePassword(body.password, user.password);
         if (!isValidPassword) throw { message: "Invalid email/password", status: 401 };
 
-        const accessToken = signToken({
+        const accessToken = await signToken({
             _id: user._id.toString(),
             email: user.email,
         });
