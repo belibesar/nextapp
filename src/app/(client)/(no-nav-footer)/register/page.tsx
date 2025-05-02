@@ -119,8 +119,7 @@ export default function RegisterPage() {
   };
 
   useEffect(() => {
-    console.log('province: ', province);
-    console.log('regency: ', regency);
+    
   }, [province, regency]);
   return (
     <>

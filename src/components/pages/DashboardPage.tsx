@@ -1,8 +1,9 @@
 import React from 'react';
 
 import ProductCard from '@/components/fragments/ProductCard';
+import { UserType } from '@/types/types';
 
-const DashboardPage = () => {
+const DashboardPage = ({user}:{user: UserType}) => {
   return (
     <>
       <div className="flex flex-col min-h-screen">
@@ -17,15 +18,15 @@ const DashboardPage = () => {
               <div className="space-y-1">
                 <div>
                   <span className="text-xl">Halo, </span>
-                  <span className="text-xl font-bold">Madurani</span>
+                  <span className="text-xl font-bold">{user.name}</span>
                 </div>
-                <div className="text-sm">madurajaya@mail.com</div>
-                <div className="mt-16 text-xl font-bold">Toko Madura 1</div>
+                <div className="text-sm">{user.email}</div>
+                <div className="mt-16 text-xl font-bold">{user.companyName}</div>
               </div>
               <div className="text-right mt-4 md:mt-0">
-                <div className="text-xl font-bold">Distributor</div>
-                <div className="mt-16 text-xl font-bold">Surabaya</div>
-                <div>Jawa Timur</div>
+                <div className="text-xl font-bold">{user.role}</div>
+                <div className="mt-16 text-xl font-bold">{user.contact.address.regency}</div>
+                <div>{user.contact.address.province}</div>
               </div>
             </div>
 

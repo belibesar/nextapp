@@ -44,6 +44,12 @@ class UserModel {
         return await this.collection().findOne({ email });
     }
 
+    static async findById(id: string) {
+        const objectId = new ObjectId(id);
+        return await this.collection().findOne({ _id: objectId });
+    }
+
+
     static async updateUser(id: string, updatedUser: Partial<NewUser>) {
         const objectId = new ObjectId(id);
 

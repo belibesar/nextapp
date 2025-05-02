@@ -1,7 +1,8 @@
 import React from 'react';
 import { handleLogout } from '@/components/layout/LogoutButton';
+import { UserType } from '@/types/types';
 
-const ProfilePage = () => {
+const ProfilePage = ({user}:{user:UserType}) => {
   return (
     <>
       <div className="container mx-auto px-4 py-8 flex-grow min-h-screen">
@@ -11,18 +12,18 @@ const ProfilePage = () => {
           {/* User Info */}
           <div>
             <h2 className="text-xl mb-2">
-              Halo, <span className="font-bold text-[#1e3a5f]">Madurani</span>
+              Halo, <span className="font-bold text-[#1e3a5f]">{user.name}</span>
             </h2>
-            <p className="text-gray-600">madurajaya@gmail.com</p>
-            <p className="text-gray-600">0857634898002</p>
+            <p className="text-gray-600">{user.email}</p>
+            <p className="text-gray-600">{user.contact.phone}</p>
           </div>
 
           {/* Distributor Info */}
           <div className="text-center">
-            <h2 className="text-xl font-bold text-[#1e3a5f] mb-4">Distributor</h2>
-            <p className="text-lg font-bold mb-2">Toko Madura 1</p>
-            <p className="text-lg mb-1">Surabaya</p>
-            <p className="text-lg">Jawa Timur</p>
+            <h2 className="text-xl font-bold text-[#1e3a5f] mb-4">{user.role}</h2>
+            <p className="text-lg font-bold mb-2">{user.companyName}</p>
+            <p className="text-lg mb-1">{user.contact.address.regency}</p>
+            <p className="text-lg">{user.contact.address.province}</p>
           </div>
 
           {/* Action Buttons */}
