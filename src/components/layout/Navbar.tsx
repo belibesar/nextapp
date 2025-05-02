@@ -1,6 +1,7 @@
 import React from 'react';
 import { cookies } from 'next/headers';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const Navbar = async () => {
   const cookieStore = await cookies();
@@ -91,8 +92,12 @@ const Navbar = async () => {
         </div>
 
         <div className="dropdown dropdown-bottom lg:hidden navbar-end">
-          <label tabIndex={0} className="btn btn-sm m-1 text-white bg-[#0075A4] border-none">
-            Menu
+          <label tabIndex={0} className="btn btn-sm text-white bg-white border-none">
+            <Image
+              src="burger-menu.svg"
+              alt="menu"
+              width={20}
+              height={20}/>
           </label>
           <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
             <li><Link href="/products">Products</Link></li>

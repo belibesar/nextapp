@@ -6,7 +6,6 @@ import {useRouter} from 'next/navigation';
 import { Bounce, ToastContainer, toast } from 'react-toastify';
 
 import dynamic from 'next/dynamic';
-import { create } from 'domain';
 
 //disable ssr to avoid error
 const MapComponent = dynamic(()=>import ('@/components/layout/MapComponent'), {ssr: false})
