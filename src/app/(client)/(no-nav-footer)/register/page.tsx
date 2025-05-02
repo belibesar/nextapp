@@ -6,6 +6,7 @@ import {useRouter} from 'next/navigation';
 import { Bounce, ToastContainer, toast } from 'react-toastify';
 
 import dynamic from 'next/dynamic';
+import { create } from 'domain';
 
 //disable ssr to avoid error
 const MapComponent = dynamic(()=>import ('@/components/layout/MapComponent'), {ssr: false})
@@ -49,7 +50,9 @@ export default function RegisterPage(){
               province,
               regency
             }
-          }
+          },
+          createdAt: new Date(),
+          updatedAt: new Date()
         })
       })
       const data = await res.json();
@@ -135,19 +138,19 @@ export default function RegisterPage(){
           <form className="max-w-medium mx-auto mt-20 px-30" onSubmit={handleSubmit}>
             <div className="relative w-full max-w-medium mt-6">
               <input type="text" id="name" value={name} placeholder=" " className=" bg-white peer w-full rounded-md px-3 pt-3 pb-2 text-sm text-gray-900 placeholder-transparent focus:outline-none focus:border-blue-500" onChange={(e)=>setName(e.target.value)}/>
-              <label className="absolute left-0 -top-3 rounded-tr-[8px] rounded-tl-[8px] bg-white px-1 text-sm text-gray-500 peer-placeholder-shown:text-sm transition-all peer-placeholder-shown:top-2.5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-blue-500 peer-focus:bg-white peer-focus:rounded-md">
+              <label htmlFor="name" className="absolute left-0 -top-3 rounded-tr-[8px] rounded-tl-[8px] bg-white px-3 text-sm text-gray-500 peer-placeholder-shown:text-sm transition-all peer-placeholder-shown:top-2.5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-blue-500 peer-focus:bg-white peer-focus:rounded-md">
                 Name<span className='text-red-500'>*</span>
               </label>
             </div>
             <div className="relative w-full max-w-medium mt-6">
               <input type="email" id="email" value={email} placeholder=" " className="bg-white peer w-full rounded-md px-3 pt-3 pb-2 text-sm text-gray-900 placeholder-transparent focus:outline-none focus:border-blue-500" onChange={(e)=>setEmail(e.target.value)}/>
-              <label className="absolute left-0 -top-3 rounded-tr-[8px] rounded-tl-[8px] bg-white px-1 text-sm text-gray-500 peer-placeholder-shown:text-sm transition-all peer-placeholder-shown:top-2.5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-blue-500 peer-focus:bg-white peer-focus:rounded-md">
+              <label htmlFor="email" className="absolute left-0 -top-3 rounded-tr-[8px] rounded-tl-[8px] bg-white px-3 text-sm text-gray-500 peer-placeholder-shown:text-sm transition-all peer-placeholder-shown:top-2.5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-blue-500 peer-focus:bg-white peer-focus:rounded-md">
                 Email<span className='text-red-500'>*</span>
               </label>
             </div>
             <div className="relative w-full max-w-medium mt-6">
               <input type="password" id="password" value={password} placeholder=" " className="bg-white peer w-full rounded-md px-3 pt-3 pb-2 text-sm text-gray-900 placeholder-transparent focus:outline-none focus:border-blue-500" onChange={(e)=> setPassword(e.target.value)}/>
-              <label className="absolute left-0 -top-3 rounded-tr-[8px] rounded-tl-[8px] bg-white px-1 text-sm text-gray-500 peer-placeholder-shown:text-sm transition-all peer-placeholder-shown:top-2.5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-blue-500 peer-focus:bg-white peer-focus:rounded-md">
+              <label htmlFor="password" className="absolute left-0 -top-3 rounded-tr-[8px] rounded-tl-[8px] bg-white px-3 text-sm text-gray-500 peer-placeholder-shown:text-sm transition-all peer-placeholder-shown:top-2.5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-blue-500 peer-focus:bg-white peer-focus:rounded-md">
                 Password<span className='text-red-500'>*</span>
               </label>
             </div>
@@ -166,7 +169,7 @@ export default function RegisterPage(){
 
             <div className="relative w-full max-w-medium mt-5">
               <input type="text" id="companyName" value={companyName} placeholder=" " className="bg-white peer w-full rounded-md px-3 pt-3 pb-2 text-sm text-gray-900 placeholder-transparent focus:outline-none focus:border-blue-500" onChange={(e)=> setCompanyName(e.target.value)}/>
-              <label className="absolute left-0 -top-3 rounded-tr-[8px] rounded-tl-[8px] bg-white px-1 text-sm text-gray-500 peer-placeholder-shown:text-sm transition-all peer-placeholder-shown:top-2.5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-blue-500 peer-focus:bg-white peer-focus:rounded-md">
+              <label htmlFor="companyName" className="absolute left-0 -top-3 rounded-tr-[8px] rounded-tl-[8px] bg-white px-3 text-sm text-gray-500 peer-placeholder-shown:text-sm transition-all peer-placeholder-shown:top-2.5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-blue-500 peer-focus:bg-white peer-focus:rounded-md">
                 Company Name<span className='text-red-500'>*</span>
               </label>
             </div>
@@ -184,7 +187,7 @@ export default function RegisterPage(){
 
             <div className="relative w-full max-w-medium mt-6">
               <input type="number" id="phone" value={phone} placeholder=" " className="bg-white peer w-full rounded-md px-3 pt-3 pb-2 text-sm text-gray-900 placeholder-transparent focus:outline-none focus:border-blue-500" onChange={(e)=>setPhone(e.target.value)}/>
-              <label className="absolute left-0 -top-3 rounded-tr-[8px] rounded-tl-[8px] bg-white px-1 text-sm text-gray-500 peer-placeholder-shown:text-sm transition-all peer-placeholder-shown:top-2.5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-blue-500 peer-focus:bg-white peer-focus:rounded-md">
+              <label htmlFor="phone" className="absolute left-0 -top-3 rounded-tr-[8px] rounded-tl-[8px] bg-white px-3 text-sm text-gray-500 peer-placeholder-shown:text-sm transition-all peer-placeholder-shown:top-2.5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-blue-500 peer-focus:bg-white peer-focus:rounded-md">
                 Phone
               </label>
             </div>
