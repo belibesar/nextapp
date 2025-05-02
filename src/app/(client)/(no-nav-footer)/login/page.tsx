@@ -73,14 +73,14 @@ export default function LoginPage(){
           <p className='font-medium text-xl text-center text-white'>Login</p>
           <form className="max-w-sm mx-auto mt-15" onSubmit={handleSubmit}>
             <div className="relative w-full max-w-md mt-6">
-              <input type="email" id="email" value={email} placeholder=" " className="bg-white peer w-full border border-gray-300 rounded-md px-3 pt-3 pb-2 text-sm text-gray-900 placeholder-transparent focus:outline-none focus:border-blue-500" onChange={(e)=>setEmail(e.target.value)}/>
-              <label className="absolute left-2 -top-3 bg-none px-1 text-sm text-gray-500 peer-placeholder-shown:text-sm transition-all peer-placeholder-shown:top-2.5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-blue-500 peer-focus:bg-white peer-focus:rounded-md peer-focus:ml-[-7px]">
+              <input type="email" id="email" value={email} placeholder=" " className="bg-white peer w-full rounded-md px-3 pt-3 pb-2 text-sm text-gray-900 placeholder-transparent focus:outline-none focus:border-blue-500" onChange={(e)=>setEmail(e.target.value)}/>
+              <label className="absolute left-0 -top-3 rounded-tr-[8px] rounded-tl-[8px] bg-white px-1 text-sm text-gray-500 peer-placeholder-shown:text-sm transition-all peer-placeholder-shown:top-2.5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-blue-500 peer-focus:bg-white peer-focus:rounded-md">
                 Email
               </label>
             </div>
             <div className="relative w-full max-w-md mt-6">
-              <input type="password" id="email" value={password} placeholder=" " className="bg-white peer w-full border border-gray-300 rounded-md px-3 pt-3 pb-2 text-sm text-gray-900 placeholder-transparent focus:outline-none focus:border-blue-500" onChange={(e)=>setPassword(e.target.value)}/>
-              <label className="absolute left-2 -top-3 bg-none px-1 text-sm text-gray-500 peer-placeholder-shown:text-sm transition-all peer-placeholder-shown:top-2.5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-blue-500 peer-focus:bg-white peer-focus:rounded-md peer-focus:ml-[-7px]">
+              <input type="password" id="email" value={password} placeholder=" " className="bg-white peer w-full rounded-md px-3 pt-3 pb-2 text-sm text-gray-900 placeholder-transparent focus:outline-none focus:border-blue-500" onChange={(e)=>setPassword(e.target.value)}/>
+              <label className="absolute left-0 -top-3 rounded-tr-[8px] rounded-tl-[8px] bg-white px-3 text-sm text-gray-500 peer-placeholder-shown:text-sm transition-all peer-placeholder-shown:top-2.5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-blue-500 peer-focus:bg-white peer-focus:rounded-md">
                 Password
               </label>
             </div>
