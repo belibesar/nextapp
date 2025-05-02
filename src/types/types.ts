@@ -36,3 +36,37 @@ export type GeocodeResult = {
     province: string | null;
     regency: string | null;
   };
+  
+export type ProductType = {
+    name: string;
+    description: string;
+    price: number;
+    stock: number;
+    category: string;
+    supplierId: string;
+    producerId: string;
+    createdAt?: Date;
+    updatedAt?: Date;
+}
+
+export type NewProduct = {
+    name: string;
+    description: string;
+    price: number;
+    stock: number;
+    category: string;
+    supplierId?: string;
+    producerId?: string;
+};
+
+
+export type ProducerType = {
+    name: string;
+    contact: {
+        phone: string;
+        email: string;
+        address: string;
+    };
+    createdAt?: Date;
+    updatedAt?: Date;
+}
