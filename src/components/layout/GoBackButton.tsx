@@ -5,6 +5,6 @@ export default function GoBackButton() {
         window.history.back();
     }
   return (
-    <a onClick={goBack} className='hover:text-gray-500 hover:cursor-pointer'>go back</a>
+    <a onClick={goBack} className='text-white hover:text-gray-100 hover:cursor-pointer duration-200'>go back</a>
   );
 }
