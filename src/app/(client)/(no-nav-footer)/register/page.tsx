@@ -158,8 +158,8 @@ export default function RegisterPage(){
             <div className="mt-6">
               <p className="text-sm text-white">Select Role:<span className='text-red-700'>*</span></p>
               <div className="flex items-center mt-2">
-                <input type="radio" id="admin" name="role" value="supplier" checked={role === 'supplier'} onChange={(e) => setRole(e.target.value)} className="mr-2" />
-                <label htmlFor="admin" className="text-sm text-white">Supplier</label>
+                <input type="radio" id="admin" name="role" value="admin" checked={role === 'admin'} onChange={(e) => setRole(e.target.value)} className="mr-2" />
+                <label htmlFor="admin" className="text-sm text-white">Admin</label>
               </div>
               <div className="flex items-center mt-2">
                 <input type="radio" id="user" name="role" value="distributor" checked={role === 'distributor'} onChange={(e) => setRole(e.target.value)} className="mr-2" />

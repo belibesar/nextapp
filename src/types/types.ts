@@ -3,7 +3,7 @@ export type UserType = {
     name: string;
     email: string;
     password: string;
-    role: "supplier" | "distributor";
+    role: "admin" | "distributor";
     companyName: string;
     contact: ContactType;
     createdAt?: Date;
@@ -22,7 +22,7 @@ export type NewUser = {
     name: string;
     email: string;
     password: string;
-    role: "supplier" | "distributor";
+    role: "admin" | "distributor";
     companyName: string;
     contact: ContactType;
 };
