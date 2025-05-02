@@ -11,8 +11,7 @@ const Navbar = async () => {
         <div className="navbar-start">
           <Link
             href={'/'}
-            className="btn btn-ghost text-xl text-white"
-          >
+            className="text-white font-semibold text-[25px] pl-3">
             BeliBesar
           </Link>
         </div>
@@ -33,7 +32,7 @@ const Navbar = async () => {
             </li>
           </ul> */}
         </div>
-        <div className="navbar-end">
+        <div className="hidden lg:flex navbar-end">
           <div className="flex flex-col relative w-auto h-10 ml-3 mr-3">
             <Link
               href="/dashboard"
@@ -89,6 +88,17 @@ const Navbar = async () => {
               </Link>
             </div>
           )}
+        </div>
+
+        <div className="dropdown dropdown-bottom lg:hidden navbar-end">
+          <label tabIndex={0} className="btn btn-sm m-1 text-white bg-[#0075A4] border-none">
+            Menu
+          </label>
+          <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+            <li><Link href="/products">Products</Link></li>
+            <li><Link href="/orders">Orders</Link></li>
+            <li><Link href="/cart">Cart</Link></li>
+          </ul>
         </div>
       </div>
     </>
