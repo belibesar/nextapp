@@ -1,8 +1,4 @@
-import { cookies } from 'next/headers';
-import { verifyToken } from '@/utils/jwt';
-import DashboardPage from '@/components/pages/DashboardPage';
-import UserModel from '@/db/models/UserModel';
-import { get } from 'http';
+import UserDashboardPage from '@/components/pages/User/UserDashboardPage';
 import { getLoggedInUserFromRequest } from '@/lib/getLoggedInUserFromRequest';
 
 const Dashboard = async () => {
@@ -13,7 +9,7 @@ const Dashboard = async () => {
 
   return (
     <div>
-      <DashboardPage user={user} />
+      <UserDashboardPage user={user} />
     </div>
   );
 };
