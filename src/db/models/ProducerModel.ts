@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb";
 import { database } from "../config/mongodb";
 
 
@@ -10,7 +11,7 @@ class ProducerModel {
     static async getAll() {
         const producers = await this.collection().find().toArray();
         return producers.map((producer) => ({
-            id: producer._id.toString(),
+            id: producer._id,
             name: producer.name,
             contact: {
                 phone: producer.phone,
