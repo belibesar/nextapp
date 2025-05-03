@@ -3,7 +3,7 @@ import React from 'react';
 import ProductCard from '@/components/fragments/ProductCard';
 import { UserType } from '@/types/types';
 
-const DashboardPage = ({user}:{user: UserType}) => {
+const DashboardPage = ({ user }: { user: UserType }) => {
   return (
     <>
       <div className="flex flex-col min-h-screen">
@@ -69,7 +69,7 @@ const DashboardPage = ({user}:{user: UserType}) => {
               {/* Product 1 */}
               <ProductCard
                 name="Indomie Goreng"
-                details="1 Palet - 500 karton"
+                details="1 Paket - 500 karton"
                 brand="Indofood CBP"
                 price="Rp. 60.000.000"
               />
@@ -77,7 +77,7 @@ const DashboardPage = ({user}:{user: UserType}) => {
               {/* Product 2 */}
               <ProductCard
                 name="Mie Sedaap Goreng"
-                details="1 Palet - 500 karton"
+                details="1 Paket - 500 karton"
                 brand="Wings Food"
                 price="Rp. 60.000.000"
               />
@@ -85,7 +85,7 @@ const DashboardPage = ({user}:{user: UserType}) => {
               {/* Product 3 */}
               <ProductCard
                 name="Pepsodent"
-                details="1 Palet - 500 karton"
+                details="1 Paket - 500 karton"
                 brand="Unilever"
                 price="Rp. 60.000.000"
               />
@@ -93,7 +93,7 @@ const DashboardPage = ({user}:{user: UserType}) => {
               {/* Product 4 */}
               <ProductCard
                 name="Pepsodent"
-                details="1 Palet - 500 karton"
+                details="1 Paket - 500 karton"
                 brand="Unilever"
                 price="Rp. 60.000.000"
               />
