@@ -1,11 +1,10 @@
 import { ObjectId } from "mongodb";
 import { database } from "../config/mongodb";
-import { CartType } from "@/types/types";
 
 
 class CartModel {
     static collection() {
-        return database.collection<CartType>("carts");
+        return database.collection("carts");
     }
 
     static async updateQuantity(userId: string, productId: string, qty: number) {   
@@ -13,7 +12,7 @@ class CartModel {
 
         if (!cart) throw { message: "Cart not found", status: 404 };
 
-        const itemIndex = cart.items.findIndex((item) => item.productId.toString() === productId);
+        const itemIndex = cart.items.findIndex((item: any) => item.productId === productId);
 
         if (itemIndex > -1) {
             cart.items[itemIndex].qty += qty;
@@ -34,7 +33,7 @@ class CartModel {
                     { $set: { items: cart.items, updatedAt: new Date() } }
                 );
             } else {
-                throw { massage: "Product not found in cart", status: 404 }
+                throw { message: "Product not found in cart", status: 404 }
             }
         }
         return cart;
@@ -93,7 +92,7 @@ class CartModel {
             return newCart;
         }
     
-        const itemIndex = cart.items.findIndex((item) => item.productId.toString() === productId);
+        const itemIndex = cart.items.findIndex((item: any) => item.productId.toString() === productId);
     
         if (itemIndex > -1) {
             throw { message: "Product already exists in cart. go to cart", status: 400 };

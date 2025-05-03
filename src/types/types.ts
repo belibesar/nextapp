@@ -73,9 +73,9 @@ export type ProducerType = {
 }
 
 export type CartType = {
-    userId: ObjectId;
+    userId: string;
     items: {
-        productId: ObjectId;
+        productId: string;
         qty: number;
     }[];
     createdAt: Date;
