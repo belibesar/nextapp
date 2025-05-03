@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb";
 
 export type UserType = {
     name: string;
@@ -69,4 +70,14 @@ export type ProducerType = {
     };
     createdAt?: Date;
     updatedAt?: Date;
+}
+
+export type CartType = {
+    userId: ObjectId;
+    items: {
+        productId: ObjectId;
+        qty: number;
+    }[];
+    createdAt: Date;
+    updatedAt: Date;
 }
