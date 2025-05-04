@@ -18,7 +18,8 @@ class CartModel {
       },
       {
         $set: {
-          "items.$.qty": qty
+          "items.$.qty": qty,
+          updatedAt: new Date()
         }
       }
     );
