@@ -117,12 +117,11 @@ class CartModel {
 
       await this.collection().insertOne(newCart);
     }
-
-
-   static async clearCart(userId: string) {
-        return await this.collection().deleteOne({ userId: new ObjectId(userId) });
-      }
     return await this.collection().findOne({ _id: new ObjectId(userId) });
+  }
+
+  static async clearCart(userId: string) {
+    return await this.collection().deleteOne({ userId: new ObjectId(userId) });
   }
 
   static async findById(id: string) {
