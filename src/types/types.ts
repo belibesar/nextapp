@@ -91,3 +91,21 @@ export type CartType = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export type OrderType = {
+  distributorId: string | ObjectId;
+  supplierId: string | ObjectId;
+  items: OrderItemType[];
+  totalPrice: number;
+  currentStatus: "pending" | "failed" | "preparing" | "shipped" | "finished";
+  isGroupBuy: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export type OrderItemType = {
+    productId: string;
+    qty: number;
+    price: number;
+}
+  
