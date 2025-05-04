@@ -1,0 +1,52 @@
+[
+  {
+    "name": "PT Indofood CBP Sukses Makmur Tbk",
+    "contact": {
+      "phone": "+62 21 5795 8822",
+      "email": "info@indofoodcbp.com",
+      "address": "Sudirman Plaza, Indofood Tower, Jl. Jend. Sudirman Kav. 76-78, Jakarta Selatan 12910, Indonesia"
+    },
+    "createdAt": "2025-05-04T21:46:00.000Z",
+    "updatedAt": "2025-05-04T21:46:00.000Z"
+  },
+  {
+    "name": "PT Unilever Indonesia Tbk",
+    "contact": {
+      "phone": "+62 21 8082 7000",
+      "email": "contact@unilever.co.id",
+      "address": "Grha Unilever, Jl. BSD Boulevard Barat, BSD City, Tangerang 15345, Indonesia"
+    },
+    "createdAt": "2025-05-04T21:46:00.000Z",
+    "updatedAt": "2025-05-04T21:46:00.000Z"
+  },
+  {
+    "name": "PT Procter & Gamble Indonesia",
+    "contact": {
+      "phone": "+62 21 2995 6000",
+      "email": "pgindonesia@pg.com",
+      "address": "Menara Satu Sentra Kelapa Gading, Jl. Boulevard Sentra, Jakarta Utara 14240, Indonesia"
+    },
+    "createdAt": "2025-05-04T21:46:00.000Z",
+    "updatedAt": "2025-05-04T21:46:00.000Z"
+  },
+  {
+    "name": "PT Wings Surya",
+    "contact": {
+      "phone": "+62 31 532 0000",
+      "email": "info@wingscorp.com",
+      "address": "Wings Tower, Jl. Raya Waru No. 15, Surabaya 60294, Jawa Timur, Indonesia"
+    },
+    "createdAt": "2025-05-04T21:46:00.000Z",
+    "updatedAt": "2025-05-04T21:46:00.000Z"
+  },
+  {
+    "name": "PT Mayora Indah Tbk",
+    "contact": {
+      "phone": "+62 21 8067 9100",
+      "email": "corporate@mayoraindah.co.id",
+      "address": "Gedung Mayora, Jl. Tomang Raya No. 21-23, Jakarta Barat 11440, Indonesia"
+    },
+    "createdAt": "2025-05-04T21:46:00.000Z",
+    "updatedAt": "2025-05-04T21:46:00.000Z"
+  }
+]
