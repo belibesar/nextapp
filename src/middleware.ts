@@ -12,7 +12,7 @@ export async function middleware(request: NextRequest) {
     if (!getCookie || type !== "Bearer" || !token) {
       if (isApiRequest) {
         // Use errorHandler for API requests
-        return errorHandler({ message: "Unauthorized", status: 401 });
+        return errorHandler({ message: "Unauthorizeds", status: 401 });
       } else {
         // Redirect to login page for client-side requests
         return NextResponse.redirect(new URL("/login", request.url));
@@ -44,7 +44,6 @@ export const config = {
     "/orders/:path*",
     "/products/:path*",
     "/profile/:path*",
-    "/api/producers:path*",
-    "/api/products:path*"
+    "/api/producers:path*"
   ]
 };

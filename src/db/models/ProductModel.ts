@@ -122,18 +122,43 @@ class ProductModel {
     const limit = 6;
     const skip = (parseInt(page) - 1) * limit;
 
-    const searchQueary = search
+    const searchQuery = search
       .trim()
       .split(" ")
       .map((el) => ({
         name: { $regex: el, $options: "i" }
-      }));
+      })
+    );
 
-    const products = await this.collection()
-      .find({ $and: searchQueary })
-      .skip(skip)
-      .limit(limit)
-      .toArray();
+    const pipeline = [
+      {
+        $match: {
+          ...(searchQuery.length > 0 ? { $and: searchQuery } : {}),
+        }
+      },
+      {
+        $lookup: {
+          from: "producers",
+          localField: "producerId",
+          foreignField: "_id",
+          as: "producer"
+        }
+      },
+      {
+        $unwind: {
+          path: "$producer",
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $skip: skip
+      },
+      {
+        $limit: limit
+      }
+    ]
+    
+    const products = await this.collection().aggregate(pipeline).toArray();
     return products;
   }
 
