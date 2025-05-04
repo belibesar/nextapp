@@ -32,18 +32,37 @@ export async function POST(request: Request) {
 }
 
 export async function PATCH(request: Request) {
+  // buat update qty produk di cart
+  // nerima {_id, qty} dari body
+  // qty yang diterima replace qty yang ada di cart
   try {
-    const userId = request.headers.get("x-user-id");
-    if (!userId)
-      throw { message: "User id is missing in headers", status: 401 };
+    // cek user
+    const userData = request.headers.get("x-user-data");
+    const userDataJson = userData ? JSON.parse(userData) : null;
 
-    const { productId, qty } = await request.json();
+    const user = await UserModel.findById(userDataJson._id);
+    if (!user) throw { message: "User not found", status: 404 };
+    if (user.role !== "distributor")
+      throw { message: "Invalid role", status: 403 };
 
-    if (!userId) throw { message: "User id is missing", status: 404 };
-    if (!productId) throw { message: "Product id is missing", status: 404 };
+    const { _id, qty } = await request.json();
 
-    const updatedCart = await CartModel.updateQuantity(userId, productId, qty);
-    return Response.json(updatedCart);
+    if (!_id) throw { message: "Product id is missing", status: 404 };
+    if (!qty) throw { message: "Quantity is missing", status: 404 };
+    if (qty <= 0 || isNaN(qty))
+      throw {
+        message: "Quantity must be a number greater than 0",
+        status: 400
+      };
+
+    const updatedCart = await CartModel.updateQuantity(
+      userDataJson._id,
+      _id,
+      qty
+    );
+
+    if (!updatedCart) throw { message: "Cart not found", status: 404 };
+    return Response.json({ message: "Cart updated" });
   } catch (error) {
     return errorHandler(error);
   }

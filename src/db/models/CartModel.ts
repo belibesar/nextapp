@@ -7,39 +7,21 @@ class CartModel {
   }
 
   static async updateQuantity(userId: string, productId: string, qty: number) {
-    const cart = await this.collection().findOne({
-      userId: new ObjectId(userId)
-    });
-
+    const cart = await this.findById(userId);
     if (!cart) throw { message: "Cart not found", status: 404 };
 
-    const itemIndex = cart.items.findIndex(
-      (item: any) => item.productId === productId
+    // Update the quantity
+    return await this.collection().updateOne(
+      {
+        _id: new ObjectId(userId),
+        "items.productId": new ObjectId(productId)
+      },
+      {
+        $set: {
+          "items.$.qty": qty
+        }
+      }
     );
-
-    if (itemIndex > -1) {
-      cart.items[itemIndex].qty += qty;
-
-      if (cart.items[itemIndex].qty <= 0) {
-        cart.items.splice(itemIndex, 1);
-      }
-
-      await this.collection().updateOne(
-        { userId: new ObjectId(userId) },
-        { $set: { items: cart.items, updatedAt: new Date() } }
-      );
-    } else {
-      if (qty > 0) {
-        cart.items.push({ productId: new ObjectId(productId), qty });
-        await this.collection().updateOne(
-          { userId: new ObjectId(userId) },
-          { $set: { items: cart.items, updatedAt: new Date() } }
-        );
-      } else {
-        throw { message: "Product not found in cart", status: 404 };
-      }
-    }
-    return cart;
   }
 
   static async getCartWithProducts(userId: string) {
@@ -139,7 +121,6 @@ class CartModel {
 
     return cart;
   }
-
 }
 
 export default CartModel;
