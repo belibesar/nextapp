@@ -23,60 +23,6 @@ class ProductModel {
   static async create(newProduct: NewProduct) {
     ProductSchema.parse(newProduct);
 
-    // ini gw comment dulu gara2 aga ribet keknya
-    // const producerId = new ObjectId(newProduct.producerId);
-    // console.log(newProduct, producerId);
-    // const products = await this.collection()
-    //   .aggregate([
-    //     {
-    //       $facet: {
-    //         existingProducts: [
-    //           {
-    //             $match: {
-    //               $or: [
-    //                 { name: newProduct.name },
-    //                 { description: newProduct.description }
-    //               ]
-    //             }
-    //           },
-    //           { $limit: 1 }
-    //         ],
-    //         validProducer: [
-    //           {
-    //             $lookup: {
-    //               from: "producers",
-    //               localField: "producerId",
-    //               foreignField: "_id",
-    //               as: "producer"
-    //             }
-    //           },
-    //           {
-    //             $match: { "producer._id": new ObjectId(newProduct.producerId) }
-    //           },
-    //           { $limit: 1 }
-    //         ]
-    //       }
-    //     },
-    //     {
-    //       $project: {
-    //         existingProducts: { $arrayElemAt: ["$existingProducts", 0] },
-    //         validProducer: { $arrayElemAt: ["$validProducer", 0] }
-    //       }
-    //     }
-    //   ])
-    //   .toArray();
-    // console.log(products, "products");
-
-    // const { existingProducts, validProducer } = products[0];
-
-    // if (existingProducts) {
-    //   throw { message: "Product already exists", status: 401 };
-    // }
-
-    // if (!validProducer) {
-    //   throw { message: "Invalid producer ID", status: 400 };
-    // }
-
     const existingProducts = await this.getByName(newProduct.name);
     if (existingProducts) {
       throw { message: "Product already exists", status: 401 };
@@ -103,8 +49,6 @@ class ProductModel {
       createdAt: new Date(),
       updatedAt: new Date()
     };
-    // console.log(productToInsert);
-    // return productToInsert;
 
     await this.collection().insertOne(productToInsert);
     return productToInsert;

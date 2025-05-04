@@ -108,6 +108,10 @@ class CartModel {
     
         return cart;
     }
+
+    static async clearCart(userId: string) {
+        return await this.collection().deleteOne({ userId: new ObjectId(userId) });
+      }
 }
 
 export default CartModel;
