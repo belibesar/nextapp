@@ -51,11 +51,16 @@ export async function PATCH(request: Request) {
 
 export async function GET(request: Request) {
   try {
-    const userId = request.headers.get("x-user-id");
-    if (!userId)
-      throw { message: "User id is missing in headers", status: 401 };
+    // cek user
+    const userData = request.headers.get("x-user-data");
+    const userDataJson = userData ? JSON.parse(userData) : null;
 
-    const cart = await CartModel.getCartWithProducts(userId);
+    const user = await UserModel.findById(userDataJson._id);
+    if (!user) throw { message: "User not found", status: 404 };
+    if (user.role !== "distributor")
+      throw { message: "Invalid role", status: 403 };
+
+    const cart = await CartModel.getCartWithProducts(userDataJson._id);
     return Response.json(cart);
   } catch (error) {
     return errorHandler(error);
