@@ -11,7 +11,7 @@ class CartModel {
     if (!cart) throw { message: "Cart not found", status: 404 };
 
     // Update the quantity
-    return await this.collection().updateOne(
+    const updatedResult = await this.collection().updateOne(
       {
         _id: new ObjectId(userId),
         "items.productId": new ObjectId(productId)
@@ -23,6 +23,11 @@ class CartModel {
         }
       }
     );
+    if (updatedResult.matchedCount === 0) {
+      throw { message: "Product not found in cart", status: 404 };
+    }
+
+    return await this.findById(userId);
   }
 
   static async getCartWithProducts(userId: string) {
