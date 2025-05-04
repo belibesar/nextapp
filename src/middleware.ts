@@ -20,6 +20,8 @@ export async function middleware(request: NextRequest) {
     }
 
     const tokenPayload = await verifyToken(token as string);
+    // ini nanti kalau mau lebih efisien bisa langsung ambil user ke db
+    // const user = await UserModel.findById(tokenPayload._id);
 
     const response = NextResponse.next();
     response.headers.set("x-user-data", JSON.stringify(tokenPayload)); // Set user data in a cookie for client-side access
@@ -44,6 +46,8 @@ export const config = {
     "/orders/:path*",
     "/products/:path*",
     "/profile/:path*",
-    "/api/producers:path*"
+    "/api/producers:path*",
+    "/api/products:path*",
+    "/api/cart:path*"
   ]
 };
