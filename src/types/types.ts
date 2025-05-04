@@ -50,6 +50,17 @@ export type ProductType = {
   updatedAt?: Date;
 };
 
+export type ProductCardType = {
+  _id: string;
+  name: string;
+  category: string;
+  producer: {
+    name: string;
+  };
+  price: number;
+};
+
+
 export type NewProduct = {
   name: string;
   description: string;
