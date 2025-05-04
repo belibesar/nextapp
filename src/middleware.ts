@@ -47,7 +47,6 @@ export const config = {
     "/products/:path*",
     "/profile/:path*",
     "/api/producers:path*",
-    "/api/products:path*",
     "/api/cart:path*"
   ]
 };
