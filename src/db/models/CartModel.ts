@@ -45,28 +45,37 @@ class CartModel {
   static async getCartWithProducts(userId: string) {
     const cart = await this.collection()
       .aggregate([
-        { $match: { userId: new ObjectId(userId) } },
+        { $match: { _id: new ObjectId(userId) } },
+        {
+          $unwind: "$items"
+        },
         {
           $lookup: {
             from: "products",
             localField: "items.productId",
             foreignField: "_id",
-            as: "productDetails"
+            as: "productDetail"
           }
         },
         {
-          $project: {
-            _id: 0,
-            userId: 1,
-            items: 1,
-            productDetails: {
-              _id: 1,
-              name: 1,
-              price: 1,
-              description: 1
+          $unwind: "$productDetail"
+        },
+        {
+          $group: {
+            _id: "$_id",
+            items: {
+              $push: {
+                productId: "$items.productId",
+                qty: "$items.qty",
+                productDetail: "$productDetail"
+              }
             },
-            createdAt: 1,
-            updatedAt: 1
+            createdAt: {
+              $first: "$createdAt"
+            },
+            updatedAt: {
+              $first: "$updatedAt"
+            }
           }
         }
       ])
