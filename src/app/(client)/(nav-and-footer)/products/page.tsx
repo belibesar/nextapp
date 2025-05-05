@@ -1,5 +1,5 @@
 import ProductCard from '@/components/fragments/ProductCard';
-import { ProductCardType } from '@/types/types';
+import { ProductType } from '@/types/types';
 import React from 'react';
 
 const Products = async () => {
@@ -12,14 +12,8 @@ const Products = async () => {
 
       {/* Product Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {data.map((product: ProductCardType) => (
-          <ProductCard
-            key={product._id}
-            name={product.name}
-            category={product.category}
-            producerName={product.producer.name}
-            price={product.price}
-          />
+        {data.map((product: ProductType) => (
+          <ProductCard key={product._id} product={product}/>
         ))}
       </div>
 
