@@ -63,7 +63,7 @@ class ProductModel {
   }
 
   static async getAll({ page, search }: { page: string; search: string }) {
-    const limit = 6;
+    const limit = 8;
     const skip = (parseInt(page) - 1) * limit;
 
     const searchQuery = search
@@ -72,7 +72,7 @@ class ProductModel {
       .map((el) => ({
         name: { $regex: el, $options: "i" }
       })
-    );
+      );
 
     const pipeline = [
       {
@@ -101,7 +101,7 @@ class ProductModel {
         $limit: limit
       }
     ]
-    
+
     const products = await this.collection().aggregate(pipeline).toArray();
     return products;
   }

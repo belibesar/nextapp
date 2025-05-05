@@ -1,9 +1,13 @@
 import React from 'react';
 
 import ProductCard from '@/components/fragments/ProductCard';
+import { ProductCardType } from '@/types/types';
 import { UserType } from '@/types/types';
+import Link from 'next/link';
 
-const DashboardPage = ({ user }: { user: UserType }) => {
+const DashboardPage = async ({ user }: { user: UserType }) => {
+  const res = await fetch('http://localhost:3000/api/products');
+  const data = await res.json();
   return (
     <>
       <div className="flex flex-col min-h-screen">
@@ -66,41 +70,25 @@ const DashboardPage = ({ user }: { user: UserType }) => {
             <h2 className="text-xl font-bold text-gray-800 mb-6">Featured Products</h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {/* Product 1 */}
-              <ProductCard
-                name="Indomie Goreng"
-                details="1 Paket - 500 karton"
-                brand="Indofood CBP"
-                price="Rp. 60.000.000"
-              />
-
-              {/* Product 2 */}
-              <ProductCard
-                name="Mie Sedaap Goreng"
-                details="1 Paket - 500 karton"
-                brand="Wings Food"
-                price="Rp. 60.000.000"
-              />
-
-              {/* Product 3 */}
-              <ProductCard
-                name="Pepsodent"
-                details="1 Paket - 500 karton"
-                brand="Unilever"
-                price="Rp. 60.000.000"
-              />
-
-              {/* Product 4 */}
-              <ProductCard
-                name="Pepsodent"
-                details="1 Paket - 500 karton"
-                brand="Unilever"
-                price="Rp. 60.000.000"
-              />
+              {/* LOOP FEATURED PRODUCT HERE */}
+              {data.map((product: ProductCardType) => (
+                <ProductCard
+                  key={product._id}
+                  name={product.name}
+                  category={product.category}
+                  producerName={product.producer.name}
+                  price={product.price}
+                />
+              ))}
             </div>
 
             <div className="flex justify-center mt-8">
-              <button className="bg-[#0099cc] text-white px-8 py-2 rounded-md hover:bg-[#007aa3] transition-colors">More</button>
+              <Link
+                href={'/products'}
+                className="bg-[#0099cc] text-white px-8 py-2 rounded-md hover:bg-[#007aa3] transition-colors"
+              >
+                More
+              </Link>
             </div>
           </div>
         </main>
