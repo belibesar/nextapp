@@ -97,15 +97,40 @@ export type OrderType = {
   supplierId: string | ObjectId;
   items: OrderItemType[];
   totalPrice: number;
-  currentStatus: "pending" | "failed" | "preparing" | "shipped" | "finished";
+  currentStatus: string;
   isGroupBuy: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
 
 export type OrderItemType = {
-    productId: string;
-    qty: number;
-    price: number;
+  productId: string | ObjectId;
+  productName: string;
+  quantity: number;
+  price: number;
+};
+
+export type GroupBuy = {
+  productId: string;
+  productName: string;
+  price: number;
+  moq: number; 
+  maxQuantity: number;
+  currentOrders: number;
+  depositPercentage: number;
+  deadline: Date;
+  distributionLocation: string;
+  description: string;
+  status: GroupBuyStatus;
+  createdAt: Date;
+  updatedAt: Date;
 }
-  
+
+export enum GroupBuyStatus {
+  OPEN = "OPEN",
+  MOQ_REACHED = "MOQ_REACHED",
+  PROCESSING = "PROCESSING",
+  WAITING_FULL_PAYMENT = "WAITING_FULL_PAYMENT",
+  DONE = "DONE",
+  FAILED = "FAILED"
+}

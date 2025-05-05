@@ -9,8 +9,12 @@ class OrderModel {
         return database.collection("orders")
     }
 
-    static async createOrder(orderData: OrderType) {
-        return await this.collection().insertOne(orderData);
+    static async create(order: OrderType) {
+        return await this.collection().insertOne({
+            ...order,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+        });
     }
 
     static async getOrderById(orderId: string) {
