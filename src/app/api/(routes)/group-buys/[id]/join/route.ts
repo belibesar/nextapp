@@ -2,32 +2,42 @@ import GroupBuyModel from "@/db/models/GroupBuyModel";
 import OrderModel from "@/db/models/OrderModel";
 import NotificationModel from "@/db/models/NotificationModel";
 import errorHandler from "@/lib/errorHandler";
+import GroupByModel from "@/db/models/GroupBuyModel";
 
 export async function POST(request: Request) {
     try {
-        const id  = new URL(request.url).pathname.split("/").slice(-2)[0]; // Group Buy ID
-        const { distributorId, supplierId, quantity } = await request.json();
+        const id = new URL(request.url).pathname.split("/").slice(-2)[0]; // Group Buy ID
+        const { quantity, paymentProof } = await request.json();
 
         // Validasi apakah Group Buy masih OPEN
         const groupBuy = await GroupBuyModel.findById(id);
         if (!groupBuy || groupBuy.status !== "OPEN") {
-            return Response.json({  message: "Group Buy is not open" });
+            return Response.json({ message: "Group Buy is not open" });
         }
+
+        // Ambil distributorId dari header
+        const distributorId = request.headers.get("x-user-id");
+        if (!distributorId) {
+            throw { message: "Distributor ID is required in the request headers." };
+        }
+
+        const supplierId = groupBuy.supplierId;
 
         // Validasi quantity
-        if (quantity < groupBuy.moq) {
-            throw { message: `Minimum quantity is ${groupBuy.moq}` }
+        if (quantity < groupBuy.minQuantity) {
+            throw { message: `Minimum quantity is ${groupBuy.minQuantity}` };
         }
         if (quantity > groupBuy.maxQuantity) {
-            throw { message: `Maximum quantity is ${groupBuy.maxQuantity}` }
+            throw { message: `Maximum quantity is ${groupBuy.maxQuantity}` };
         }
 
-        // Hitung pembayaran awal (10% dari total harga)
+        // Hitung total harga dan jumlah pembayaran
         const totalPrice = quantity * groupBuy.price;
         const depositAmount = totalPrice * (groupBuy.depositPercentage / 100);
+        const paymentAmount = paymentProof ? depositAmount : totalPrice; // DP jika ada paymentProof, full jika tidak
 
         // Buat data Order
-        const orderId = await OrderModel.create({
+        const order = await OrderModel.create({
             distributorId,
             supplierId,
             items: [
@@ -39,31 +49,61 @@ export async function POST(request: Request) {
                 },
             ],
             totalPrice,
-            currentStatus: "DEPOSIT_PENDING",
+            currentStatus: paymentProof ? "AWAITING_ADMIN_CONFIRMATION" : "FULL_PAYMENT_PENDING",
             isGroupBuy: true,
+            paymentProof: paymentProof || null, // Simpan paymentProof jika ada
             createdAt: new Date(),
             updatedAt: new Date(),
         });
 
-        // Buat notifikasi untuk user dan admin
+        const updateResult = await GroupBuyModel.updateGroupBuy(id, {
+            $push: {
+                participants: {
+                    distributorId, 
+                    qty: quantity,
+                    joinedAt: new Date(), 
+                },
+            },
+            $inc: { currentOrders: quantity }, 
+        });
+
+        if (!updateResult) {
+            throw { message: "Failed to update Group Buy participants." };
+        }
+
+        // Buat notifikasi untuk user
         await NotificationModel.create({
             userId: distributorId,
             message: `You have joined the Group Buy: ${groupBuy.productName}`,
             createdAt: new Date(),
         });
 
-        await NotificationModel.create({
-            userId: "admin", // Assuming "admin" is the admin user ID
-            message: `Distributor ${distributorId} has joined the Group Buy: ${groupBuy.productName}`,
-            createdAt: new Date(),
-        });
+        // Buat notifikasi untuk admin jika ada paymentProof
+        if (paymentProof) {
+            await NotificationModel.create({
+                userId: "admin",
+                message: `Order ${order.insertedId} requires your confirmation.`,
+                createdAt: new Date(),
+            });
+        } else {
+            await NotificationModel.create({
+                userId: "admin",
+                message: `Distributor ${distributorId} has joined the Group Buy: ${groupBuy.productName}`,
+                createdAt: new Date(),
+            });
+        }
 
-        // Kembalikan informasi pembayaran awal
+        // Kembalikan informasi pembayaran
         return Response.json({
             success: true,
-            orderId,
+            orderId: order.insertedId, 
+            quantity,
+            totalPrice,
             depositAmount,
-            message: `Please pay the deposit amount of ${depositAmount}`,
+            paymentAmount,
+            message: paymentProof
+                ? "Deposit payment submitted. Awaiting admin confirmation."
+                : "Full payment required. Please complete your payment.",
         });
     } catch (error) {
         console.error("Error joining Group Buy:", error);
