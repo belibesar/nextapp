@@ -1,9 +1,19 @@
-'use client'
+'use client';
+
+import Image from 'next/image';
 
 export default function ProductCard({ name, category, producerName, price }: { name: string; category: string; producerName: string; price: number }) {
   return (
     <div className="bg-white rounded-lg shadow overflow-hidden">
-      <div className="h-48 bg-gray-200"></div>
+      <div className="h-48 bg-gray-200">
+        <Image
+          src="https://placehold.co/400x400"
+          alt={name}
+          height={400}
+          width={400}
+          className="w-full h-full object-cover"
+        />
+      </div>
       <div className="p-4">
         <h3 className="font-bold">{name}</h3>
         <p className="text-sm text-gray-600">{category}</p>
