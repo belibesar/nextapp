@@ -119,7 +119,7 @@ class ProductModel {
   }
 
   static async getAll({ page, search }: { page: string; search: string }) {
-    const limit = 6;
+    const limit = 8;
     const skip = (parseInt(page) - 1) * limit;
 
     const searchQuery = search
