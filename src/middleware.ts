@@ -5,6 +5,14 @@ import errorHandler from "./lib/errorHandler";
 
 export async function middleware(request: NextRequest) {
   try {
+    // Exclude GET requests to /api/products
+    if (
+      request.nextUrl.pathname.startsWith("/api/products") &&
+      request.method === "GET"
+    ) {
+      return NextResponse.next();
+    }
+
     const isApiRequest = request.nextUrl.pathname.startsWith("/api"); // Check if the request is for an API route
     const getCookie = request.cookies.get("Authorization")?.value;
     const [type, token] = getCookie?.split(" ") || [];
@@ -47,6 +55,7 @@ export const config = {
     "/products/:path*",
     "/profile/:path*",
     "/api/producers:path*",
-    "/api/cart:path*"
+    "/api/cart:path*",
+    "/api/products:path*"
   ]
 };
