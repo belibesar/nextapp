@@ -23,6 +23,10 @@ export default function RegisterPage() {
   const [province, setProvince] = useState('-');
   const [regency, setRegency] = useState('-');
 
+  //bank account state
+  const [bankName, setBankName] = useState('');
+  const [accNumber, setAccNumber] = useState('');
+
   //succes and error state
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
@@ -50,6 +54,10 @@ export default function RegisterPage() {
               regency,
             },
           },
+          bankAccount: {
+            name: bankName,
+            number: accNumber,
+          },
           createdAt: new Date(),
           updatedAt: new Date(),
         }),
@@ -68,6 +76,8 @@ export default function RegisterPage() {
       setRole('');
       setCompanyName('');
       setPhone('');
+      setBankName('');
+      setAccNumber('');
       setProvince('-');
       setRegency('-');
 
@@ -273,6 +283,40 @@ export default function RegisterPage() {
                 className="absolute left-0 -top-3 rounded-tr-[8px] rounded-tl-[8px] bg-white px-3 text-sm text-gray-500 peer-placeholder-shown:text-sm transition-all peer-placeholder-shown:top-2.5 peer-placeholder-shown:text-gray-400 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-blue-500 peer-focus:bg-white peer-focus:rounded-md"
               >
                 Phone
+              </label>
+            </div>
+
+            <p className="mt-6 text-white text-medium font-bold">Bank Account </p>
+            <div className="relative w-full max-w-medium mt-6">
+              <input
+                type="text"
+                id="bankName"
+                value={bankName}
+                placeholder=" "
+                className="bg-white peer w-full rounded-md px-3 pt-3 pb-2 text-sm text-gray-900 placeholder-transparent focus:outline-none focus:border-blue-500"
+                onChange={(e) => setBankName(e.target.value)}
+              />
+              <label
+                htmlFor="bankName"
+                className="absolute left-0 -top-3 rounded-tr-[8px] rounded-tl-[8px] bg-white px-3 text-sm text-gray-500 peer-placeholder-shown:text-sm transition-all peer-placeholder-shown:top-2.5 peer-placeholder-shown:text-gray-400 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-blue-500 peer-focus:bg-white peer-focus:rounded-md"
+              >
+                Bank Name<span className="text-red-500">*</span>
+              </label>
+            </div>
+            <div className="relative w-full max-w-medium mt-6">
+              <input
+                type="number"
+                id="accNumber"
+                value={accNumber}
+                placeholder=" "
+                className="bg-white peer w-full rounded-md px-3 pt-3 pb-2 text-sm text-gray-900 placeholder-transparent focus:outline-none focus:border-blue-500"
+                onChange={(e) => setAccNumber(e.target.value)}
+              />
+              <label
+                htmlFor="accNumber"
+                className="absolute left-0 -top-3 rounded-tr-[8px] rounded-tl-[8px] bg-white px-3 text-sm text-gray-500 peer-placeholder-shown:text-sm transition-all peer-placeholder-shown:top-2.5 peer-placeholder-shown:text-gray-400 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-blue-500 peer-focus:bg-white peer-focus:rounded-md"
+              >
+                Account Number<span className="text-red-500">*</span>
               </label>
             </div>
             <button
