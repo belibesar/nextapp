@@ -37,7 +37,7 @@ export async function POST(request: Request) {
             updatedAt: new Date(),
           };
       
-          const result = await OrderModel.createOrder(orderData);
+          const result = await OrderModel.create(orderData);
       
           await CartModel.clearCart(userId);
 
