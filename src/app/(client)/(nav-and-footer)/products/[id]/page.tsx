@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import React from 'react';
 
 const ProductById = () => {
@@ -6,7 +7,12 @@ const ProductById = () => {
     <>
       <section className="flex-grow container mx-auto px-4 py-6">
         <div className="mb-4">
-          <button className="btn btn-sm bg-gray-200 hover:bg-gray-300 border-none text-gray-700 rounded-md px-6">Back</button>
+          <Link
+            href={'/products'}
+            className="btn btn-sm bg-gray-200 hover:bg-gray-300 border-none text-gray-700 rounded-md px-6"
+          >
+            Back
+          </Link>
         </div>
 
         <h1 className="text-2xl font-bold text-gray-800 mb-6">Product</h1>
