@@ -2,7 +2,7 @@ import React from 'react';
 import { handleLogout } from '@/components/layout/LogoutButton';
 import { UserType } from '@/types/types';
 
-const ProfilePage = ({user}:{user:UserType}) => {
+const ProfilePage = ({ user }: { user: UserType }) => {
   return (
     <>
       <div className="container mx-auto px-4 py-8 flex-grow min-h-screen">
@@ -35,6 +35,13 @@ const ProfilePage = ({user}:{user:UserType}) => {
             >
               Logout
             </button>
+          </div>
+
+          {/* Bank Account Info */}
+          <div className="text-left">
+            <h2 className="text-xl font-bold text-[#1e3a5f] mb-4">Bank Account</h2>
+            <p className="text-lg font-bold mb-2">{user?.bankAccount?.name}</p>
+            <p className="text-lg mb-1">{user?.bankAccount?.number}</p>
           </div>
         </div>
       </div>

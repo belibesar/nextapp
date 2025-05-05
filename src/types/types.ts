@@ -7,6 +7,10 @@ export type UserType = {
   role: "admin" | "distributor" | "supplier";
   companyName: string;
   contact: ContactType;
+  bankAccount?: {
+    name: string;
+    number: string;
+  };
   createdAt?: Date;
   updatedAt?: Date;
 };
@@ -39,7 +43,7 @@ export type GeocodeResult = {
 };
 
 export type ProductType = {
-  _id : string
+  _id: string
   name: string;
   description: string;
   price: number;
@@ -126,7 +130,7 @@ export type GroupBuy = {
   productId: string;
   productName: string;
   price: number;
-  moq: number; 
+  moq: number;
   maxQuantity: number;
   currentOrders: number;
   depositPercentage: number;
