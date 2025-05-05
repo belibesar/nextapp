@@ -39,6 +39,7 @@ export type GeocodeResult = {
 };
 
 export type ProductType = {
+  _id : string
   name: string;
   description: string;
   price: number;
@@ -46,6 +47,17 @@ export type ProductType = {
   category: string;
   supplierId: string;
   producerId: string;
+  producer: {
+    _id: string
+    name: string;
+    contact: {
+      phone: string;
+      email: string;
+      address: string;
+    },
+    createdAt?: Date;
+    updatedAt?: Date;
+  }
   createdAt?: Date;
   updatedAt?: Date;
 };
