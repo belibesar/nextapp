@@ -134,6 +134,7 @@ export type GroupBuy = {
   minTargetQuantity: number; 
   maxTargetQuantity: number;
   minUserOrder: number;
+  currentOrders: number;
   depositPercentage: number;
   deadline: Date;
   participants: ParticipantType[];
