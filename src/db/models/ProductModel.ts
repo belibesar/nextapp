@@ -71,13 +71,12 @@ class ProductModel {
       .split(" ")
       .map((el) => ({
         name: { $regex: el, $options: "i" }
-      })
-      );
+      }));
 
     const pipeline = [
       {
         $match: {
-          ...(searchQuery.length > 0 ? { $and: searchQuery } : {}),
+          ...(searchQuery.length > 0 ? { $and: searchQuery } : {})
         }
       },
       {
@@ -100,7 +99,7 @@ class ProductModel {
       {
         $limit: limit
       }
-    ]
+    ];
 
     const products = await this.collection().aggregate(pipeline).toArray();
     return products;
@@ -109,6 +108,31 @@ class ProductModel {
   static async getByName(name: string) {
     const product = await this.collection().findOne({ name });
     return product;
+  }
+
+  static async update(id: string, updateData: Partial<NewProduct>) {
+    const product = await this.collection().findOne({ _id: new ObjectId(id) });
+    if (!product) {
+      throw { message: "Product not found", status: 404 };
+    }
+
+    const updatedProduct = await this.collection().updateOne(
+      { _id: new ObjectId(id) },
+      { $set: { ...updateData, updatedAt: new Date() } }
+    );
+    return updatedProduct;
+  }
+
+  static async delete(id: string) {
+    const product = await this.collection().findOne({ _id: new ObjectId(id) });
+    if (!product) {
+      throw { message: "Product not found", status: 404 };
+    }
+
+    const deletedProduct = await this.collection().deleteOne({
+      _id: new ObjectId(id)
+    });
+    return deletedProduct;
   }
 }
 

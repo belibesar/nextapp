@@ -1,12 +1,12 @@
-import React from 'react';
+import React from "react";
 
-import ProductCard from '@/components/fragments/ProductCard';
-import { ProductCardType } from '@/types/types';
-import { UserType } from '@/types/types';
-import Link from 'next/link';
+import ProductCard from "@/components/fragments/ProductCard";
+import { ProductType } from "@/types/types";
+import { UserType } from "@/types/types";
+import Link from "next/link";
 
 const DashboardPage = async ({ user }: { user: UserType }) => {
-  const res = await fetch('http://localhost:3000/api/products');
+  const res = await fetch("http://localhost:3000/api/products");
   const data = await res.json();
   return (
     <>
@@ -22,14 +22,20 @@ const DashboardPage = async ({ user }: { user: UserType }) => {
               <div className="space-y-1">
                 <div>
                   <span className="text-xl">Halo, </span>
-                  <span className="text-xl font-bold capitalize">{user.name}</span>
+                  <span className="text-xl font-bold capitalize">
+                    {user.name}
+                  </span>
                 </div>
                 <div className="text-sm">{user.email}</div>
-                <div className="mt-16 text-xl font-bold capitalize">{user.companyName}</div>
+                <div className="mt-16 text-xl font-bold capitalize">
+                  {user.companyName}
+                </div>
               </div>
               <div className="text-right mt-4 md:mt-0">
                 <div className="text-xl font-bold capitalize">{user.role}</div>
-                <div className="mt-16 text-xl font-bold">{user.contact.address.regency}</div>
+                <div className="mt-16 text-xl font-bold">
+                  {user.contact.address.regency}
+                </div>
                 <div>{user.contact.address.province}</div>
               </div>
             </div>
@@ -67,24 +73,27 @@ const DashboardPage = async ({ user }: { user: UserType }) => {
 
           {/* Featured Products */}
           <div className="mb-8">
-            <h2 className="text-xl font-bold text-gray-800 mb-6">Featured Products</h2>
+            <h2 className="text-xl font-bold text-gray-800 mb-6">
+              Featured Products
+            </h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {/* LOOP FEATURED PRODUCT HERE */}
-              {data.map((product: ProductCardType) => (
+              {data.map((product: ProductType) => (
                 <ProductCard
                   key={product._id}
-                  name={product.name}
-                  category={product.category}
-                  producerName={product.producer.name}
-                  price={product.price}
+                  product={product}
+                  // name={product.name}
+                  // category={product.category}
+                  // producerName={product.producer.name}
+                  // price={product.price}
                 />
               ))}
             </div>
 
             <div className="flex justify-center mt-8">
               <Link
-                href={'/products'}
+                href={"/products"}
                 className="bg-[#0099cc] text-white px-8 py-2 rounded-md hover:bg-[#007aa3] transition-colors"
               >
                 More
