@@ -111,6 +111,7 @@ export type OrderType = {
   totalPrice: number;
   currentStatus: string;
   isGroupBuy: boolean;
+  paymentProof: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -123,19 +124,27 @@ export type OrderItemType = {
 };
 
 export type GroupBuy = {
-  productId: string;
+  productId: string | ObjectId;
   productName: string;
   price: number;
-  moq: number; 
-  maxQuantity: number;
+  minTargetQuantity: number; 
+  maxTargetQuantity: number;
+  minUserOrder: number;
   currentOrders: number;
   depositPercentage: number;
   deadline: Date;
+  participants: ParticipantType[];
   distributionLocation: string;
   description: string;
   status: GroupBuyStatus;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export type ParticipantType = {
+      distributorId: string,// ref → users._id
+      qty: Number,
+      joinedAt: Date
 }
 
 export enum GroupBuyStatus {

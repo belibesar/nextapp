@@ -3,7 +3,7 @@ import { database } from "../config/mongodb"
 import { GroupBuy, GroupBuyStatus } from "@/types/types";
 
 
-class GroupByModel {
+class GroupBuyModel {
     static collection() {
         return database.collection("groupBuys");
     }
@@ -12,8 +12,20 @@ class GroupByModel {
         return this.collection().findOne({ _id: new ObjectId(id) })
     }
 
-    static async findAll(filter: Partial<GroupBuy>) {
-        return this.collection().find(filter).toArray();
+    static async findAllWithProducts() {
+
+        return this.collection()
+            .aggregate([
+                {
+                    $lookup: {
+                        from: "products", 
+                        localField: "productId", 
+                        foreignField: "_id", 
+                        as: "productDetails", 
+                    },
+                },
+            ])
+            .toArray();
     }
 
     static async findByStatus(status: GroupBuyStatus){
@@ -37,6 +49,14 @@ class GroupByModel {
         return result.modifiedCount > 0;
     }
 
+    static async updateGroupBuy(id: string, updateData: any) {
+        const result = await this.collection().updateOne(
+            { _id: new ObjectId(id) },
+            updateData
+        );
+        return result.modifiedCount > 0; 
+    }
+
     static async deleteById(id: string) {
         const result = await this.collection().deleteOne({ _id: new ObjectId(id) });
         return result.deletedCount > 0;
@@ -44,4 +64,4 @@ class GroupByModel {
 
 }
 
-export default GroupByModel
+export default GroupBuyModel
