@@ -2,7 +2,6 @@ import GroupBuyModel from "@/db/models/GroupBuyModel";
 import OrderModel from "@/db/models/OrderModel";
 import NotificationModel from "@/db/models/NotificationModel";
 import errorHandler from "@/lib/errorHandler";
-import GroupByModel from "@/db/models/GroupBuyModel";
 
 export async function POST(request: Request) {
     try {

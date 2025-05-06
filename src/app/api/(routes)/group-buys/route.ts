@@ -3,6 +3,7 @@ import GroupBuyModel from "@/db/models/GroupBuyModel";
 import errorHandler from "@/lib/errorHandler";
 import { GroupBuy, GroupBuyStatus } from "@/types/types";
 import ProductModel from "@/db/models/ProductModel";
+import { ObjectId } from "mongodb";
 
 export async function GET() {
   try {
@@ -27,15 +28,15 @@ export async function POST(request: Request) {
     }
 
     const groupBuy: GroupBuy = {
-      productId: groupBuyData.productId,
-      // productName: product.name,
-      // price: product.price,
+      productId: new ObjectId(groupBuyData.productId),
+      productName: product.name,
+      price: product.price,
       minTargetQuantity: groupBuyData.minTargetQuantity || 10,
       maxTargetQuantity: groupBuyData.maxTargetQuantity || 50,
       minUserOrder: groupBuyData.minUserOrder || 1,
       currentOrders: 0,
       depositPercentage: product.price * 0.1,
-      deadline: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), // 3 days from now
+      deadline: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days from now
       participants: [],
       distributionLocation: groupBuyData.distributionLocation || "",
       description: groupBuyData.description || "",
