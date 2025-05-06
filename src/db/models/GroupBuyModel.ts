@@ -35,8 +35,10 @@ class GroupBuyModel {
 
   static async create(groupBuy: GroupBuy) {
     groupBuy.productId = new ObjectId(groupBuy.productId);
+    // Create a copy without _id
+    const { _id: _, ...groupBuyData } = groupBuy;
     const result = await this.collection().insertOne({
-      ...groupBuy,
+      ...groupBuyData,
       createdAt: new Date(),
       updatedAt: new Date()
     });

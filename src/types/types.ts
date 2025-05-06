@@ -144,6 +144,7 @@ export type GroupBuy = {
   status: GroupBuyStatus;
   createdAt: Date;
   updatedAt: Date;
+  productDetails?: ProductType;
 };
 
 export type ParticipantType = {
