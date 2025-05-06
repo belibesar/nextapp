@@ -43,30 +43,27 @@ class GroupBuyModel {
     return result.insertedId;
   }
 
+  static async updateById(id: string, updateData: Partial<GroupBuy>) {
+    updateData.productId = new ObjectId(updateData.productId);
+    const result = await this.collection().updateOne(
+      { _id: new ObjectId(id) },
+      { $set: { ...updateData, updatedAt: new Date() } }
+    );
+    return result.modifiedCount > 0;
+  }
 
-    static async updateById(id: string, updateData: Partial<GroupBuy>) {
-        const result = await this.collection().updateOne(
-            { _id: new ObjectId(id) },
-            { $set: { ...updateData, updatedAt: new Date() } }
-        );
-        return result.modifiedCount > 0;
-    }
+  static async updateGroupBuy(id: string, updateData: Partial<GroupBuy>) {
+    const result = await this.collection().updateOne(
+      { _id: new ObjectId(id) },
+      updateData
+    );
+    return result.modifiedCount > 0;
+  }
 
-    static async updateGroupBuy(id: string, updateData: any) {
-        const result = await this.collection().updateOne(
-            { _id: new ObjectId(id) },
-            updateData
-        );
-        console.log("Mongo Update Result:", result);
-        return result.modifiedCount > 0; 
-    }
-
-    static async deleteById(id: string) {
-        const result = await this.collection().deleteOne({ _id: new ObjectId(id) });
-        return result.deletedCount > 0;
-    }
-
-
+  static async deleteById(id: string) {
+    const result = await this.collection().deleteOne({ _id: new ObjectId(id) });
+    return result.deletedCount > 0;
+  }
 }
 
 export default GroupBuyModel;
