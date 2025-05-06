@@ -4,7 +4,7 @@ import Link from 'next/link';
 const AdminNavbar = () => {
   return (
     <>
-      <header className="bg-sky-500 text-white">
+      <header className="bg-[#1194D0] text-white">
         <div className="container mx-auto px-4 py-2 flex items-center justify-between">
           <div className="text-xl font-bold">BeliBesar</div>
 
@@ -79,7 +79,7 @@ const AdminNavbar = () => {
           </div>
 
           {/* Desktop Navigation - Hidden on small screens */}
-          <nav className="hidden lg:flex px-4 py-2 gap-4">
+          <nav className="hidden lg:flex px-4 py-2 gap-4 text-sm">
             <Link
               href="/dashboard"
               className="hover:underline"
@@ -95,13 +95,28 @@ const AdminNavbar = () => {
               </Link>
               <ul className="dropdown-content z-[1] menu p-0 shadow bg-base-100 w-32 text-neutral">
                 <li>
-                  <a className="py-2 px-4 hover:bg-base-200">Product</a>
+                  <Link
+                    href={'#'}
+                    className="py-2 px-4 hover:bg-base-200"
+                  >
+                    Product
+                  </Link>
                 </li>
                 <li>
-                  <a className="py-2 px-4 hover:bg-base-200">Producer</a>
+                  <Link
+                    href={'#'}
+                    className="py-2 px-4 hover:bg-base-200"
+                  >
+                    Producer
+                  </Link>
                 </li>
                 <li>
-                  <a className="py-2 px-4 bg-sky-100">Group Buy</a>
+                  <Link
+                    href={'#'}
+                    className="py-2 px-4 bg-sky-100"
+                  >
+                    Group Buy
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -118,7 +133,7 @@ const AdminNavbar = () => {
               Orders
             </Link>
             <Link
-              href="#"
+              href="/groupbuy"
               className="hover:underline"
             >
               Group Buy
