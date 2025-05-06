@@ -108,14 +108,25 @@ export type CartType = {
   updatedAt: Date;
 };
 
+export enum ORDER_STATUS  {
+  AWAITING_ADMIN_CONFIRMATION = "AWAITING_ADMIN_CONFIRMATION",
+  DP_CONFIRMED = "DP_CONFIRMED",
+  AWAITING_FULL_PAYMENT = "AWAITING_FULL_PAYMENT",
+  AWAITING_ADMIN_CONFIRMATION_FULL = "AWAITING_ADMIN_CONFIRMATION_FULL",
+  PAID_IN_FULL = "PAID_IN_FULL",
+  CANCELLED = "CANCELLED"
+};
+
 export type OrderType = {
   distributorId: string | ObjectId;
   items: OrderItemType[];
   totalPrice: number;
-  currentStatus: string;
+  currentStatus: ORDER_STATUS;
+  fullPaymentsStatus: ORDER_STATUS;
   isGroupBuy: boolean;
   groupBuyId?: string | ObjectId;
   paymentProof: string;
+  fullPaymentProof?: string;
   createdAt: Date;
   updatedAt: Date;
 };
