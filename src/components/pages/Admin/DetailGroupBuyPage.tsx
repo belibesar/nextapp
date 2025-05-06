@@ -24,7 +24,7 @@ export default function DetailGroupBuyPage() {
             try {
                 const res = await fetch(`http://localhost:3000/api/group-buys/${params.id}`)
                 const data = await res.json()
-                setGroupBuy(data)
+                setGroupBuy(Array.isArray(data) ? data[0] : data)
             } catch (error) {
                 console.log(error)
             } finally{
@@ -43,6 +43,7 @@ export default function DetailGroupBuyPage() {
         }
       }, [groupBuy?.minUserOrder])
 
+      console.log(groupBuy, "<<< groupBuy")
     const [quantity, setQuantity] = useState<number | null> (null)
     const pricePerUnit = groupBuy?.price || 0
     const minQuantity = groupBuy?.minUserOrder || 1
@@ -288,21 +289,35 @@ export default function DetailGroupBuyPage() {
                         </Button>
                       </div>
                     </TooltipTrigger>
+                    <div className="flex justify-center mt-1">
                     {(quantity ?? 0) < minQuantity && (
-                      <TooltipContent>
+                      <TooltipContent side="top" sideOffset={10} className="flex flex-col items-center justify-center text-center">
                         <p>Minimal pembelian adalah {minQuantity} paket</p>
                       </TooltipContent>
                     )}
+                    </div>
+                    
                   </Tooltip>
                 </TooltipProvider>
 
-                <div className="mt-4 text-center text-sm text-gray-500">
-                  Dengan bergabung, Anda setuju dengan{" "}
-                  <Link href="#" className="text-blue-600 hover:underline">
-                    Syarat & Ketentuan
-                  </Link>{" "}
-                  kami
-                </div>
+                {(quantity ?? 0) < minQuantity ? (
+                    <div className="mt-10 text-center text-sm text-gray-500">
+                        Minimal pembelian adalah {minQuantity} paket.{" "}
+                        <Link href="#" className="text-blue-600 hover:underline">
+                        Syarat & Ketentuan
+                        </Link>{" "}
+                        kami
+                    </div>
+                ) : (
+                    <div className="mt-5 text-center text-sm text-gray-500">
+                        Dengan bergabung, Anda setuju dengan{" "}
+                        <Link href="#" className="text-blue-600 hover:underline">
+                        Syarat & Ketentuan
+                        </Link>{" "}
+                        kami
+                    </div>
+                )}
+
               </CardContent>
             </Card>
           </div>

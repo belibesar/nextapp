@@ -142,6 +142,8 @@ export type GroupBuy = {
   createdAt: Date;
   updatedAt: Date;
   productDetails?: ProductType;
+  productName?: string;
+  price?: number;
 };
 
 export type ParticipantType = {
