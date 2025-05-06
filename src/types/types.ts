@@ -43,25 +43,25 @@ export type GeocodeResult = {
 };
 
 export type ProductType = {
-  _id: string
+  _id: string;
   name: string;
   description: string;
   price: number;
   stock: number;
   category: string;
-  supplierId: string;
+  // supplierId: string;
   producerId: string;
   producer: {
-    _id: string
+    _id: string;
     name: string;
     contact: {
       phone: string;
       email: string;
       address: string;
-    },
+    };
     createdAt?: Date;
     updatedAt?: Date;
-  }
+  };
   createdAt?: Date;
   updatedAt?: Date;
 };
@@ -76,14 +76,13 @@ export type ProductCardType = {
   price: number;
 };
 
-
 export type NewProduct = {
   name: string;
   description: string;
   price: number;
   stock: number;
   category: string;
-  supplierId?: string | ObjectId;
+  // supplierId?: string | ObjectId;
   producerId?: string | ObjectId;
 };
 
@@ -118,7 +117,7 @@ export type OrderType = {
   paymentProof: string;
   createdAt: Date;
   updatedAt: Date;
-}
+};
 
 export type OrderItemType = {
   productId: string | ObjectId;
@@ -129,9 +128,9 @@ export type OrderItemType = {
 
 export type GroupBuy = {
   productId: string | ObjectId;
-  productName: string;
-  price: number;
-  minTargetQuantity: number; 
+  // productName: string;
+  // price: number;
+  minTargetQuantity: number;
   maxTargetQuantity: number;
   minUserOrder: number;
   currentOrders: number;
@@ -143,13 +142,13 @@ export type GroupBuy = {
   status: GroupBuyStatus;
   createdAt: Date;
   updatedAt: Date;
-}
+};
 
 export type ParticipantType = {
-      distributorId: string,// ref → users._id
-      qty: Number,
-      joinedAt: Date
-}
+  distributorId: string | ObjectId; // ref → users._id
+  qty: number;
+  joinedAt: Date;
+};
 
 export enum GroupBuyStatus {
   OPEN = "OPEN",
