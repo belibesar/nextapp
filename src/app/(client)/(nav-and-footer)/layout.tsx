@@ -10,7 +10,13 @@ export default async function LayoutWithNavFooter({
 }>) {
   const user = await getLoggedInUserFromRequest();
   if (!user || user instanceof Response) {
-    throw new Error('User not found or invalid user type');
+    return (
+      <div className="flex flex-col min-h-screen">
+        <Navbar />
+        <main className="flex-grow">{children}</main>
+        <Footer />
+      </div>
+    )
   }
   return (
     <div>
