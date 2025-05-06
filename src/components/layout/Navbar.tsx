@@ -98,7 +98,7 @@ const Navbar = async () => {
             className="btn btn-sm text-white bg-white border-none"
           >
             <Image
-              src="burger-menu.svg"
+              src="/burger-menu.svg"
               alt="menu"
               width={20}
               height={20}
