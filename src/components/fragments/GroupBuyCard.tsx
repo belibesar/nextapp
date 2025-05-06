@@ -5,7 +5,7 @@ import { GroupBuy } from "@/types/types";
 import Link from "next/link";
 
 export default function GroupBuyCard({ groupBuy }: { groupBuy: GroupBuy }) {
-  console.log(groupBuy, "groupBuy card");
+  // console.log(groupBuy, "groupBuy card");
   // const bundlePrice = groupBuy.productDetails
   //   ? new Intl.NumberFormat("id-ID", {
   //       style: "currency",

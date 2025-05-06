@@ -3,7 +3,6 @@ import GroupBuyModel from "@/db/models/GroupBuyModel";
 import errorHandler from "@/lib/errorHandler";
 import { GroupBuy, GroupBuyStatus } from "@/types/types";
 import ProductModel from "@/db/models/ProductModel";
-import { ObjectId } from "mongodb";
 
 export async function GET() {
   try {
@@ -28,9 +27,7 @@ export async function POST(request: Request) {
     }
 
     const groupBuy: GroupBuy = {
-      productId: new ObjectId(groupBuyData.productId),
-      productName: product.name,
-      price: product.price,
+      productId: groupBuyData.productId,
       minTargetQuantity: groupBuyData.minTargetQuantity || 10,
       maxTargetQuantity: groupBuyData.maxTargetQuantity || 50,
       minUserOrder: groupBuyData.minUserOrder || 1,

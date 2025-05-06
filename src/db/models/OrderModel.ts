@@ -2,28 +2,31 @@ import { OrderType } from "@/types/types";
 import { database } from "../config/mongodb";
 import { ObjectId } from "mongodb";
 
-
-
 class OrderModel {
-    static collection() {
-        return database.collection("orders")
-    }
+  static collection() {
+    return database.collection("orders");
+  }
 
-    static async create(order: OrderType) {
-        return await this.collection().insertOne({
-            ...order,
-            createdAt: new Date(),
-            updatedAt: new Date(),
-        });
-    }
+  static async create(order: OrderType) {
+    // console.log(order, "ini order dari model");
+    order.distributorId = new ObjectId(order.distributorId);
+    return await this.collection().insertOne({
+      ...order,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    });
+  }
 
-    static async getOrderById(orderId: string) {
-        return await this.collection().findOne({ _id: new ObjectId(orderId)})
-    }
+  static async getOrderById(orderId: string) {
+    return await this.collection().findOne({ _id: new ObjectId(orderId) });
+  }
 
-    static async updateOrder(orderId: string, updates: Partial<OrderType>) {
-        return await this.collection().updateOne({ _id: new ObjectId(orderId)}, { $set: updates });
-    }
+  static async updateOrder(orderId: string, updates: Partial<OrderType>) {
+    return await this.collection().updateOne(
+      { _id: new ObjectId(orderId) },
+      { $set: updates }
+    );
+  }
 }
 
 export default OrderModel;

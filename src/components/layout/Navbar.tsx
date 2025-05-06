@@ -12,7 +12,8 @@ const Navbar = async () => {
         <div className="navbar-start">
           <Link
             href={'/'}
-            className="text-white font-semibold text-[25px] pl-3">
+            className="text-white font-semibold text-[25px] pl-3"
+          >
             BeliBesar
           </Link>
         </div>
@@ -63,10 +64,10 @@ const Navbar = async () => {
           </div>
           <div className="flex flex-col relative w-auto h-10 ml-3 mr-3">
             <Link
-              href="/cart"
+              href="/groupbuy"
               className="relative group text-white text-sm flex items-center py-2.5"
             >
-              Cart
+              Group Buy
               <span className="absolute left-0 -bottom-3 h-1 w-full bg-white scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-200"></span>
             </Link>
           </div>
@@ -92,17 +93,48 @@ const Navbar = async () => {
         </div>
 
         <div className="dropdown dropdown-bottom lg:hidden navbar-end">
-          <label tabIndex={0} className="btn btn-sm text-white bg-white border-none">
+          <label
+            tabIndex={0}
+            className="btn btn-sm text-white bg-white border-none"
+          >
             <Image
               src="burger-menu.svg"
               alt="menu"
               width={20}
-              height={20}/>
+              height={20}
+            />
           </label>
-          <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-            <li><Link href="/products">Products</Link></li>
-            <li><Link href="/orders">Orders</Link></li>
-            <li><Link href="/cart">Cart</Link></li>
+          <ul
+            tabIndex={0}
+            className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
+          >
+            <li>
+              <Link href="/products">Products</Link>
+            </li>
+            <li>
+              <Link href="/orders">Orders</Link>
+            </li>
+            <li>
+              <Link href="/cart">Cart</Link>
+            </li>
+            <li>
+              <Link href="/groupbuy">Group Buy</Link>
+            </li>
+            {!authorization && (
+              <li>
+                <Link href="/login">Login</Link>
+              </li>
+            )}
+            {authorization && (
+              <li>
+                <Link href="/profile">Profile</Link>
+              </li>
+            )}
+            {authorization && (
+              <li>
+                <Link href="/logout">Logout</Link>
+              </li>
+            )}
           </ul>
         </div>
       </div>
