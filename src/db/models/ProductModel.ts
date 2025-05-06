@@ -45,11 +45,33 @@ class ProductModel {
   }
 
   static async findById(id: string) {
-    const product = await this.collection().findOne({ _id: new ObjectId(id) });
+    const pipeline = [
+      {
+        $match: {
+          _id: new ObjectId(id)
+        }
+      },
+      {
+        $lookup: {
+          from: "producers",
+          localField: "producerId",
+          foreignField: "_id",
+          as: "producer"
+        }
+      },
+      {
+        $unwind: {
+          path: "$producer",
+          preserveNullAndEmptyArrays: true
+        }
+      }
+    ]
+
+    const product = await this.collection().aggregate(pipeline).toArray();
     if (!product) {
       throw { message: "Product not found", status: 404 };
     }
-    return product;
+    return product[0] || null;
   }
 
   static async getAll({ page, search }: { page: string; search: string }) {

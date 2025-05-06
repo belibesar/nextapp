@@ -12,24 +12,37 @@ import { Separator } from "@/components/ui/Separator"
 import { Badge } from "@/components/ui/Badge"
 import { Progress } from "@/components/ui/Progress"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/Tooltip"
-import { GroupBuy } from "@/types/types"
+import { GroupBuy, ProductType, UserType } from "@/types/types"
 
-export default function DetailGroupBuyPage() {
+export default function DetailGroupBuyPage({user}:{user:UserType}) {    
     const params = useParams()
     const [groupBuy, setGroupBuy] = useState<GroupBuy | null>(null)
+    const [product, setProduct] = useState<ProductType | null>(null) 
     const [loading, setLoading] = useState(true)
+    const [isModalOpen, setIsModalOpen] = useState(false)
+
+    const openModal = () => {
+        setIsModalOpen(true); // Set modal visibility to true when button is clicked
+      };
+    
+      const closeModal = () => {
+        setIsModalOpen(false); // Close the modal by setting visibility to false
+      }
 
     useEffect(()=>{
         async function fetchGroupBuy() {
             try {
                 const res = await fetch(`http://localhost:3000/api/group-buys/${params.id}`)
                 const data = await res.json()
+
+                const productRes = await fetch(`http://localhost:3000/api/products/${data[0].productId}`)
+                const productData = await productRes.json()
                 setGroupBuy(Array.isArray(data) ? data[0] : data)
+                setProduct(Array.isArray(productData) ? productData[0] : productData)
             } catch (error) {
                 console.log(error)
             } finally{
                 setLoading(false)
-
             }
         }
         if(params.id) {
@@ -41,9 +54,8 @@ export default function DetailGroupBuyPage() {
         if (groupBuy?.minUserOrder) {
           setQuantity(groupBuy.minUserOrder)
         }
-      }, [groupBuy?.minUserOrder])
+    }, [groupBuy?.minUserOrder])
 
-      console.log(groupBuy, "<<< groupBuy")
     const [quantity, setQuantity] = useState<number | null> (null)
     const pricePerUnit = groupBuy?.price || 0
     const minQuantity = groupBuy?.minUserOrder || 1
@@ -90,7 +102,7 @@ export default function DetailGroupBuyPage() {
     <div className="min-h-screen flex flex-col bg-gray-50">
       <main className="flex-1 container mx-auto p-4 md:p-6 lg:p-8">
         <Button className="mb-6">
-          <Link href="/products" className="flex items-center">
+          <Link href="/groupbuy" className="flex items-center">
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back
           </Link>
@@ -281,8 +293,9 @@ export default function DetailGroupBuyPage() {
                     <TooltipTrigger>
                       <div className="w-full">
                         <Button
-                          className="w-full bg-blue-600 hover:bg-blue-700 h-12 text-base"
-                          onClick={() => (window.location.href = `/payment/${params.id}`)}
+                          className={`${(quantity ?? 0) < minQuantity ? "w-full bg-gray-300 hover:bg-gray-400 h-12 text-base"
+                            : "w-full bg-blue-600 hover:bg-blue-700 h-12 text-base hover:cursor-pointer"}`}
+                          onClick={openModal}
                           disabled={(quantity ?? 0) < minQuantity}
                         >
                           Join Group Buy
@@ -317,9 +330,46 @@ export default function DetailGroupBuyPage() {
                         kami
                     </div>
                 )}
-
               </CardContent>
             </Card>
+            {isModalOpen && (
+          <div className="fixed inset-0 bg-opacity-50 backdrop-blur-sm flex justify-center items-center z-50">
+            
+            <div className="relative bg-white p-6 rounded-xl shadow-lg max-w-2xl w-full h-[350px]">
+                <button
+                    onClick={closeModal}
+                    className="absolute top-4 left-4 text-gray-500 hover:text-gray-700 text-xl font-bold w-10 h-10">
+                    &times;
+                </button>
+
+                <h3 className="text-2xl font-bold text-center mb-4">Payment</h3>
+                <p className="text-center mb-4 text-sm">Transfer to this Account to finish payment</p>
+
+                <div className="flex justify-between mt-2">
+                    <h3 className="font-semibold">23908593408590</h3>
+                    <h3 className="font-semibold">10% DP</h3>
+                </div>
+                <div className="flex justify-between">
+                    <p>{user.bankAccount?.name}</p>
+                    <h3 className="font-semibold">Total</h3>
+                </div>
+                <div className="flex justify-between">
+                    <p>{product?.producer && product?.producer.name}</p>
+                    <h3 className="font-semibold">Rp. {formatCurrency(totalPrice)}</h3>
+                </div>
+
+                <div className="flex flex-col justify-center mt-2">
+                    <p className="text-sm font-semibold text-center mt-5">Upload your transfer note</p>
+                    <button className="self-center w-50 items-center text-center bg-gray-600 text-sm text-white p-1 rounded-md hover:cursor-pointer hover:bg-gray-700">Choose your file</button>
+                </div>
+
+                <div className="flex flex-col justify-center mt-5">
+                    <p className="text-xs text-center">Press this button if payment process already finished</p>
+                    <button className="self-center w-30 bg-blue-400 rounded-md hover:bg-blue-300 hover:cursor-pointer text-sm font-semibold text-white mt-1 pt-1 pb-1">Pay</button>
+                </div>
+            </div>
+          </div>
+        )}
           </div>
         </div>
       </main>
