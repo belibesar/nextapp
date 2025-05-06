@@ -85,7 +85,7 @@ export default function LoginPage() {
               />
               <label
                 htmlFor="email"
-                className="absolute left-0 -top-3 rounded-tr-[8px] rounded-tl-[8px] bg-white px-3 text-sm text-gray-500 peer-placeholder-shown:text-sm transition-all peer-placeholder-shown:top-2.5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-blue-500 peer-focus:bg-white peer-focus:rounded-md"
+                className="absolute left-0 -top-3 rounded-tr-[8px] rounded-tl-[8px] bg-white px-3 text-sm text-gray-500  transition-all peer-placeholder-shown:top-2.5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-blue-500 peer-focus:bg-white peer-focus:rounded-md"
               >
                 Email
               </label>
@@ -101,7 +101,7 @@ export default function LoginPage() {
               />
               <label
                 htmlFor="password"
-                className="absolute left-0 -top-3 rounded-tr-[8px] rounded-tl-[8px] bg-white px-3 text-sm text-gray-500 peer-placeholder-shown:text-sm transition-all peer-placeholder-shown:top-2.5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-blue-500 peer-focus:bg-white peer-focus:rounded-md"
+                className="absolute left-0 -top-3 rounded-tr-[8px] rounded-tl-[8px] bg-white px-3 text-sm text-gray-500  transition-all peer-placeholder-shown:top-2.5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-blue-500 peer-focus:bg-white peer-focus:rounded-md"
               >
                 Password
               </label>
@@ -113,7 +113,7 @@ export default function LoginPage() {
               Login
             </button>
           </form>
-          <p className="text-center text-sm text-gray-700 mt-3 text-white">
+          <p className="text-center text-sm text-gray-700 mt-3 ">
             Don't have an account?
             <br />{" "}
             <a href="/register" className="text-white font-semibold">
