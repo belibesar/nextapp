@@ -1,4 +1,4 @@
-import { ObjectId } from "mongodb";
+import { ObjectId, UpdateFilter } from "mongodb";
 import { database } from "../config/mongodb";
 import { GroupBuy, GroupBuyStatus } from "@/types/types";
 
@@ -8,7 +8,24 @@ class GroupBuyModel {
   }
 
   static async findById(id: string) {
-    return this.collection().findOne({ _id: new ObjectId(id) });
+    return this.collection()
+      .aggregate([
+        {
+          $match: { _id: new ObjectId(id) }
+        },
+        {
+          $lookup: {
+            from: "products",
+            localField: "productId",
+            foreignField: "_id",
+            as: "productDetails"
+          }
+        },
+        {
+          $unwind: "$productDetails"
+        }
+      ])
+      .toArray();
   }
 
   static async findAllWithProducts() {
@@ -54,10 +71,34 @@ class GroupBuyModel {
     return result.modifiedCount > 0;
   }
 
-  static async updateGroupBuy(id: string, updateData: Partial<GroupBuy>) {
+  static async updateGroupBuy(id: string, distributorId: string, qty: number) {
+    // Check if current distributorId is already in the participants array
+    const groupBuy = await this.collection().findOne({ _id: new ObjectId(id) });
+    if (!groupBuy) {
+      throw new Error("Group buy not found");
+    }
+    const existingParticipant = groupBuy.participants.find(
+      (participant: { distributorId: ObjectId }) =>
+        participant.distributorId.toString() === distributorId
+    );
+    if (existingParticipant) {
+      // If the distributorId already exists, return an error
+      throw { message: "Distributor already joined", status: 400 };
+    }
+
     const result = await this.collection().updateOne(
       { _id: new ObjectId(id) },
-      updateData
+      {
+        $push: {
+          participants: {
+            distributorId: new ObjectId(distributorId),
+            qty,
+            joinedAt: new Date()
+          }
+        },
+        $inc: { currentOrders: qty },
+        $set: { updatedAt: new Date() }
+      } as any // Type assertion to avoid TypeScript error
     );
     return result.modifiedCount > 0;
   }
