@@ -127,6 +127,7 @@ export type OrderItemType = {
 };
 
 export type GroupBuy = {
+  _id?: string | ObjectId;
   productId: string | ObjectId;
   // productName: string;
   // price: number;
@@ -142,6 +143,7 @@ export type GroupBuy = {
   status: GroupBuyStatus;
   createdAt: Date;
   updatedAt: Date;
+  productDetails?: ProductType;
 };
 
 export type ParticipantType = {
