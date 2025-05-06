@@ -56,7 +56,7 @@ export default function GroupBuyCard({ groupBuy }: { groupBuy: GroupBuy }) {
           <div className="flex flex-row justify-between">
             <p className="text-xs mt-2">
               <span className="font-bold ">Moq:</span>{" "}
-              {`${groupBuy.minUserOrder} paket`}
+              {`${groupBuy.minTargetQuantity} paket`}
             </p>
             <p className="text-xs">per paket</p>
           </div>
@@ -66,7 +66,9 @@ export default function GroupBuyCard({ groupBuy }: { groupBuy: GroupBuy }) {
               {groupBuy.distributionLocation}
             </p>
             <div className="flex flex-col">
-              <p className="text-sm font-semibold text-right">Min 1 paket</p>{" "}
+              <p className="text-sm font-semibold text-right">
+                Min {groupBuy.minUserOrder} paket
+              </p>{" "}
               {/*change this to bundle qty */}
               {groupBuy.productDetails &&
               groupBuy.productDetails.stock !== 0 ? (
