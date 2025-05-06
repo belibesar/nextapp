@@ -3,28 +3,27 @@ import OrderModel from "@/db/models/OrderModel";
 import NotificationModel from "@/db/models/NotificationModel";
 import errorHandler from "@/lib/errorHandler";
 import UserModel from "@/db/models/UserModel";
-import { GroupBuy } from "@/types/types";
+import { cloudinary } from "@/lib/cloudinaryConfig";
+import { GroupBuy, GroupBuyStatus, ORDER_STATUS } from "@/types/types";
+import { Readable } from "stream";
 
 export async function POST(request: Request) {
   try {
-    const id = new URL(request.url).pathname.split("/").slice(-2)[0]; // Group Buy ID
-    const { quantity, paymentProof } = await request.json();
+    const id = new URL(request.url).pathname.split("/").slice(-2)[0];
+    const formData = await request.formData();
+    const quantity = parseInt(formData.get("quantity") as string, 10);
+    const paymentProof = formData.get("paymentProof") as File;
 
-    // Validasi apakah Group Buy masih OPEN
     const groupBuyArr = await GroupBuyModel.findById(id);
     const groupBuy = groupBuyArr[0] as GroupBuy;
-    if (!groupBuy || groupBuy.status !== "OPEN") {
+    if (!groupBuy || groupBuy.status !== GroupBuyStatus.OPEN) {
       return Response.json({ message: "Group Buy is not open" });
     }
 
-    // console.log(groupBuy, "Group Buy Data");
-
-    // Ambil distributorId dari header
     const userData = request.headers.get("x-user-data");
     const userDataJson = userData ? JSON.parse(userData) : null;
-    const distributorId = userDataJson?._id; // Ambil userId dari token yang sudah di-decode
+    const distributorId = userDataJson?._id;
 
-    // Validasi apakah user ada dalam database dan memiliki role distributor
     const user = await UserModel.findById(distributorId);
     if (!user) {
       return Response.json({ message: "User not found" }, { status: 404 });
@@ -33,7 +32,6 @@ export async function POST(request: Request) {
       return Response.json({ message: "Unauthorized Role" }, { status: 403 });
     }
 
-    // Validasi quantity
     if (quantity < groupBuy.minTargetQuantity) {
       throw { message: `Minimum quantity is ${groupBuy.minTargetQuantity}` };
     }
@@ -41,25 +39,37 @@ export async function POST(request: Request) {
       throw { message: `Maximum quantity is ${groupBuy.maxTargetQuantity}` };
     }
 
-    // Hitung total harga dan jumlah pembayaran
     const totalPrice = groupBuy.productDetails
       ? quantity * groupBuy.productDetails.price
       : 0;
     const depositAmount = totalPrice * (groupBuy.depositPercentage / 100);
-    const paymentAmount = paymentProof ? depositAmount : totalPrice; // DP jika ada paymentProof, full jika tidak
+    const paymentAmount = paymentProof ? depositAmount : totalPrice;
 
-    // // Update Group Buy dengan join sebagai distributor
-    // const updateResult = await GroupBuyModel.updateGroupBuy(
-    //   id,
-    //   distributorId,
-    //   quantity
-    // );
+    let paymentProofUrl = "";
 
-    // if (!updateResult) {
-    //   throw { message: "Failed to update Group Buy participants." };
-    // }
+    if (paymentProof) {
+      const buffer = Buffer.from(await paymentProof.arrayBuffer());
 
-    // Buat data Order
+      paymentProofUrl = await new Promise<string>((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          {
+            folder: "payment-proofs",
+            resource_type: "image",
+          },
+          (error, result) => {
+            if (error || !result) {
+              console.error("Cloudinary upload error:", error);
+              reject(new Error("Failed to upload payment proof"));
+            } else {
+              resolve(result.secure_url); // Resolve with the secure URL
+            }
+          }
+        );
+    
+        Readable.from(buffer).pipe(stream);
+      });
+    }
+
     const order = await OrderModel.create({
       distributorId,
       items: [
@@ -69,49 +79,27 @@ export async function POST(request: Request) {
             ? groupBuy.productDetails.name
             : "",
           quantity,
-          price: groupBuy.productDetails ? groupBuy.productDetails.price : 0
-        }
+          price: groupBuy.productDetails ? groupBuy.productDetails.price : 0,
+        },
       ],
       totalPrice,
       currentStatus: paymentProof
-        ? "AWAITING_ADMIN_CONFIRMATION"
-        : "FULL_PAYMENT_PENDING",
+        ? ORDER_STATUS.AWAITING_ADMIN_CONFIRMATION
+        : ORDER_STATUS.AWAITING_FULL_PAYMENT,
+      fullPaymentsStatus: ORDER_STATUS.AWAITING_FULL_PAYMENT,
       isGroupBuy: true,
       groupBuyId: groupBuy._id,
-      paymentProof: paymentProof || null, // Simpan paymentProof jika ada
+      paymentProof: paymentProofUrl,
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
     });
 
-    // Buat notifikasi untuk user
     await NotificationModel.create({
       userId: distributorId,
-      message: `You have joined the Group Buy: ${groupBuy.productDetails?.name}`
+      title: "Yeayy!!",
+      message: `You have joined the Group Buy: ${groupBuy.productDetails?.name}`,
     });
 
-    // console.log(userNotification, "User Notification");
-
-    // =================== YANG DI BAWAH INI DI DISABLE DULU, NANTI KALO SIAP BARU GAS ===================
-    // Get all users with role 'admin'
-    // const admins = await UserModel.getAllAdmin();
-    // Extract admin IDs
-    // const adminIds = admins.map((admin) => admin._id.toString());
-
-    // Buat notifikasi untuk admin jika ada paymentProof
-    // =================== NANTI INI LOOP SETIAP ADMIN ID BUAT CREATE NOTIFIKASI ===================
-    // if (paymentProof) {
-    //   await NotificationModel.create({
-    //     userId: "admin",
-    //     message: `Order ${order.insertedId} requires your confirmation.`
-    //   });
-    // } else {
-    //   await NotificationModel.create({
-    //     userId: "admin",
-    //     message: `Distributor ${distributorId} has joined the Group Buy: ${groupBuy.productDetails?.name}`
-    //   });
-    // }
-
-    // Kembalikan informasi pembayaran
     return Response.json({
       success: true,
       orderId: order.insertedId,
@@ -121,7 +109,7 @@ export async function POST(request: Request) {
       paymentAmount,
       message: paymentProof
         ? "Deposit payment submitted. Awaiting admin confirmation."
-        : "Full payment required. Please complete your payment."
+        : "Full payment required. Please complete your payment.",
     });
   } catch (error) {
     console.error("Error joining Group Buy:", error);

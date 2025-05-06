@@ -28,23 +28,31 @@ class OrderModel {
     );
   }
 
-  static async updateStatus(orderId: string | ObjectId, updateData: Partial<OrderType>): Promise<boolean> {
-    console.log("Updating order with ID:", orderId);
-    console.log("Update data:", updateData);
+  static async findGroupBuyOrder(distributorId: string, groupBuyId: string) {
+    return await this.collection().findOne({
+      distributorId: new ObjectId(distributorId),
+      groupBuyId: new ObjectId(groupBuyId),
+      isGroupBuy: true
+    });
+  }
 
+  static async findAllByGroupBuyId(groupBuyId: string) {
+    const orders = await this.collection()
+      .find({ groupBuyId: new ObjectId(groupBuyId) }) 
+      .toArray();
+    return orders;
+  }
+
+
+  static async updateStatus(orderId: string | ObjectId, updateData: Partial<OrderType>): Promise<boolean> {
     const result = await this.collection().updateOne(
         { _id: new ObjectId(orderId) },
         { $set: updateData }
     );
 
-    console.log("Update result:", result);
-
-    if (result.modifiedCount === 0) {
-        console.error("No documents were updated. Check if the order ID exists.");
-    }
-
     return result.modifiedCount > 0;
-}
+  }
+
 }
 
 export default OrderModel;
