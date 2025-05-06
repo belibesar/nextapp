@@ -8,7 +8,7 @@ class GroupBuyModel {
   }
 
   static async findById(id: string) {
-    return this.collection()
+    const result = await this.collection()
       .aggregate([
         {
           $match: { _id: new ObjectId(id) }
@@ -26,6 +26,8 @@ class GroupBuyModel {
         }
       ])
       .toArray();
+
+      return result
   }
 
   static async findAllWithProducts() {

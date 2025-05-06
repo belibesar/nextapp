@@ -92,10 +92,6 @@ const DashboardPage = async ({ user }: { user: UserType }) => {
                 <ProductCard
                   key={product._id}
                   product={product}
-                  // name={product.name}
-                  // category={product.category}
-                  // producerName={product.producer.name}
-                  // price={product.price}
                 />
               ))}
             </div>
@@ -117,10 +113,10 @@ const DashboardPage = async ({ user }: { user: UserType }) => {
             </h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {groups.map((product: GroupBuy, index: string) => (
+              {groups.map((groupBuy: GroupBuy, index: string) => (
                 <GroupBuyCard
                   key={index}
-                  product={product}
+                  groupBuy={groupBuy}
                   user={plainUser}
                 />
               ))}

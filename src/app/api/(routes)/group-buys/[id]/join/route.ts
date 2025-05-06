@@ -48,16 +48,16 @@ export async function POST(request: Request) {
     const depositAmount = totalPrice * (groupBuy.depositPercentage / 100);
     const paymentAmount = paymentProof ? depositAmount : totalPrice; // DP jika ada paymentProof, full jika tidak
 
-    // Update Group Buy dengan join sebagai distributor
-    const updateResult = await GroupBuyModel.updateGroupBuy(
-      id,
-      distributorId,
-      quantity
-    );
+    // // Update Group Buy dengan join sebagai distributor
+    // const updateResult = await GroupBuyModel.updateGroupBuy(
+    //   id,
+    //   distributorId,
+    //   quantity
+    // );
 
-    if (!updateResult) {
-      throw { message: "Failed to update Group Buy participants." };
-    }
+    // if (!updateResult) {
+    //   throw { message: "Failed to update Group Buy participants." };
+    // }
 
     // Buat data Order
     const order = await OrderModel.create({
@@ -77,6 +77,7 @@ export async function POST(request: Request) {
         ? "AWAITING_ADMIN_CONFIRMATION"
         : "FULL_PAYMENT_PENDING",
       isGroupBuy: true,
+      groupBuyId: groupBuy._id,
       paymentProof: paymentProof || null, // Simpan paymentProof jika ada
       createdAt: new Date(),
       updatedAt: new Date()

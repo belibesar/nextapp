@@ -27,6 +27,24 @@ class OrderModel {
       { $set: updates }
     );
   }
+
+  static async updateStatus(orderId: string | ObjectId, updateData: Partial<OrderType>): Promise<boolean> {
+    console.log("Updating order with ID:", orderId);
+    console.log("Update data:", updateData);
+
+    const result = await this.collection().updateOne(
+        { _id: new ObjectId(orderId) },
+        { $set: updateData }
+    );
+
+    console.log("Update result:", result);
+
+    if (result.modifiedCount === 0) {
+        console.error("No documents were updated. Check if the order ID exists.");
+    }
+
+    return result.modifiedCount > 0;
+}
 }
 
 export default OrderModel;

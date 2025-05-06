@@ -1,10 +1,10 @@
 // "use client";
 
 import Image from "next/image";
-import { GroupBuy } from "@/types/types";
+import { GroupBuy, UserType } from "@/types/types";
 import Link from "next/link";
 
-export default function GroupBuyCard({ groupBuy }: { groupBuy: GroupBuy }) {
+export default function GroupBuyCard({ groupBuy, user }: { groupBuy: GroupBuy, user: UserType }) {
   // console.log(groupBuy, "groupBuy card");
   // const bundlePrice = groupBuy.productDetails
   //   ? new Intl.NumberFormat("id-ID", {
@@ -79,12 +79,12 @@ export default function GroupBuyCard({ groupBuy }: { groupBuy: GroupBuy }) {
             </div>
           </div>
         </div>
-      </Link>
       <div className="flex justify-end mt-2 px-4 pb-4">
         <button className="bg-[#0099cc] text-white text-xs px-8 py-2 rounded-md hover:bg-[#007aa3] transition-colors cursor-pointer z-50">
           Join
         </button>
       </div>
+      </Link>
     </div>
   );
 }

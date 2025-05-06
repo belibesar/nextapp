@@ -1,7 +1,7 @@
 import { ObjectId } from "mongodb";
 
 export type UserType = {
-  _id?: string | ObjectId;
+  _id: string | ObjectId;
   name: string;
   email: string;
   password: string;
@@ -114,6 +114,7 @@ export type OrderType = {
   totalPrice: number;
   currentStatus: string;
   isGroupBuy: boolean;
+  groupBuyId?: string | ObjectId;
   paymentProof: string;
   createdAt: Date;
   updatedAt: Date;
