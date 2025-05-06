@@ -1,6 +1,7 @@
 import { ObjectId } from "mongodb";
 
 export type UserType = {
+  _id: string;
   name: string;
   email: string;
   password: string;
@@ -128,6 +129,7 @@ export type OrderItemType = {
 };
 
 export type GroupBuy = {
+  _id: ObjectId;
   productId: string | ObjectId;
   productName: string;
   price: number;

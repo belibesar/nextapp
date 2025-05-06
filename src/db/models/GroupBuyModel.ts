@@ -54,6 +54,7 @@ class GroupBuyModel {
             { _id: new ObjectId(id) },
             updateData
         );
+        console.log("Mongo Update Result:", result);
         return result.modifiedCount > 0; 
     }
 
