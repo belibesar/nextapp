@@ -105,6 +105,40 @@ class ProductModel {
     return products;
   }
 
+  static async getAllUnlimited({ search }: { search: string }) {
+    const searchQuery = search
+      .trim()
+      .split(" ")
+      .map((el) => ({
+        name: { $regex: el, $options: "i" }
+      }));
+
+    const pipeline = [
+      {
+        $match: {
+          ...(searchQuery.length > 0 ? { $and: searchQuery } : {})
+        }
+      },
+      {
+        $lookup: {
+          from: "producers",
+          localField: "producerId",
+          foreignField: "_id",
+          as: "producer"
+        }
+      },
+      {
+        $unwind: {
+          path: "$producer",
+          preserveNullAndEmptyArrays: true
+        }
+      }
+    ];
+
+    const products = await this.collection().aggregate(pipeline).toArray();
+    return products;
+  }
+
   static async getByName(name: string) {
     const product = await this.collection().findOne({ name });
     return product;

@@ -33,7 +33,7 @@ export async function POST(request: Request) {
             minUserOrder: groupBuyData.minUserOrder || 1,
             currentOrders: 0,
             depositPercentage: product.price * 0.1,
-            deadline: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), // 3 days from now
+            deadline: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days from now
             participants: [],
             distributionLocation: groupBuyData.distributionLocation || "",
             description: groupBuyData.description || "",
