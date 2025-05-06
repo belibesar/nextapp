@@ -3,7 +3,7 @@ import { database } from "../config/mongodb";
 import { z } from "zod";
 import { ObjectId } from "mongodb";
 import ProducerModel from "./ProducerModel";
-import UserModel from "./UserModel";
+// import UserModel from "./UserModel";
 
 const ProductSchema = z.object({
   name: z.string({ message: "Name is required" }),
@@ -11,7 +11,6 @@ const ProductSchema = z.object({
   price: z.number({ message: "Price is required" }),
   stock: z.number({ message: "Stock is required" }),
   category: z.string({ message: "Category is required" }),
-  supplierId: z.string({ message: "Supplier ID is required" }),
   producerId: z.string({ message: "Producer ID is required" })
 });
 
@@ -31,18 +30,9 @@ class ProductModel {
     if (!validProducer) {
       throw { message: "Invalid producer ID", status: 400 };
     }
-    const validSupplier = await UserModel.findById(
-      newProduct.supplierId as string
-    );
-    if (!validSupplier) {
-      throw { message: "Invalid supplier ID", status: 400 };
-    }
-    if (validSupplier.role !== "supplier") {
-      throw { message: "Invalid supplier role", status: 400 };
-    }
 
     newProduct.producerId = new ObjectId(newProduct.producerId);
-    newProduct.supplierId = new ObjectId(newProduct.supplierId);
+    // newProduct.supplierId = new ObjectId(newProduct.supplierId);
 
     const productToInsert = {
       ...newProduct,
@@ -149,6 +139,7 @@ class ProductModel {
     if (!product) {
       throw { message: "Product not found", status: 404 };
     }
+    updateData.producerId = new ObjectId(updateData.producerId);
 
     const updatedProduct = await this.collection().updateOne(
       { _id: new ObjectId(id) },
