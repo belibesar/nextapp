@@ -128,8 +128,8 @@ export type OrderItemType = {
 
 export type GroupBuy = {
   productId: string | ObjectId;
-  // productName: string;
-  // price: number;
+  productName?: string;
+  price?: number;
   minTargetQuantity: number;
   maxTargetQuantity: number;
   minUserOrder: number;
