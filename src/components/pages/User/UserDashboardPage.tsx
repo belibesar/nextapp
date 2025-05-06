@@ -1,20 +1,20 @@
-import React from "react";
-import ProductCard from "@/components/fragments/ProductCard";
-import { GroupBuy, ProductType } from "@/types/types";
-import { UserType } from "@/types/types";
-import Link from "next/link";
-import GroupBuyCard from "@/components/fragments/GroupBuyCard";
+import React from 'react';
+import ProductCard from '@/components/fragments/ProductCard';
+import { GroupBuy, ProductType } from '@/types/types';
+import { UserType } from '@/types/types';
+import Link from 'next/link';
+import GroupBuyCard from '@/components/fragments/GroupBuyCard';
 
 const DashboardPage = async ({ user }: { user: UserType }) => {
-  const res = await fetch("http://localhost:3000/api/products");
+  const res = await fetch('http://localhost:3000/api/products');
   const data = await res.json();
 
-  const result = await fetch("http://localhost:3000/api/group-buys");
+  const result = await fetch('http://localhost:3000/api/group-buys');
   const groups = await result.json();
 
   const plainUser = {
     ...user,
-    _id: user._id?.toString() // Convert _id to string
+    _id: user._id?.toString(), // Convert _id to string
   };
 
   return (
@@ -31,21 +31,15 @@ const DashboardPage = async ({ user }: { user: UserType }) => {
               <div className="space-y-1">
                 <div>
                   <span className="text-xl">Halo, </span>
-                  <span className="text-xl font-bold capitalize">
-                    {user.name}
-                  </span>
+                  <span className="text-xl font-bold capitalize">{plainUser.name}</span>
                 </div>
-                <div className="text-sm">{user.email}</div>
-                <div className="mt-16 text-xl font-bold capitalize">
-                  {user.companyName}
-                </div>
+                <div className="text-sm">{plainUser.email}</div>
+                <div className="mt-16 text-xl font-bold capitalize">{plainUser.companyName}</div>
               </div>
               <div className="text-right mt-4 md:mt-0">
-                <div className="text-xl font-bold capitalize">{user.role}</div>
-                <div className="mt-16 text-xl font-bold">
-                  {user.contact.address.regency}
-                </div>
-                <div>{user.contact.address.province}</div>
+                <div className="text-xl font-bold capitalize">{plainUser.role}</div>
+                <div className="mt-16 text-xl font-bold">{plainUser.contact.address.regency}</div>
+                <div>{plainUser.contact.address.province}</div>
               </div>
             </div>
 
@@ -82,9 +76,7 @@ const DashboardPage = async ({ user }: { user: UserType }) => {
 
           {/* Featured Products */}
           <div className="mb-8">
-            <h2 className="text-xl font-bold text-gray-800 mb-6">
-              Featured Products
-            </h2>
+            <h2 className="text-xl font-bold text-gray-800 mb-6">Featured Products</h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {/* LOOP FEATURED PRODUCT HERE */}
@@ -98,7 +90,7 @@ const DashboardPage = async ({ user }: { user: UserType }) => {
 
             <div className="flex justify-center mt-8">
               <Link
-                href={"/products"}
+                href={'/products'}
                 className="bg-[#0099cc] text-white px-8 py-2 rounded-md hover:bg-[#007aa3] transition-colors"
               >
                 More
@@ -111,13 +103,16 @@ const DashboardPage = async ({ user }: { user: UserType }) => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {groups.map((groupBuy: GroupBuy, index: string) => (
-                <GroupBuyCard key={index} groupBuy={groupBuy} />
+                <GroupBuyCard
+                  key={index}
+                  groupBuy={groupBuy}
+                />
               ))}
             </div>
 
             <div className="flex justify-center mt-8">
               <Link
-                href={"/group-buys"}
+                href={'/groupbuy'}
                 className="bg-[#0099cc] text-white px-8 py-2 rounded-md hover:bg-[#007aa3] transition-colors"
               >
                 More
