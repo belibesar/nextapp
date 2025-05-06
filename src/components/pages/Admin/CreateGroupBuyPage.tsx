@@ -54,9 +54,15 @@ export default function CreateGroupBuyPage({
     e.preventDefault();
     try {
       // console.log(formData, "ini form data dari create group buy page");
+      const findProduct = products.find(
+        (product) => product._id === formData.productId
+      );
+      if (!findProduct && productName) throw new Error("Invalid productId");
+
       Object.values(formData).forEach((value) => {
         if (value === "") throw new Error("Please fill in all fields");
       });
+
       const res = await fetch("/api/group-buys", {
         method: "POST",
         body: JSON.stringify(formData)
@@ -66,18 +72,31 @@ export default function CreateGroupBuyPage({
         console.log("Group buy created successfully:", data);
         router.push("/dashboard");
       }
-    } catch (error) {
-      console.log("Error creating group buy:", error);
-      toast.error("Please fill in all fields", {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored"
-      });
+    } catch (error: any) {
+      console.log("Error creating group buy:", error.message);
+      if (error.message === "Invalid productId") {
+        toast.error("Invalid productId", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored"
+        });
+      } else {
+        toast.error("Please fill in all fields", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored"
+        });
+      }
     }
   };
 
