@@ -1,7 +1,7 @@
 import { ObjectId } from "mongodb";
 
 export type UserType = {
-  _id: string;
+  _id?: string | ObjectId;
   name: string;
   email: string;
   password: string;
@@ -110,7 +110,6 @@ export type CartType = {
 
 export type OrderType = {
   distributorId: string | ObjectId;
-  supplierId: string | ObjectId;
   items: OrderItemType[];
   totalPrice: number;
   currentStatus: string;
@@ -130,8 +129,6 @@ export type OrderItemType = {
 export type GroupBuy = {
   _id?: ObjectId;
   productId: string | ObjectId;
-  productName?: string;
-  price?: number;
   minTargetQuantity: number;
   maxTargetQuantity: number;
   minUserOrder: number;

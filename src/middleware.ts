@@ -5,10 +5,13 @@ import errorHandler from "./lib/errorHandler";
 
 export async function middleware(request: NextRequest) {
   try {
+    console.log("Middleware triggered for path:", request.nextUrl.pathname);
     // Exclude GET requests to /api/products
     if (
-      request.nextUrl.pathname.startsWith("/api/products") &&
-      request.method === "GET"
+      (request.nextUrl.pathname.startsWith("/api/products") &&
+        request.method === "GET") ||
+      (request.nextUrl.pathname.startsWith("/api/group-buys") &&
+        request.method === "GET")
     ) {
       return NextResponse.next();
     }
@@ -56,6 +59,7 @@ export const config = {
     "/profile/:path*",
     "/api/producers:path*",
     "/api/cart:path*",
-    "/api/products:path*"
+    "/api/products:path*",
+    "/api/group-buys/:path*"
   ]
 };
