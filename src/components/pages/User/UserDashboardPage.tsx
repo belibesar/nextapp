@@ -14,9 +14,9 @@ const DashboardPage = async ({ user }: { user: UserType }) => {
 
   const plainUser = {
     ...user,
-    _id: user._id.toString(), // Convert _id to string
+    _id: user._id?.toString() // Convert _id to string
   };
-  
+
   return (
     <>
       <div className="flex flex-col min-h-screen">
@@ -106,19 +106,12 @@ const DashboardPage = async ({ user }: { user: UserType }) => {
             </div>
           </div>
 
-
           <div className="mb-8">
-            <h2 className="text-xl font-bold text-gray-800 mb-6">
-              Group Buy
-            </h2>
+            <h2 className="text-xl font-bold text-gray-800 mb-6">Group Buy</h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {groups.map((groupBuy: GroupBuy, index: string) => (
-                <GroupBuyCard
-                  key={index}
-                  groupBuy={groupBuy}
-                  user={plainUser}
-                />
+                <GroupBuyCard key={index} groupBuy={groupBuy} />
               ))}
             </div>
 

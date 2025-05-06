@@ -1,7 +1,10 @@
 import React from 'react';
+import DetailGroupBuy from '@/components/pages/Admin/DetailGroupBuyPage';
 
 const GroupBuyId = () => {
-  return <div>GroupBuyId</div>;
+  return (
+    <DetailGroupBuy/>
+  )
 };
 
 export default GroupBuyId;
