@@ -1,10 +1,12 @@
 import CreateGroupBuyPage from '@/components/pages/Admin/CreateGroupBuyPage';
 import React from 'react';
 
-const AddGroupBuy = () => {
+const AddGroupBuy = async () => {
+  const getProducts = await fetch('http://localhost:3000/api/products/all');
+  const productsData = await getProducts.json();
   return (
     <>
-      <CreateGroupBuyPage />
+      <CreateGroupBuyPage products={productsData} />
     </>
   );
 };

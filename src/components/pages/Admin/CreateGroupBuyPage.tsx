@@ -1,9 +1,11 @@
 'use client';
+import { ProductType } from '@/types/types';
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
-export default function CreateGroupBuyPage() {
+export default function CreateGroupBuyPage({ products }: { products: ProductType[] }) {
   const [formData, setFormData] = useState({
-    product: '',
+    productId: '',
     productName: '',
     minimalTargetQuantity: '',
     maximalTargetQuantity: '',
@@ -19,10 +21,22 @@ export default function CreateGroupBuyPage() {
       [name]: value,
     }));
   };
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const router = useRouter();
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(formData);
+    try {
+      const res = await fetch('/api/group-buys', {
+        method: 'POST',
+        body: JSON.stringify(formData),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        console.log('Group buy created successfully:', data);
+        router.push('/dashboard');
+      }
+    } catch (error) {
+      console.error('Error creating group buy:', error);
+    }
   };
 
   return (
@@ -39,19 +53,22 @@ export default function CreateGroupBuyPage() {
             <label className="block text-slate-700 mb-2">Product</label>
             <div className="relative">
               <select
-                name="product"
-                value={formData.product}
+                name="productId"
                 onChange={handleChange}
                 className="select select-bordered w-full appearance-none rounded-md"
               >
-                <option
-                  disabled
-                  value=""
-                >
-                  Choose a Product
-                </option>
-                <option>Product 1</option>
-                <option>Product 2</option>
+                <option value={''}>Choose a Product</option>
+                {products.map((product) => {
+                  return (
+                    <option
+                      key={product._id}
+                      value={product._id}
+                      className="capitalize"
+                    >
+                      {product.name}
+                    </option>
+                  );
+                })}
               </select>
             </div>
           </div>
@@ -100,22 +117,6 @@ export default function CreateGroupBuyPage() {
                 placeholder="dd/mm/yyyy"
                 className="input input-bordered w-full rounded-md pr-10"
               />
-              <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 text-gray-400"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                  />
-                </svg>
-              </div>
             </div>
           </div>
 
