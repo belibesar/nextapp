@@ -1,21 +1,22 @@
+import { UserType } from '@/types/types';
 import React from 'react';
 
-const AdminDashboardPage = () => {
+const AdminDashboardPage = async ({ user }: { user: UserType }) => {
   return (
     <>
       <section className="container mx-auto px-4 py-6 flex-1">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Admin Info Card */}
-          <div className="md:col-span-2 bg-sky-500 text-white rounded-lg p-8">
+          <div className="md:col-span-2 bg-[#1194D0] text-white rounded-lg p-8">
             <div className="flex justify-between">
               <div>
                 <h2 className="text-2xl">
-                  Halo, <span className="font-bold">Admin 1</span>
+                  Halo, <span className="font-bold capitalize">{user.name}</span>
                 </h2>
-                <p className="text-sm">admin@mail.com</p>
+                <p className="text-sm">{user.email}</p>
               </div>
               <div>
-                <h2 className="text-2xl font-bold">Super Admin</h2>
+                <h2 className="text-2xl font-bold capitalize">{user.role}</h2>
               </div>
             </div>
             <div className="mt-16">
@@ -26,13 +27,13 @@ const AdminDashboardPage = () => {
 
           {/* Stats Cards */}
           <div className="flex flex-col gap-4">
-            <div className="bg-sky-500 text-white rounded-lg p-4">
+            <div className="bg-[#1194D0] text-white rounded-lg p-4">
               <h3 className="text-xl font-bold">Products</h3>
               <p className="text-2xl font-bold">
                 232 <span className="font-normal">Items</span>
               </p>
             </div>
-            <div className="bg-sky-500 text-white rounded-lg p-4">
+            <div className="bg-[#1194D0] text-white rounded-lg p-4">
               <h3 className="text-xl font-bold">Orders</h3>
               <div className="space-y-2 mt-2">
                 <p className="text-xl font-bold">

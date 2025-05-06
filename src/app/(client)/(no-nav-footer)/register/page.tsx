@@ -128,9 +128,7 @@ export default function RegisterPage() {
     }
   };
 
-  useEffect(() => {
-    
-  }, [province, regency]);
+  useEffect(() => {}, [province, regency]);
   return (
     <>
       <section className="min-h-screen flex flex-col items-center justify-center">
@@ -286,7 +284,9 @@ export default function RegisterPage() {
               </label>
             </div>
 
-            <p className="mt-6 text-white text-medium font-bold">Bank Account </p>
+            <p className="mt-6 text-white text-medium font-bold">
+              Bank Account <span className="text-red-500">*</span>
+            </p>
             <div className="relative w-full max-w-medium mt-6">
               <input
                 type="text"

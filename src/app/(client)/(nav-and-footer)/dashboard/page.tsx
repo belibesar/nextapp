@@ -8,7 +8,7 @@ const Dashboard = async () => {
     throw new Error('User not found or invalid user type');
   }
   console.log(user);
-  return <div>{user.role === 'admin' ? <AdminDashboardPage /> : <UserDashboardPage user={user} />}</div>;
+  return <div>{user.role === 'admin' ? <AdminDashboardPage user={user} /> : <UserDashboardPage user={user} />}</div>;
 };
 
 export default Dashboard;
