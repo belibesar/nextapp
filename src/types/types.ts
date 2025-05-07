@@ -122,6 +122,7 @@ export enum ORDER_STATUS {
 }
 
 export type OrderType = {
+  _id?: string | ObjectId;
   distributorId: string | ObjectId;
   items: OrderItemType;
   totalPrice: number;
