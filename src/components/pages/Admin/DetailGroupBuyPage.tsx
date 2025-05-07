@@ -62,9 +62,11 @@ export default function DetailGroupBuyPage({user}:{user:UserType}) {
     const maxQuantity = groupBuy?.maxTargetQuantity || 10
 
   // Mock data for group buy progress
+  const currentOrder = groupBuy?.currentOrders || 1
+  const targetOrder = groupBuy?.minTargetQuantity || 10
+  const progressPercentage = ((currentOrder ?? 1) / (targetOrder ?? 10)) * 100
+
   const currentParticipants = groupBuy?.participants.length || 1
-  const targetParticipants = 30
-  const progressPercentage = ((currentParticipants ?? 1) / (targetParticipants ?? 10)) * 100 //change this next time
 
   // data for remaining time
     const currentDate = new Date()
@@ -135,7 +137,7 @@ export default function DetailGroupBuyPage({user}:{user:UserType}) {
                   <div className="flex justify-between text-sm mb-1">
                     <span>Progress Group Buy</span>
                     <span className="font-medium">
-                      {currentParticipants}/{targetParticipants} peserta
+                      {currentOrder}/{targetOrder} order
                     </span>
                   </div>
                   <Progress value={progressPercentage} className="h-2" />
