@@ -27,7 +27,7 @@ export default function GroupBuyCard({ groupBuy }: { groupBuy: GroupBuy }) {
       <Link href={`/groupbuy/${groupBuy._id}`}>
         <div className="h-48 bg-gray-200">
           <Image
-            src="https://placehold.co/400x400"
+            src={groupBuy.productDetails?.img || 'https://placehold.co/400x400'}
             alt={groupBuy.productDetails ? groupBuy.productDetails.name : ''}
             height={400}
             width={400}

@@ -16,10 +16,10 @@ export default function LandingPage() {
               </p>
             </div>
             <Link
-              href="/products"
+              href="/register"
               className="btn btn-primary"
             >
-              Lihat Produk
+              Join Us
             </Link>
           </div>
           <div className="rounded-lg aspect-square w-full max-w-md mx-auto flex items-center justify-center">
