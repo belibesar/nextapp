@@ -10,16 +10,11 @@ class OrderModel {
   static async create(order: OrderType) {
     // console.log(order, "ini order dari model");
     order.distributorId = new ObjectId(order.distributorId);
-    if (order._id && typeof order._id === "string") {
-      order._id = new ObjectId(order._id);
-    }
-    const orderToInsert = {
+    return await this.collection().insertOne({
       ...order,
-      _id: order._id instanceof ObjectId ? order._id : new ObjectId(order._id),
       createdAt: new Date(),
       updatedAt: new Date()
-    };
-    return await this.collection().insertOne(orderToInsert);
+    });
   }
 
   static async getOrderById(orderId: string) {
@@ -27,7 +22,9 @@ class OrderModel {
   }
 
   static async getOrderbyUser(distributorId: string) {
-    const cursor = this.collection().find({ distributorId: new ObjectId(distributorId) });
+    const cursor = this.collection().find({
+      distributorId: new ObjectId(distributorId)
+    });
     return await cursor.toArray();
   }
 
@@ -74,9 +71,9 @@ class OrderModel {
   }
 
   static async getOrdersByUserId(distributorId: string) {
-      return await this.collection()
-        .find({ distributorId: new ObjectId(distributorId)})
-        .toArray();
+    return await this.collection()
+      .find({ distributorId: new ObjectId(distributorId) })
+      .toArray();
   }
 
   static async getAllOrders() {

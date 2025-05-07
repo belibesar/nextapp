@@ -95,7 +95,7 @@ export type ProducerType = {
     email: string;
     address: string;
   };
-  products?: ProductType[]
+  products?: ProductType[];
   createdAt?: Date;
   updatedAt?: Date;
 };
@@ -123,26 +123,32 @@ export const ORDER_STATUS = {
 
 
 export type OrderType = {
-  _id?: string | ObjectId;
-  distributorId?: string | ObjectId;
-  items?: OrderItemType[];
-  totalPrice?: number;
-  currentStatus?: keyof typeof ORDER_STATUS;
-  fullPaymentsStatus?: keyof typeof ORDER_STATUS;
-  isGroupBuy?: boolean;
-  groupBuyId?: string | ObjectId;
-  paymentProof?: string;
-  fullPaymentProof?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
+  distributorId: string | ObjectId;
+  items: OrderItemType;
+  totalPrice: number;
+  currentStatus: ORDER_STATUS;
+  groupBuyId: string | ObjectId;
+  downPayment?: {
+    status: ORDER_STATUS;
+    paymentProof: string;
+    amount: number;
+    percentage: number;
+  };
+  fullPayment?: {
+    status: ORDER_STATUS;
+    paymentProof: string;
+    amount: number;
+  };
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 export type OrderItemType = {
   productId: string | ObjectId;
   quantity: number;
-  price?: number;
-  productName?: string;
-  producerName?: string;
+  // price?: number;
+  // productName?: string;
+  // producerName?: string;
 };
 
 export type GroupBuy = {
@@ -161,8 +167,6 @@ export type GroupBuy = {
   createdAt: Date;
   updatedAt: Date;
   productDetails?: ProductType;
-  productName?: string;
-  price?: number;
 };
 
 export type ParticipantType = {

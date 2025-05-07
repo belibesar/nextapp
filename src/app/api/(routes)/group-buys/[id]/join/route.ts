@@ -40,10 +40,10 @@ export async function POST(request: Request) {
     if (alreadyJoined)
       throw { message: "You have already joined this Group Buy.", status: 400 };
 
-    if (quantity < groupBuy.minTargetQuantity) {
+    if (quantity < groupBuy.minUserOrder) {
       throw { message: `Minimum quantity is ${groupBuy.minTargetQuantity}` };
     }
-    if (quantity > groupBuy.maxTargetQuantity) {
+    if (quantity + groupBuy.currentOrders > groupBuy.maxTargetQuantity) {
       throw { message: `Maximum quantity is ${groupBuy.maxTargetQuantity}` };
     }
 
