@@ -30,7 +30,8 @@ class OrderModel {
   }
 
   static async getOrderById(orderId: string) {
-    return await this.collection().findOne({ _id: new ObjectId(orderId) });
+    const cursor = this.collection().find({ distributorId: new ObjectId(orderId) });
+    return await cursor.toArray();
   }
 
   static async getOrderbyUser(distributorId: string) {

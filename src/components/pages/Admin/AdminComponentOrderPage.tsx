@@ -1,5 +1,5 @@
 'use client'
-import { OrderType, UserType } from '@/types/types';
+import { OrderType, UserType, OrderItemType } from '@/types/types';
 import React from 'react';
 import { useEffect } from 'react';
 import { ProductType } from '@/types/types';
@@ -7,13 +7,12 @@ import { useRouter } from 'next/navigation';
 
 export default function AdminComponentOrderPage({order}: {order: OrderType}) {
     const [product, setProduct] = React.useState<ProductType>({} as ProductType)
-    const [user, setUser] = React.useState<UserType>({} as UserType)
     const router = useRouter()
 
     useEffect(() => {
         const fetchProduct = async () => {
           try {
-            const res = await fetch(`http://localhost:3000/api/products/${order.items?.[0]?.productId}`);
+            const res = await fetch(`http://localhost:3000/api/products/${order.items?.productId}`);
             const productData = await res.json();
       
             setProduct(productData);
@@ -106,7 +105,7 @@ export default function AdminComponentOrderPage({order}: {order: OrderType}) {
     const formattedSinglePrice = new Intl.NumberFormat('id-ID', {
         style: 'currency',
         currency: 'IDR',
-    }).format(order.items?.[0]?.price ?? 0).replace('IDR', 'Rp.')
+    }).format(product.price ?? 0).replace('IDR', 'Rp.')
     const formattedPrice = new Intl.NumberFormat('id-ID', {
         style: 'currency',
         currency: 'IDR',
@@ -161,12 +160,12 @@ export default function AdminComponentOrderPage({order}: {order: OrderType}) {
                   {/* First Item */}
                   <div className="flex justify-between p-3 bg-gray-50 rounded-lg">
                     <div>
-                      <p className="font-semibold">{order.items?.[0]?.productName ?? 'Unknown Product'}</p>
+                      <p className="font-semibold">{product.name ?? 'Unknown Product'}</p>
                       <p className="text-gray-600">{producerName}</p>
                       <p className="text-gray-500 text-sm">Product ID {productId}</p>
                     </div>
                     <div className="text-right">
-                      <p>{order.items?.[0]?.quantity ?? 0} Paket</p>
+                      <p>{order.items?.quantity ?? 0} Paket</p>
                       <p className="font-medium">{formattedSinglePrice}</p>
                     </div>
                   </div>

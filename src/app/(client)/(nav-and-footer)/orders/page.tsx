@@ -11,16 +11,19 @@ const Orders = async () => {
   if (!user) {
     throw new Error("User not found or invalid user type");
   }
-
+  let userId
+  if ('_id' in user) {
+    userId = user._id.toString();
+  } else {
+    throw new Error("Invalid user object");
+  }
   const cookieStore = await cookies();
   const cookie = cookieStore.get("Authorization")?.value;
   const getOrders = await fetch("http://localhost:3000/api/orders/user", {
     headers: {
       Cookie: `Authorization=${cookie}`
     }
-  });
-  const orders = await getOrders.json();
-  // console.log(orders, "orders from orders page");
+  }); 
 
   try {
     return (
@@ -28,28 +31,13 @@ const Orders = async () => {
         {/* Main Content */}
         <main className="container mx-auto px-6 py-8 flex-grow">
           <h1 className="text-3xl font-bold text-gray-800 mb-6">
-            Admin Orders
+            Orders
           </h1>
 
-          {/* Status Filters */}
-          <div className="flex gap-2 mb-8 flex-wrap">
-            {["Pending", "Preparing", "Shipped", "Finished", "Failed"].map(
-              (status) => (
-                <button
-                  key={status}
-                  className="btn btn-sm bg-gray-300 hover:bg-gray-400 text-gray-800 border-none"
-                >
-                  {status}
-                </button>
-              )
-            )}
-          </div>
           {(user as UserType).role === "admin" ? (
             <AdminOrderPage />
           ) : (
-            orders.map((order: OrderType) => (
-              <UserOrderPage key={order._id?.toString()} order={order} />
-            ))
+            <UserOrderPage userId={user._id.toString()}/>  
           )}
         </main>
       </div>

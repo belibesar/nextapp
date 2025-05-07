@@ -227,7 +227,7 @@ export default function DetailGroupBuyPage({ user }: { user: UserType }) {
   const maxQuantity = groupBuy?.maxTargetQuantity || 10;
 
   // Mock data for group buy progress
-  const currentOrder = groupBuy?.currentOrders || 1
+  const currentOrder = groupBuy?.currentOrders || 0
   const targetOrder = groupBuy?.minTargetQuantity || 10
   const progressPercentage = ((currentOrder ?? 1) / (targetOrder ?? 10)) * 100
   const maxProgressPercentage = ((currentOrder ?? 1) / (maxQuantity ?? 10)) * 100

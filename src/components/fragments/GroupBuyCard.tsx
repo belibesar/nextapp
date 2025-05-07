@@ -33,8 +33,7 @@ export default function GroupBuyCard({ groupBuy }: { groupBuy: GroupBuy }) {
     <div
       className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1 border border-gray-100"
       onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
+      onMouseLeave={() => setIsHovered(false)}>
       <Link href={`/groupbuy/${groupBuy._id}`} className="block h-full">
         <div className="relative h-40 bg-gray-200 overflow-hidden">
           <Image

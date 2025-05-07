@@ -5,6 +5,7 @@ import UserModel from "@/db/models/UserModel";
 import { cloudinary } from "@/lib/cloudinaryConfig";
 import errorHandler from "@/lib/errorHandler";
 import { ORDER_STATUS, OrderType } from "@/types/types";
+import { stat } from "fs";
 import { Readable } from "stream";
 
 export async function POST(request: Request) {
@@ -109,6 +110,25 @@ export async function PATCH(request: Request) {
   } catch (error) {
       console.error("Error updating order status:", error);
       return errorHandler(error);
+  }
+}
+
+export async function GET(request: Request) {
+  try {
+    const id = new URL(request.url).pathname.split("/").pop();
+    if (!id) {
+      throw { message: "Invalid ID in request URL", status: 400 };
+    }
+
+    const order = await OrderModel.getOrderById(id);
+    if (!order) {
+      return Response.json({ message: "Order not found" }, { status: 404 });
+    }
+
+    return Response.json(order, { status: 200 });
+  } catch (error) {
+    console.error("Error fetching order:", error);
+    return errorHandler(error);
   }
 }
 
