@@ -136,7 +136,7 @@ export default function DetailGroupBuyPage({user}:{user:UserType}) {
                 <div className="mb-4">
                   <div className="flex justify-between text-sm mb-1">
                     <span>Progress Group Buy</span>
-                    <span className="font-medium" title="Minimum Order Quantity">
+                    <span className="font-medium" title="Minimum Order quantity">
                       {currentOrder}/{targetOrder} MOQ
                     </span>
                   </div>
@@ -317,7 +317,7 @@ export default function DetailGroupBuyPage({user}:{user:UserType}) {
 
                 {(quantity ?? 0) < minQuantity ? (
                     <div className="mt-10 text-center text-sm text-gray-500">
-                        Minimal pembelian adalah {minQuantity} paket.{" "}
+                        Dengan bergabung, Anda setuju dengan{" "}
                         <Link href="#" className="text-blue-600 hover:underline">
                         Syarat & Ketentuan
                         </Link>{" "}

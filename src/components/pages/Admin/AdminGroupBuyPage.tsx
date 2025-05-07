@@ -39,7 +39,6 @@ const GroupBuyPage = async () => {
             <GroupBuyCard
               key={index}
               groupBuy={groupBuy}
-              product={products[index]}
             />
           ))}
         </div>
