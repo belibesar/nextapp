@@ -1,5 +1,5 @@
-import React from "react";
-import Link from "next/link";
+import React from 'react';
+import Link from 'next/link';
 
 const AdminNavbar = () => {
   return (
@@ -7,7 +7,7 @@ const AdminNavbar = () => {
       <div className="navbar bg-[#008DCB] text-white shadow-sm h-auto">
         <div className="navbar-start">
           <Link
-            href={"/"}
+            href={'/'}
             className="text-white font-semibold text-[25px] pl-3"
           >
             BeliBesar
@@ -16,9 +16,16 @@ const AdminNavbar = () => {
 
         {/* Mobile Menu Button - Only visible on small screens */}
         <div className="drawer drawer-end lg:hidden flex justify-end z-[100]">
-          <input id="my-drawer" type="checkbox" className="drawer-toggle" />
+          <input
+            id="my-drawer"
+            type="checkbox"
+            className="drawer-toggle"
+          />
           <div className="drawer-content">
-            <label htmlFor="my-drawer" className="btn btn-ghost drawer-button">
+            <label
+              htmlFor="my-drawer"
+              className="btn btn-ghost drawer-button"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -43,7 +50,10 @@ const AdminNavbar = () => {
             ></label>
             <ul className="menu p-4 w-60 min-h-full bg-base-200 text-base-content">
               <li>
-                <Link href={"/dashboard"} className="font-semibold">
+                <Link
+                  href={'/dashboard'}
+                  className="font-semibold"
+                >
                   Dashboard
                 </Link>
               </li>
@@ -58,22 +68,22 @@ const AdminNavbar = () => {
                       <a>Producer</a>
                     </li>
                     <li className="bg-sky-100 text-sky-800">
-                      <Link href={"/groupbuy/create"}>Group Buy</Link>
+                      <Link href={'/groupbuy/create'}>Group Buy</Link>
                     </li>
                   </ul>
                 </details>
               </li>
               <li>
-                <Link href={"/products"}>Products</Link>
+                <Link href={'/products'}>Products</Link>
               </li>
               <li>
-                <Link href={"/orders"}>Orders</Link>
+                <Link href={'/orders'}>Orders</Link>
               </li>
               <li>
-                <Link href={"/groupbuy"}>Group Buy</Link>
+                <Link href={'/groupbuy'}>Group Buy</Link>
               </li>
               <li>
-                <Link href={"/profile"}>Profile</Link>
+                <Link href={'/profile'}>Profile</Link>
               </li>
             </ul>
           </div>
@@ -102,18 +112,24 @@ const AdminNavbar = () => {
             </div>
             <ul className="dropdown-content z-[1] menu p-0 shadow bg-base-100 w-32 text-neutral">
               <li>
-                <Link href={"#"} className="py-2 px-4 hover:bg-base-200">
+                <Link
+                  href={'#'}
+                  className="py-2 px-4 hover:bg-base-200"
+                >
                   Product
                 </Link>
               </li>
               <li>
-                <Link href={"#"} className="py-2 px-4 hover:bg-base-200">
+                <Link
+                  href={'/producers/create'}
+                  className="py-2 px-4 hover:bg-base-200"
+                >
                   Producer
                 </Link>
               </li>
               <li>
                 <Link
-                  href={"/groupbuy/create"}
+                  href={'/groupbuy/create'}
                   className="py-2 px-4 bg-sky-100"
                 >
                   Group Buy
