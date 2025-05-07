@@ -10,7 +10,6 @@ export async function GET({ params }: { params: { userId: string } }) {
         }
 
         const notifications = await NotificationModel.findByUser(userId);
-
         return Response.json({
             success: true,
             data: notifications,

@@ -11,6 +11,10 @@ export async function middleware(request: NextRequest) {
       (request.nextUrl.pathname.startsWith("/api/products") &&
         request.method === "GET") ||
       (request.nextUrl.pathname.startsWith("/api/group-buys") &&
+        request.method === "GET") ||
+      (request.nextUrl.pathname.startsWith("/api/producers") &&
+        request.method === "GET") ||
+      (request.nextUrl.pathname.startsWith("/api/users") &&
         request.method === "GET")
     ) {
       return NextResponse.next();
@@ -23,7 +27,7 @@ export async function middleware(request: NextRequest) {
     if (!getCookie || type !== "Bearer" || !token) {
       if (isApiRequest) {
         // Use errorHandler for API requests
-        return errorHandler({ message: "Unauthorizeds", status: 401 });
+        return errorHandler({ message: "Unauthorized", status: 401 });
       } else {
         // Redirect to login page for client-side requests
         return NextResponse.redirect(new URL("/login", request.url));
@@ -57,9 +61,8 @@ export const config = {
     "/orders/:path*",
     "/products/:path*",
     "/profile/:path*",
-    "/api/producers:path*",
-    "/api/cart:path*",
-    "/api/products:path*",
-    "/api/group-buys/:path*"
+    "/api/products/:path*",
+    "/api/group-buys/:path*",
+    "/api/producers/:path*"
   ]
 };

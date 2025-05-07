@@ -1,7 +1,17 @@
-import { UserType } from '@/types/types';
+import { ProducerType, UserType } from '@/types/types';
 import React from 'react';
 
 const AdminDashboardPage = async ({ user }: { user: UserType }) => {
+  const getProducts = await fetch('http://localhost:3000/api/products/all');
+  const productsData = await getProducts.json();
+
+  const getProducers = await fetch('http://localhost:3000/api/producers');
+  const producersData = await getProducers.json();
+
+  const getDistributors = await fetch('http://localhost:3000/api/users/all');
+  const distributorsData = await getDistributors.json();
+  console.log(distributorsData);
+
   return (
     <>
       <section className="container mx-auto px-4 py-6 flex-1">
@@ -30,7 +40,7 @@ const AdminDashboardPage = async ({ user }: { user: UserType }) => {
             <div className="bg-[#1194D0] text-white rounded-lg p-4">
               <h3 className="text-xl font-bold">Products</h3>
               <p className="text-2xl font-bold">
-                232 <span className="font-normal">Items</span>
+                {productsData.length} <span className="font-normal">Items</span>
               </p>
             </div>
             <div className="bg-[#1194D0] text-white rounded-lg p-4">
@@ -54,56 +64,59 @@ const AdminDashboardPage = async ({ user }: { user: UserType }) => {
         <section className="mt-8">
           <h2 className="text-xl font-bold mb-4">Producers</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {Array(6)
-              .fill(0)
-              .map((_, index) => (
-                <div
-                  key={`producer-${index}`}
-                  className="bg-slate-200 rounded-lg p-4"
-                >
-                  <div className="flex justify-between">
-                    <h3 className="font-bold">Indofood CBP</h3>
-                    <span className="font-bold">24 Products</span>
-                  </div>
-                  <div className="mt-2 text-sm">
-                    <p>Phone: 021-57958822</p>
-                    <p>Email: corporate@indofood.co.id</p>
-                    <p>Address: Sudirman Plaza, Indofood Tower, Lantai 23,</p>
-                    <p>Jl. Jend. Sudirman Kav. 76-78, Jakarta 12910.</p>
-                  </div>
+            {producersData.map((producer: ProducerType, index: number) => (
+              <div
+                key={`producer-${index}`}
+                className="bg-slate-200 rounded-lg p-4"
+              >
+                <div className="flex justify-between text-sm">
+                  <h3 className="font-bold capitalize">{producer.name}</h3>
+                  <span className="font-bold">{producer?.products?.length}</span>
                 </div>
-              ))}
+                <div className="mt-2 text-xs">
+                  <p className="">
+                    Email: <span className="lowercase">{producer.contact.email}</span>
+                  </p>
+                  <p className="">
+                    Phone: <span className="lowercase">{producer.contact.phone}</span>
+                  </p>
+                  <p className="capitalize">Adress: {producer.contact.address}</p>
+                </div>
+              </div>
+            ))}
           </div>
-          <div className="flex justify-center mt-4">
+          {/* <div className="flex justify-center mt-4">
             <button className="btn btn-primary text-white px-8">More</button>
-          </div>
+          </div> */}
         </section>
 
         {/* Distributors Section */}
         <section className="mt-8">
           <h2 className="text-xl font-bold mb-4">Distributors</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {Array(6)
-              .fill(0)
-              .map((_, index) => (
-                <div
-                  key={`distributor-${index}`}
-                  className="bg-slate-200 rounded-lg p-4"
-                >
-                  <div className="flex justify-between">
-                    <h3 className="font-bold">Toko Madura 1</h3>
-                  </div>
-                  <div className="mt-2 text-sm">
-                    <p>Phone: 021-57958822</p>
-                    <p>Email: maduraja@gmail.com</p>
-                    <p>Address: Surabaya, Jawa Timur</p>
-                  </div>
+            {distributorsData.map((distributor: UserType, index: number) => (
+              <div
+                key={`distributor-${index}`}
+                className="bg-slate-200 rounded-lg p-4"
+              >
+                <div className="flex justify-between">
+                  <h3 className="font-bold">{distributor.name}</h3>
                 </div>
-              ))}
+                <div className="mt-2 text-xs">
+                  <p className="">
+                    Email: <span className="lowercase">{distributor.email}</span>
+                  </p>
+                  <p className="">
+                    Phone: <span className="lowercase">{distributor.contact.phone}</span>
+                  </p>
+                  <p className="capitalize">Adress: {distributor.contact.address.province}</p>
+                </div>
+              </div>
+            ))}
           </div>
-          <div className="flex justify-center mt-4">
+          {/* <div className="flex justify-center mt-4">
             <button className="btn btn-primary text-white px-8">More</button>
-          </div>
+          </div> */}
         </section>
       </section>
     </>
