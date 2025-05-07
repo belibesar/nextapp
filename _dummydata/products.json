@@ -1,0 +1,172 @@
+[
+  // Produk untuk PT Indofood CBP Sukses Makmur Tbk
+  {
+    "name": "Indomie Goreng Special",
+    "description": "Mie instan goreng dengan bumbu khas Indonesia, cocok untuk makanan cepat saji.",
+    "price": 25000000,
+    "stock": 100,
+    "category": "Food and Beverages",
+    "supplierId": null,
+    "producerId": "",
+    "createdAt": "2025-05-04T21:46:00.000Z",
+    "updatedAt": "2025-05-04T21:46:00.000Z"
+  },
+  {
+    "name": "Chitato Original",
+    "description": "Keripik kentang rasa original, renyah dan gurih untuk camilan sehari-hari.",
+    "price": 18000000,
+    "stock": 80,
+    "category": "Food and Beverages",
+    "supplierId": null,
+    "producerId": "",
+    "createdAt": "2025-05-04T21:46:00.000Z",
+    "updatedAt": "2025-05-04T21:46:00.000Z"
+  },
+  {
+    "name": "Indomilk UHT Full Cream",
+    "description": "Susu UHT full cream dalam kemasan karton, kaya nutrisi untuk keluarga.",
+    "price": 30000000,
+    "stock": 120,
+    "category": "Food and Beverages",
+    "supplierId": null,
+    "producerId": "",
+    "createdAt": "2025-05-04T21:46:00.000Z",
+    "updatedAt": "2025-05-04T21:46:00.000Z"
+  },
+  // Produk untuk PT Unilever Indonesia Tbk
+  {
+    "name": "Lifebuoy Body Wash Total 10",
+    "description": "Sabun cair dengan perlindungan kuman hingga 10 jam, segar dan bersih.",
+    "price": 22000000,
+    "stock": 90,
+    "category": "Personal Care",
+    "supplierId": null,
+    "producerId": "",
+    "createdAt": "2025-05-04T21:46:00.000Z",
+    "updatedAt": "2025-05-04T21:46:00.000Z"
+  },
+  {
+    "name": "Sunsilk Black Shine Shampoo",
+    "description": "Shampoo untuk rambut hitam berkilau, dengan formula nutrisi alami.",
+    "price": 20000000,
+    "stock": 110,
+    "category": "Personal Care",
+    "supplierId": null,
+    "producerId": "",
+    "createdAt": "2025-05-04T21:46:00.000Z",
+    "updatedAt": "2025-05-04T21:46:00.000Z"
+  },
+  {
+    "name": "Rinso Anti Noda Detergent",
+    "description": "Deterjen cair untuk menghilangkan noda membandel pada pakaian.",
+    "price": 28000000,
+    "stock": 100,
+    "category": "Household",
+    "supplierId": null,
+    "producerId": "",
+    "createdAt": "2025-05-04T21:46:00.000Z",
+    "updatedAt": "2025-05-04T21:46:00.000Z"
+  },
+  // Produk untuk PT Procter & Gamble Indonesia
+  {
+    "name": "Pantene Anti Dandruff Shampoo",
+    "description": "Shampoo anti ketombe untuk rambut sehat dan bebas gatal.",
+    "price": 21000000,
+    "stock": 95,
+    "category": "Personal Care",
+    "supplierId": null,
+    "producerId": "",
+    "createdAt": "2025-05-04T21:46:00.000Z",
+    "updatedAt": "2025-05-04T21:46:00.000Z"
+  },
+  {
+    "name": "Pampers Active Baby Diapers",
+    "description": "Popok bayi dengan perlindungan ekstra untuk kenyamanan sepanjang hari.",
+    "price": 35000000,
+    "stock": 70,
+    "category": "Baby Care",
+    "supplierId": null,
+    "producerId": "",
+    "createdAt": "2025-05-04T21:46:00.000Z",
+    "updatedAt": "2025-05-04T21:46:00.000Z"
+  },
+  {
+    "name": "Ariel Power Gel",
+    "description": "Deterjen gel untuk mencuci pakaian dengan keharuman tahan lama.",
+    "price": 27000000,
+    "stock": 85,
+    "category": "Household",
+    "supplierId": null,
+    "producerId": "",
+    "createdAt": "2025-05-04T21:46:00.000Z",
+    "updatedAt": "2025-05-04T21:46:00.000Z"
+  },
+  // Produk untuk PT Wings Surya
+  {
+    "name": "So Klin Liquid Detergent",
+    "description": "Deterjen cair untuk pakaian bersih maksimal dan lembut di tangan.",
+    "price": 26000000,
+    "stock": 100,
+    "category": "Household",
+    "supplierId": null,
+    "producerId": "",
+    "createdAt": "2025-05-04T21:46:00.000Z",
+    "updatedAt": "2025-05-04T21:46:00.000Z"
+  },
+  {
+    "name": "Mie Sedaap Korean Spicy Chicken",
+    "description": "Mie instan dengan rasa ayam pedas Korea, cocok untuk pecinta pedas.",
+    "price": 24000000,
+    "stock": 90,
+    "category": "Food and Beverages",
+    "supplierId": null,
+    "producerId": "",
+    "createdAt": "2025-05-04T21:46:00.000Z",
+    "updatedAt": "2025-05-04T21:46:00.000Z"
+  },
+  {
+    "name": "Giv White Soap",
+    "description": "Sabun mandi dengan ekstrak alami untuk kulit cerah dan lembut.",
+    "price": 19000000,
+    "stock": 120,
+    "category": "Personal Care",
+    "supplierId": null,
+    "producerId": "",
+    "createdAt": "2025-05-04T21:46:00.000Z",
+    "updatedAt": "2025-05-04T21:46:00.000Z"
+  },
+  // Produk untuk PT Mayora Indah Tbk
+  {
+    "name": "Kopiko Coffee Candy",
+    "description": "Permen rasa kopi asli, memberikan sensasi segar dan energi.",
+    "price": 15000000,
+    "stock": 150,
+    "category": "Food and Beverages",
+    "supplierId": null,
+    "producerId": "",
+    "createdAt": "2025-05-04T21:46:00.000Z",
+    "updatedAt": "2025-05-04T21:46:00.000Z"
+  },
+  {
+    "name": "Beng-Beng Chocolate Wafer",
+    "description": "Wafer cokelat dengan lapisan karamel dan krispies, camilan lezat.",
+    "price": 17000000,
+    "stock": 130,
+    "category": "Food and Beverages",
+    "supplierId": null,
+    "producerId": "",
+    "createdAt": "2025-05-04T21:46:00.000Z",
+    "updatedAt": "2025-05-04T21:46:00.000Z"
+  },
+  {
+    "name": "Torabika Creamy Latte",
+    "description": "Kopi instan dengan rasa latte creamy, cocok untuk dinikmati kapan saja.",
+    "price": 20000000,
+    "stock": 110,
+    "category": "Food and Beverages",
+    "supplierId": null,
+    "producerId": "",
+    "createdAt": "2025-05-04T21:46:00.000Z",
+    "updatedAt": "2025-05-04T21:46:00.000Z"
+  }
+]
