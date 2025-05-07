@@ -120,17 +120,18 @@ export enum ORDER_STATUS {
 };
 
 export type OrderType = {
-  distributorId: string | ObjectId;
-  items: OrderItemType[];
-  totalPrice: number;
-  currentStatus: ORDER_STATUS;
-  fullPaymentsStatus: ORDER_STATUS;
-  isGroupBuy: boolean;
+  _id?: string | ObjectId;
+  distributorId?: string | ObjectId;
+  items?: OrderItemType[];
+  totalPrice?: number;
+  currentStatus?: ORDER_STATUS;
+  fullPaymentsStatus?: ORDER_STATUS;
+  isGroupBuy?: boolean;
   groupBuyId?: string | ObjectId;
-  paymentProof: string;
+  paymentProof?: string;
   fullPaymentProof?: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 };
 
 export type OrderItemType = {

@@ -21,6 +21,11 @@ class OrderModel {
     return await this.collection().findOne({ _id: new ObjectId(orderId) });
   }
 
+  static async getOrderbyUser(distributorId: string) {
+    const cursor = this.collection().find({ distributorId: new ObjectId(distributorId) });
+    return await cursor.toArray();
+  }
+
   static async updateOrder(orderId: string, updates: Partial<OrderType>) {
     return await this.collection().updateOne(
       { _id: new ObjectId(orderId) },
