@@ -254,7 +254,7 @@ export async function GET(request: Request) {
       throw { message: "Invalid ID in request URL", status: 400 };
     }
 
-    const order = await OrderModel.getOrderById(id);
+    const order = await OrderModel.getOrdersByUserId(id);
     if (!order) {
       return Response.json({ message: "Order not found" }, { status: 404 });
     }

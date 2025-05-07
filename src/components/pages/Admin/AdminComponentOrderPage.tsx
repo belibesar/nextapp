@@ -203,6 +203,26 @@ export default function AdminComponentOrderPage({
                   Ordered At {formattedDate}
                 </p>
                 <div className="flex justify-between flex-row w-full">
+                  <a
+                    href={
+                      order.fullPayment
+                        ? order.fullPayment?.paymentProof
+                        : order.downPayment?.paymentProof
+                    }
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`border-1 p-2 w-20 rounded-md duration-200 text-center 
+                        ${
+                          disabledNextButton
+                            ? "bg-gray-400 text-gray-200 cursor-not-allowed" // Disabled color
+                            : "bg-blue-600 text-white hover:cursor-pointer hover:bg-blue-700"
+                        }`}
+                    // onClick={handleNext}
+                    tabIndex={disabledNextButton ? -1 : 0}
+                    aria-disabled={disabledNextButton ? "true" : undefined}
+                  >
+                    view
+                  </a>
                   <button
                     className={`border-1 p-2 w-20 rounded-md duration-200 
                         ${
