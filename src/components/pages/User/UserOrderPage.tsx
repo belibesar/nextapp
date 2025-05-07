@@ -16,7 +16,7 @@ const UserOrderPage = async({order}:{order:OrderType}) => {
   const formattedSinglePrice = new Intl.NumberFormat('id-ID', {
     style: 'currency',
     currency: 'IDR',
-  }).format(order.items[0].price).replace('IDR', 'Rp.')
+  }).format(order.items[0].price ?? 0).replace('IDR', 'Rp.')
   const formattedPrice = new Intl.NumberFormat('id-ID', {
     style: 'currency',
     currency: 'IDR',

@@ -138,6 +138,9 @@ export type OrderType = {
 export type OrderItemType = {
   productId: string | ObjectId;
   quantity: number;
+  price?: number;
+  productName?: string;
+  producerName?: string;
 };
 
 export type GroupBuy = {

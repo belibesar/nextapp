@@ -10,11 +10,16 @@ class OrderModel {
   static async create(order: OrderType) {
     // console.log(order, "ini order dari model");
     order.distributorId = new ObjectId(order.distributorId);
-    return await this.collection().insertOne({
+    if (order._id && typeof order._id === "string") {
+      order._id = new ObjectId(order._id);
+    }
+    const orderToInsert = {
       ...order,
+      _id: order._id instanceof ObjectId ? order._id : new ObjectId(order._id),
       createdAt: new Date(),
       updatedAt: new Date()
-    });
+    };
+    return await this.collection().insertOne(orderToInsert);
   }
 
   static async getOrderById(orderId: string) {

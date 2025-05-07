@@ -52,7 +52,8 @@ class UserModel {
 
     newUser.password = hashPassword(newUser.password);
 
-    await this.collection().insertOne(newUser);
+    const userToInsert = { ...newUser, _id: new ObjectId() };
+    await this.collection().insertOne(userToInsert);
     return "User created successfully";
   }
 
