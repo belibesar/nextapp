@@ -14,7 +14,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`antialiased`}>
-        <main className="">{children}</main>
+        <main className="scroll-smooth">{children}</main>
       </body>
     </html>
   );

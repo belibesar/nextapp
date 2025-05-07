@@ -27,19 +27,21 @@ const DashboardPage = async ({ user }: { user: UserType }) => {
           {/* Dashboard Cards */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
             {/* User Info Card */}
-            <div className="md:col-span-3 bg-[#0099cc] text-white rounded-lg p-8 flex flex-col md:flex-row justify-between">
-              <div className="space-y-1">
-                <div>
-                  <span className="text-xl">Halo, </span>
-                  <span className="text-xl font-bold capitalize">{plainUser.name}</span>
+            <div className="md:col-span-3 bg-[#0099cc] text-white rounded-lg p-8">
+              <div className="flex flex-col sm:flex-row justify-between">
+                <div className="space-y-1">
+                  <div>
+                    <span className="text-xl">Halo, </span>
+                    <span className="text-xl font-bold capitalize">{plainUser.name}</span>
+                  </div>
+                  <div className="text-sm">{plainUser.email}</div>
+                  <div className="mt-4 sm:mt-16 text-xl font-bold capitalize">{plainUser.companyName}</div>
                 </div>
-                <div className="text-sm">{plainUser.email}</div>
-                <div className="mt-16 text-xl font-bold capitalize">{plainUser.companyName}</div>
-              </div>
-              <div className="text-right mt-4 md:mt-0">
-                <div className="text-xl font-bold capitalize">{plainUser.role}</div>
-                <div className="mt-16 text-xl font-bold">{plainUser.contact.address.regency}</div>
-                <div>{plainUser.contact.address.province}</div>
+                <div className="text-left sm:text-right mt-4 sm:mt-0">
+                  <div className="text-xl font-bold capitalize">{plainUser.role}</div>
+                  <div className="mt-4 sm:mt-16 text-xl font-bold">{plainUser.contact.address.regency}</div>
+                  <div>{plainUser.contact.address.province}</div>
+                </div>
               </div>
             </div>
 
