@@ -74,3 +74,21 @@ export async function PATCH(request: Request) {
         return errorHandler(error);
     }
 }
+
+export async function POST(request: Request) {
+    try {
+        const id = new URL(request.url).pathname.split("/").pop();
+        if (!id) {
+            throw { message: "Invalid ID in request URL", status: 400 };
+        }
+        
+        const res = await request.json();
+
+        console.log(res);
+
+        
+    } catch (error) {
+        console.error("Error updating group buy:", error);
+        return errorHandler(error);
+    }
+}
