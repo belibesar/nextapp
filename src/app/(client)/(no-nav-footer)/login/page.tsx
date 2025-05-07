@@ -113,7 +113,7 @@ export default function LoginPage() {
               Login
             </button>
           </form>
-          <p className="text-center text-sm text-gray-700 mt-3 ">
+          <p className="text-center text-sm text-white mt-3 ">
             Don't have an account?
             <br />{" "}
             <a href="/register" className="text-white font-semibold">
