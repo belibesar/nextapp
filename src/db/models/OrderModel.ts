@@ -53,6 +53,15 @@ class OrderModel {
     return result.modifiedCount > 0;
   }
 
+  static async hasJoinedGroupBuy(distributorId: string, groupBuyId: string): Promise<boolean> {
+    const existingOrder = await this.collection().findOne({
+      distributorId: new ObjectId(distributorId),
+      groupBuyId: new ObjectId(groupBuyId),
+      isGroupBuy: true,
+    });
+    return !!existingOrder; 
+  }
+
 }
 
 export default OrderModel;
