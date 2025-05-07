@@ -60,7 +60,7 @@ export async function POST(request: Request) {
       "fullPayment.paymentProof": paymentProofUrl
     };
 
-    const updateStatus = await OrderModel.updateStatus(id, updateData);
+    const updateStatus = await OrderModel.updateStatus(id, updateData as Partial<OrderType>);
 
     return Response.json({ updateStatus }, { status: 200 });
   } catch (error) {
@@ -71,120 +71,48 @@ export async function POST(request: Request) {
 
 export async function PATCH(request: Request) {
   try {
-    const id = new URL(request.url).pathname.split("/").pop();
-    if (!id) {
-      throw { message: "Invalid ID in request URL", status: 400 };
-    }
-
-    const { ...updateData } = await request.json();
-    if (!updateData || !updateData.currentStatus) {
-      throw { message: "Update data is required", status: 400 };
-    }
-
-    const currentStatus = updateData.currentStatus;
-    if (!Object.values(ORDER_STATUS).includes(currentStatus)) {
-      throw { message: "Invalid order status", status: 400 };
-    }
-
-    const userData = request.headers.get("x-user-data");
-    const userDataJson = userData ? JSON.parse(userData) : null;
-    const adminId = userDataJson?._id;
-    if (!adminId) {
-      throw { message: "Admin ID is missing in headers", status: 400 };
-    }
-
-    const user = await UserModel.findById(adminId);
-    if (!user) {
-      return Response.json({ message: "User not found" }, { status: 404 });
-    }
-    if (user.role !== "admin") {
-      return Response.json({ message: "Unauthorized Role" }, { status: 403 });
-    }
-
-    const getOrder = await OrderModel.getOrderById(id);
-    if (!getOrder) {
-      return Response.json({ message: "Order not found" }, { status: 404 });
-    }
-
-    if (currentStatus === ORDER_STATUS.DP_CONFIRMED) {
-      const newStatus = ORDER_STATUS.AWAITING_FULL_PAYMENT;
-      updateData.currentStatus = newStatus;
-      updateData["downPayment.status"] = ORDER_STATUS.DP_CONFIRMED;
-      updateData.fullPayment = {
-        status: ORDER_STATUS.AWAITING_FULL_PAYMENT,
-        paymentProof: updateData.paymentProof,
-        amount: getOrder.totalPrice - getOrder.downPayment.amount
-      };
-      const success = await OrderModel.updateStatus(id, updateData);
-      console.log(success, "success");
-
-      if (success) {
-        const order = await OrderModel.getOrderById(id);
-        if (!order) {
-          throw { message: "Order not found", status: 404 };
-        }
-
-        if (order && order.groupBuyId) {
-          const groupBuyExists = await GroupBuyModel.findById(
-            order.groupBuyId as string
-          );
-          if (!groupBuyExists) {
-            throw { message: "Group buy not found", status: 404 };
-          }
-
-          await GroupBuyModel.updateGroupBuy(
-            order.groupBuyId as string,
-            order.distributorId as string,
-            order.items.quantity
-          );
-        }
-
-        await NotificationModel.create({
-          userId: order.userId,
-          title: "Order Confirmed",
-          message: `Your order with ID ${id} has been confirmed.`,
-          groupBuyId: order.groupBuyId
-        });
-
-        return Response.json({
-          success: true,
-          message: "Payment confirmed and user added to participants."
-        });
-      } else {
-        throw { message: "Failed to update order status", status: 500 };
+      const id = new URL(request.url).pathname.split("/").pop();
+      if (!id) {
+          throw { message: "Invalid ID in request URL", status: 400 };
       }
-    } else if (currentStatus === ORDER_STATUS.FULLPAYMENT_CONFIRMED) {
-      const newStatus = ORDER_STATUS.PAID_IN_FULL;
-      updateData.currentStatus = newStatus;
-      updateData["fullPayment.status"] = ORDER_STATUS.FULLPAYMENT_CONFIRMED;
+
+      const { currentStatus } = await request.json();
+
+      if (!currentStatus) {
+          throw { message: "Update data is required", status: 400 };
+      }
+
+      // Ensure that the status is valid
+      if (!Object.values(ORDER_STATUS).includes(currentStatus)) {
+          throw { message: "Invalid order status", status: 400 };
+      }
+
+      const getOrder = await OrderModel.getOrderById(id);
+      if (!getOrder) {
+          return Response.json({ message: "Order not found" }, { status: 404 });
+      }
+
+      const updateData = { currentStatus };
+
+      // Correct the flow logic here
+      if (currentStatus === ORDER_STATUS.FULLPAYMENT_CONFIRMED) {
+          updateData.currentStatus = ORDER_STATUS.PAID_IN_FULL;  // Transition directly to PAID_IN_FULL
+      }
+
       const success = await OrderModel.updateStatus(id, updateData);
 
-      if (success) {
-        const order = await OrderModel.getOrderById(id);
-        if (!order) {
-          throw { message: "Order not found", status: 404 };
-        }
-
-        await NotificationModel.create({
-          userId: order.userId,
-          title: "Full Payment Confirmed",
-          message: `Your full payment for order ID ${id} has been confirmed.`,
-          groupBuyId: order.groupBuyId
-        });
-
-        return Response.json({
-          success: true,
-          message: "Full payment confirmed."
-        });
-      } else {
-        throw { message: "Failed to update order status", status: 500 };
+      if (!success) {
+          throw { message: "Failed to update order status", status: 500 };
       }
-    }
+
+      return Response.json({ success: true, message: "Status updated successfully." }, { status: 200 });
   } catch (error) {
-    console.error("Error updating group buy:", error);
-    return errorHandler(error);
+      console.error("Error updating order status:", error);
+      return errorHandler(error);
   }
 }
+
+
 
 /* 
     const userData = request.headers.get("x-user-data");
