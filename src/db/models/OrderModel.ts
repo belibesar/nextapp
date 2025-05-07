@@ -8,13 +8,25 @@ class OrderModel {
   }
 
   static async create(order: OrderType) {
-    // console.log(order, "ini order dari model");
-    order.distributorId = new ObjectId(order.distributorId);
-    return await this.collection().insertOne({
-      ...order,
+    const { _id: _, ...orderWithoutId } = order; // Destructure to remove _id if present
+    // Prepare a new object to avoid mutating the original
+    const orderData = {
+      ...orderWithoutId,
+      distributorId: new ObjectId(order.distributorId),
+      groupBuyId: new ObjectId(order.groupBuyId),
+      items: {
+        productId: new ObjectId(order.items.productId),
+        quantity: order.items.quantity
+      },
       createdAt: new Date(),
       updatedAt: new Date()
-    });
+    };
+    // Ensure _id is removed if present (let MongoDB generate it)
+    if ("_id" in orderData) {
+      delete orderData._id;
+    }
+    // return orderData;
+    return await this.collection().insertOne(orderData);
   }
 
   static async getOrderById(orderId: string) {
