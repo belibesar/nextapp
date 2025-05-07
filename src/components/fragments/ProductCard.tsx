@@ -30,17 +30,23 @@ export default function ProductCard({ product }: { product: ProductType }) {
       </div>
       <div className="p-4">
         <div className="flex flex-row justify-between">
-          <h3 className="font-bold text-xs">{product.name.length > 15 ? `${product.name.slice(0, 15)}...` : product.name}</h3>
+          <h3 className="font-bold text-xs" title={product.name}>
+            {product.name.length > 15 ? `${product.name.slice(0, 15)}...` : product.name}
+          </h3>
           <h3 className="font-medium text-xs">{bundlePrice}</h3>
         </div>
 
         <div className="flex flex-row justify-between">
-          <h3 className="font-bold text-xs">{product.producer.name.length > 15 ? `${product.producer.name.slice(0, 15)}...` : product.producer.name}</h3>
+          <h3 className="font-bold text-xs" title={product.producer.name}>
+            {product.producer.name.length > 15 ? `${product.producer.name.slice(0, 15)}...` : product.producer.name}
+          </h3>
           <h3 className="font-medium text-xs">{price}</h3>
         </div>
 
         <div className="flex flex-row justify-between items-start mt-5">
-          <p className="text-sm text-black font-semibold">{product.category}</p>
+        <p className="text-sm text-black font-semibold" title={product.category}>
+          {product.category.length > 13 ? `${product.category.slice(0, 13)}...` : product.category}
+        </p>
           <div className="flex flex-col">
             <p className="text-xs font-semibold text-right">Min 1 paket</p> {/*change this to bundle qty */}
             {product.stock !== 0 ? <p className="text-xs text-blue-500">{product.stock} paket available</p> : <p className="text-sm text-red-500">Out of stock</p>}
