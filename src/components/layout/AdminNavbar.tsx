@@ -6,7 +6,12 @@ const AdminNavbar = () => {
     <>
       <header className="bg-[#1194D0] text-white">
         <div className="container mx-auto px-4 py-2 flex items-center justify-between">
-          <div className="text-xl font-bold">BeliBesar</div>
+          <Link
+            href={'/'}
+            className="text-xl font-bold"
+          >
+            BeliBesar
+          </Link>
 
           {/* Mobile Menu Button - Only visible on small screens */}
           <div className="drawer drawer-end lg:hidden flex justify-end">
@@ -44,7 +49,12 @@ const AdminNavbar = () => {
               ></label>
               <ul className="menu p-4 w-60 min-h-full bg-base-200 text-base-content">
                 <li>
-                  <a className="font-semibold">Dashboard</a>
+                  <Link
+                    href={'/dashboard'}
+                    className="font-semibold"
+                  >
+                    Dashboard
+                  </Link>
                 </li>
                 <li>
                   <details>
@@ -57,22 +67,22 @@ const AdminNavbar = () => {
                         <a>Producer</a>
                       </li>
                       <li className="bg-sky-100 text-sky-800">
-                        <a>Group Buy</a>
+                        <Link href={'/groupbuy/create'}>Group Buy</Link>
                       </li>
                     </ul>
                   </details>
                 </li>
                 <li>
-                  <a>Products</a>
+                  <Link href={'/products'}>Products</Link>
                 </li>
                 <li>
-                  <a>Orders</a>
+                  <Link href={'/orders'}>Orders</Link>
                 </li>
                 <li>
-                  <a>Group Buy</a>
+                  <Link href={'/groupbuy'}>Group Buy</Link>
                 </li>
                 <li>
-                  <a>Profile</a>
+                  <Link href={'/profile'}>Profile</Link>
                 </li>
               </ul>
             </div>
@@ -112,7 +122,7 @@ const AdminNavbar = () => {
                 </li>
                 <li>
                   <Link
-                    href={'#'}
+                    href={'/groupbuy/create'}
                     className="py-2 px-4 bg-sky-100"
                   >
                     Group Buy
