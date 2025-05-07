@@ -46,17 +46,23 @@ export async function PATCH(request: Request) {
     }
 
     await Promise.all(
-      orders.map((order) =>
+      orders.map((order) => {
         NotificationModel.create({
           userId: order.distributorId, 
           title: notifTitle,  
           message: notifMessage, 
           groupBuyId: id, 
         })
-      )
+      })
     );
 
-    return NextResponse.json({ message: "Group buy status updated & notifikasi dikirim" });
+    return NextResponse.json({ 
+      success: true,
+      message: notifMessage,
+      groupBuyId: id,
+      status: status,
+      title: notifTitle,
+     });
   } catch (error) {
     console.error("Error updating group buy status:", error);
     return errorHandler(error);
