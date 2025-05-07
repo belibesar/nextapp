@@ -157,6 +157,7 @@ export default function DetailGroupBuyPage({user}:{user:UserType}) {
   const currentOrder = groupBuy?.currentOrders || 1
   const targetOrder = groupBuy?.minTargetQuantity || 10
   const progressPercentage = ((currentOrder ?? 1) / (targetOrder ?? 10)) * 100
+  const maxProgressPercentage = ((currentOrder ?? 1) / (maxQuantity ?? 10)) * 100
 
   const currentParticipants = groupBuy?.participants.length || 1
 
@@ -227,12 +228,22 @@ export default function DetailGroupBuyPage({user}:{user:UserType}) {
 
                 <div className="mb-4">
                   <div className="flex justify-between text-sm mb-1">
-                    <span>Progress Group Buy</span>
+                    <span>Minimum Group Buy</span>
                     <span className="font-medium" title="Minimum Order quantity">
                       {currentOrder}/{targetOrder} MOQ
                     </span>
                   </div>
                   <Progress value={progressPercentage} className="h-2" />
+                </div>
+
+                <div className="mb-4">
+                  <div className="flex justify-between text-sm mb-1">
+                    <span>Max Group Buy</span>
+                    <span className="font-medium" title="Maximum Order quantity">
+                      {currentOrder}/{maxQuantity} MOQ
+                    </span>
+                  </div>
+                  <Progress value={maxProgressPercentage} className="h-2" />
                 </div>
 
                 <Separator className="my-4" />
@@ -429,7 +440,7 @@ export default function DetailGroupBuyPage({user}:{user:UserType}) {
             {isModalOpen && (
           <div className="fixed inset-0 bg-opacity-50 backdrop-blur-sm flex justify-center items-center z-50">
             
-            <div className="relative bg-white p-6 rounded-xl shadow-lg max-w-2xl w-full h-[350px]">
+            <div className="relative bg-white p-6 rounded-xl shadow-lg max-w-2xl w-full h-[380px] pt-10">
                 <button
                     onClick={closeModal}
                     className="absolute top-4 left-4 text-gray-500 hover:text-gray-700 text-xl font-bold w-10 h-10">
