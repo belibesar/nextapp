@@ -49,7 +49,6 @@ export default function DetailGroupBuyPage({user}:{user:UserType}) {
         })
         
         const data = await response.json()
-        console.log(data, "data")
         if (data.secure_url) {
           return data.secure_url
         } else {
@@ -108,7 +107,6 @@ export default function DetailGroupBuyPage({user}:{user:UserType}) {
       }
   
       const data = await res.json()
-      console.log(data)
   
       navigate.push('/groupbuy')
       alert('Payment proof uploaded successfully!')
