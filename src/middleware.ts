@@ -60,6 +60,7 @@ export const config = {
     "/api/producers:path*",
     "/api/cart:path*",
     "/api/products:path*",
-    "/api/group-buys/:path*"
+    "/api/group-buys/:path*",
+    "/api/orders/:path*"
   ]
 };
