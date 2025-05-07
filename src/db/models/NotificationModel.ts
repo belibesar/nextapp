@@ -19,13 +19,26 @@ class NotificationModel {
   }
 
   static async create(notification: Omit<Notification, "createdAt">) {
-    notification.userId = new ObjectId(notification.userId);
-    const result = await this.collection().insertOne({
+    const userId =
+      typeof notification.userId === "string"
+        ? new ObjectId(notification.userId)
+        : notification.userId;
+  
+    const notifData = {
       ...notification,
+      userId,
       createdAt: new Date()
-    });
+    };
+  
+    console.log("📨 Inserting notif to user_notifications:", notifData);
+  
+    const result = await this.collection().insertOne(notifData);
+  
+    console.log("✅ Notif inserted with ID:", result.insertedId);
+  
     return result.insertedId;
   }
+  
 
   static async createAdmin(notification: Omit<Notification, "createdAt">) {
     notification.userId = new ObjectId(notification.userId);
@@ -44,9 +57,8 @@ class NotificationModel {
     return notifications;
   }
 
-  static async deleteById(id: string) {
-    const objectId = new ObjectId(id);
-    const result = await this.collection().deleteOne({ _id: objectId });
+  static async deleteOne(filter: { _id: ObjectId; userId: ObjectId }) {
+    const result = await this.collection().deleteOne(filter);
     return result.deletedCount > 0;
   }
 }

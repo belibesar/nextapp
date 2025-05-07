@@ -1,11 +1,89 @@
 "use client"
 import { handleLogout } from "@/components/layout/LogoutButton"
 import type { UserType } from "@/types/types"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { toast } from "react-toastify"
 
 const ProfilePage = ({ user }: { user: UserType }) => {
   const [showNotificationModal, setShowNotificationModal] = useState(false)
+  const [notifications, setNotifications] = useState<any[]>([]);
+  const [unreadCount, setUnreadCount] = useState(0)
 
+    const fetchNotifications = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/api/notifications?userId=${user._id}`, {
+          headers: {
+            "x-user-data": JSON.stringify({ _id: user._id }),
+          },
+        });
+        const data = await response.json();
+        if (data.success) {
+          setNotifications(data.data);
+        } else {
+          console.error("Failed to fetch notifications:", data);
+        }
+      } catch (error) {
+        console.error("Error fetching notifications:", error);
+      }
+    };
+  
+    const deleteNotification = async (notificationId: string) => {
+      try {
+        console.log("Deleting notification with ID:", notificationId);
+        const response = await fetch(`http://localhost:3000/api/notifications`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            "x-user-data": JSON.stringify({ _id: user._id }),
+          },
+          body: JSON.stringify({ notificationId }),
+        });
+        const data = await response.json();
+        console.log("Response from server:", data); 
+
+        if (data.success) {
+          setNotifications((prev) =>
+            prev.filter((notification) => notification._id !== notificationId)
+          );
+        } else {
+          toast.error("Failed to delete notification:", data);
+        }
+      } catch (error) {
+        console.error("Error deleting notification:", error);
+      }
+    };
+
+    const markAllAsRead = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/api/notifications/markAllAsRead`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-user-data": JSON.stringify({ _id: user._id }),
+          },
+          body: JSON.stringify({ userId: user._id })
+        })
+        const data = await response.json()
+  
+        if (data.success) {
+          setNotifications((prev) =>
+            prev.map((notification) => ({ ...notification, isRead: true }))
+          )
+          setUnreadCount(0)
+        } else {
+          toast.error("Failed to mark notifications as read:", data)
+        }
+      } catch (error) {
+        console.error("Error marking notifications as read:", error)
+      }
+    }
+  
+    useEffect(() => {
+      if (showNotificationModal) {
+        fetchNotifications();
+      }
+    }, [showNotificationModal]);
+  
   return (
     <div className="min-h-screen bg-[#f8fafc] py-10 px-4">
       <div className="max-w-5xl mx-auto">
@@ -36,6 +114,11 @@ const ProfilePage = ({ user }: { user: UserType }) => {
                     d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 01-6 0v-1m6 0H9"
                   />
                 </svg>
+                {unreadCount > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                    {unreadCount}
+                  </span>
+                )}
               </div>
             </div>
 
@@ -443,7 +526,10 @@ const ProfilePage = ({ user }: { user: UserType }) => {
           className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
           onClick={() => setShowNotificationModal(false)}
         >
-          <div className="bg-white rounded-xl p-6 max-w-md w-full shadow-xl" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="bg-white rounded-xl p-6 max-w-md w-full shadow-xl h-[80vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-xl font-bold text-[#1e3a5f] flex items-center">
                 <svg
@@ -478,25 +564,35 @@ const ProfilePage = ({ user }: { user: UserType }) => {
               </button>
             </div>
             <div className="space-y-4 mb-6">
-              <div className="bg-blue-50 p-4 rounded-lg border-l-4 border-[#0099cc]">
-                <div className="flex justify-between">
-                  <p className="font-medium text-[#1e3a5f]">Order #12345 has been shipped</p>
-                  <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full font-medium">New</span>
+              {notifications.map((notification, index) => (
+                  <div
+                  key={index}
+                  className={`p-4 rounded-lg border-l-4 flex justify-between items-center ${
+                    notification.isRead
+                      ? "bg-gray-100 border-gray-300"
+                      : "bg-blue-50 border-[#0099cc]"
+                  }`}
+                  >
+                  <div>
+                    <p className="font-medium text-[#1e3a5f]">
+                      {notification.message}
+                    </p>
+                    <p className="text-sm text-gray-500 mt-1">
+                      {new Date(notification.createdAt).toLocaleString()}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => deleteNotification(notification._id)}
+                    className="text-red-500 hover:text-red-700 transition-colors"
+                  >
+                    Delete
+                  </button>
                 </div>
-                <p className="text-sm text-gray-500 mt-1">2 hours ago</p>
-              </div>
-              <div className="bg-gray-50 p-4 rounded-lg">
-                <p className="font-medium text-[#1e3a5f]">New product available</p>
-                <p className="text-sm text-gray-500 mt-1">Yesterday</p>
-              </div>
-              <div className="bg-gray-50 p-4 rounded-lg">
-                <p className="font-medium text-[#1e3a5f]">Welcome to BeliBesar!</p>
-                <p className="text-sm text-gray-500 mt-1">3 days ago</p>
-              </div>
+              ))}
             </div>
             <button
               className="w-full py-3 bg-[#1e3a5f] text-white rounded-lg hover:bg-[#15294a] transition-colors font-medium"
-              onClick={() => setShowNotificationModal(false)}
+              onClick={markAllAsRead}
             >
               Mark all as read
             </button>
