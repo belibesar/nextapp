@@ -13,6 +13,9 @@ export async function POST(request: Request) {
     const formData = await request.formData();
     const quantity = parseInt(formData.get("quantity") as string, 10);
     const paymentProof = formData.get("paymentProof") as File;
+    if (!paymentProof) {
+      throw { message: "Payment proof is required", status: 400 };
+    }
 
     const groupBuyArr = await GroupBuyModel.findById(id);
     const groupBuy = groupBuyArr[0] as GroupBuy;
@@ -32,12 +35,10 @@ export async function POST(request: Request) {
       return Response.json({ message: "Unauthorized Role" }, { status: 403 });
     }
 
-    const alreadyJoined = await OrderModel.hasJoinedGroupBuy(
-      distributorId,
-      id,
-    );
+    const alreadyJoined = await OrderModel.hasJoinedGroupBuy(distributorId, id);
 
-    if (alreadyJoined) throw { message: "You have already joined this Group Buy.", status: 400 }
+    if (alreadyJoined)
+      throw { message: "You have already joined this Group Buy.", status: 400 };
 
     if (quantity < groupBuy.minTargetQuantity) {
       throw { message: `Minimum quantity is ${groupBuy.minTargetQuantity}` };
@@ -49,8 +50,10 @@ export async function POST(request: Request) {
     const totalPrice = groupBuy.productDetails
       ? quantity * groupBuy.productDetails.price
       : 0;
-    const depositAmount = totalPrice * (groupBuy.depositPercentage / 100);
-    const paymentAmount = paymentProof ? depositAmount : totalPrice;
+    const percentage =
+      (groupBuy.productDetails ? groupBuy.productDetails.price : 0) /
+      groupBuy.depositPercentage;
+    const depositAmount = totalPrice * (percentage / 100);
 
     let paymentProofUrl = "";
 
@@ -61,7 +64,7 @@ export async function POST(request: Request) {
         const stream = cloudinary.uploader.upload_stream(
           {
             folder: "payment-proofs",
-            resource_type: "image",
+            resource_type: "image"
           },
           (error, result) => {
             if (error || !result) {
@@ -72,39 +75,51 @@ export async function POST(request: Request) {
             }
           }
         );
-    
+
         Readable.from(buffer).pipe(stream);
       });
+    } else {
+      throw {
+        message: "Payment proof is required for deposit payment"
+      };
     }
 
     const order = await OrderModel.create({
       distributorId,
-      items: [
-        {
-          productId: groupBuy.productId,
-          productName: groupBuy.productDetails
-            ? groupBuy.productDetails.name
-            : "",
-          quantity,
-          price: groupBuy.productDetails ? groupBuy.productDetails.price : 0,
-        },
-      ],
+      items: {
+        productId: groupBuy.productId,
+        quantity
+      },
       totalPrice,
       currentStatus: paymentProof
         ? ORDER_STATUS.AWAITING_ADMIN_CONFIRMATION
         : ORDER_STATUS.AWAITING_FULL_PAYMENT,
-      fullPaymentsStatus: ORDER_STATUS.AWAITING_FULL_PAYMENT,
-      isGroupBuy: true,
-      groupBuyId: groupBuy._id,
-      paymentProof: paymentProofUrl,
+      groupBuyId: groupBuy._id!,
+      downPayment: {
+        status: ORDER_STATUS.AWAITING_ADMIN_CONFIRMATION,
+        paymentProof: paymentProofUrl,
+        amount: depositAmount,
+        percentage: percentage
+      },
       createdAt: new Date(),
-      updatedAt: new Date(),
+      updatedAt: new Date()
     });
 
     await NotificationModel.create({
       userId: distributorId,
       title: "Yeayy!!",
-      message: `You have joined the Group Buy: ${groupBuy.productDetails?.name}`,
+      message: `You have joined the Group Buy: ${groupBuy.productDetails?.name}`
+    });
+
+    const getAdmins = await UserModel.getAllAdmin();
+    const adminIds = getAdmins.map((admin) => admin._id);
+    // :v
+    adminIds.forEach(async (adminId) => {
+      await NotificationModel.createAdmin({
+        userId: adminId,
+        title: "New Group Buy Participant",
+        message: `${user.name} has joined the Group Buy for: ${groupBuy.productDetails?.name}`
+      });
     });
 
     return Response.json({
@@ -113,10 +128,9 @@ export async function POST(request: Request) {
       quantity,
       totalPrice,
       depositAmount,
-      paymentAmount,
       message: paymentProof
         ? "Deposit payment submitted. Awaiting admin confirmation."
-        : "Full payment required. Please complete your payment.",
+        : "Full payment required. Please complete your payment."
     });
   } catch (error) {
     console.error("Error joining Group Buy:", error);

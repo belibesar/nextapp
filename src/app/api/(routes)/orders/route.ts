@@ -1,8 +1,18 @@
+
 import GroupBuyModel from "@/db/models/GroupBuyModel";
 import NotificationModel from "@/db/models/NotificationModel";
 import OrderModel from "@/db/models/OrderModel";
 import errorHandler from "@/lib/errorHandler";
 import { getLoggedInUserFromRequest } from "@/lib/getLoggedInUserFromRequest";
+
+export async function GET() {
+    try {
+        const orders = await OrderModel.getAllOrders();
+        if (!orders || orders.length === 0) throw { message: "No orders found"}
+
+        return Response.json(orders);
+    } catch (error) {
+
 
 export async function POST(request: Request) {
     try {

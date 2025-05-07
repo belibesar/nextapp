@@ -113,11 +113,12 @@ export type CartType = {
 export enum ORDER_STATUS {
   AWAITING_ADMIN_CONFIRMATION = "AWAITING_ADMIN_CONFIRMATION",
   DP_CONFIRMED = "DP_CONFIRMED",
-  AWAITING_FULL_PAYMENT = "AWAITING_FULL_PAYMENT",
   AWAITING_ADMIN_CONFIRMATION_FULL = "AWAITING_ADMIN_CONFIRMATION_FULL",
+  FULLPAYMENT_CONFIRMED = "FULLPAYMENT_CONFIRMED",
+  AWAITING_FULL_PAYMENT = "AWAITING_FULL_PAYMENT",
   PAID_IN_FULL = "PAID_IN_FULL",
   CANCELLED = "CANCELLED"
-};
+}
 
 export type OrderType = {
   _id?: string | ObjectId;
@@ -136,9 +137,7 @@ export type OrderType = {
 
 export type OrderItemType = {
   productId: string | ObjectId;
-  productName: string;
   quantity: number;
-  price: number;
 };
 
 export type GroupBuy = {
