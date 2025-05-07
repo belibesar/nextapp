@@ -5,6 +5,16 @@ import { NextResponse } from "next/server";
 import errorHandler from "@/lib/errorHandler";
 import { GroupBuyStatus } from "@/types/types";
 
+export async function GET() {
+  try {
+    const groupBuys = await GroupBuyModel.findAllWithProducts();
+    return Response.json(groupBuys);
+  } catch (error) {
+    console.error("Error fetching group buys:", error);
+    return errorHandler(error);
+  }
+}
+
 export async function PATCH(request: Request) {
   try {
     const id = new URL(request.url).pathname.split("/").slice(-2)[0];
