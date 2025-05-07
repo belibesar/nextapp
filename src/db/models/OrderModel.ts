@@ -38,28 +38,29 @@ class OrderModel {
 
   static async findAllByGroupBuyId(groupBuyId: string) {
     const orders = await this.collection()
-      .find({ groupBuyId: new ObjectId(groupBuyId) }) 
+      .find({ groupBuyId: new ObjectId(groupBuyId) })
       .toArray();
     return orders;
   }
 
-
-  static async updateStatus(orderId: string | ObjectId, updateData: Partial<OrderType>): Promise<boolean> {
+  static async updateStatus(
+    orderId: string | ObjectId,
+    updateData: Partial<OrderType>
+  ): Promise<boolean> {
     const result = await this.collection().updateOne(
-        { _id: new ObjectId(orderId) },
-        { $set: updateData }
+      { _id: new ObjectId(orderId) },
+      { $set: updateData }
     );
 
     return result.modifiedCount > 0;
   }
 
-  static async hasJoinedGroupBuy(distributorId: string, groupBuyId: string): Promise<boolean> {
+  static async hasJoinedGroupBuy(distributorId: string, groupBuyId: string) {
     const existingOrder = await this.collection().findOne({
       distributorId: new ObjectId(distributorId),
-      groupBuyId: new ObjectId(groupBuyId),
-      isGroupBuy: true,
+      groupBuyId: new ObjectId(groupBuyId)
     });
-    return !!existingOrder; 
+    return existingOrder;
   }
 
   static async getOrdersByUserId(distributorId: string) {
