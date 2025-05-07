@@ -32,6 +32,13 @@ export async function POST(request: Request) {
       return Response.json({ message: "Unauthorized Role" }, { status: 403 });
     }
 
+    const alreadyJoined = await OrderModel.hasJoinedGroupBuy(
+      distributorId,
+      id,
+    );
+
+    if (alreadyJoined) throw { message: "You have already joined this Group Buy.", status: 400 }
+
     if (quantity < groupBuy.minTargetQuantity) {
       throw { message: `Minimum quantity is ${groupBuy.minTargetQuantity}` };
     }
