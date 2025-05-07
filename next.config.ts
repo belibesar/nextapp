@@ -9,6 +9,11 @@ const nextConfig: NextConfig = {
         hostname: 'placehold.co',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'www.static-src.com',
+        pathname: '/**',
+      },
     ],
     dangerouslyAllowSVG: true,
   }

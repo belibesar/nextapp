@@ -63,6 +63,7 @@ export type ProductType = {
     createdAt?: Date;
     updatedAt?: Date;
   };
+  img?: string;
   createdAt?: Date;
   updatedAt?: Date;
 };
@@ -108,7 +109,7 @@ export type CartType = {
   updatedAt: Date;
 };
 
-export enum ORDER_STATUS  {
+export enum ORDER_STATUS {
   AWAITING_ADMIN_CONFIRMATION = "AWAITING_ADMIN_CONFIRMATION",
   DP_CONFIRMED = "DP_CONFIRMED",
   AWAITING_FULL_PAYMENT = "AWAITING_FULL_PAYMENT",
