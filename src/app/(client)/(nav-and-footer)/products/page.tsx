@@ -22,7 +22,6 @@ const Products = () => {
       try {
         const res = await fetch(`http://localhost:3000/api/products?page=${pageNum}&search=${searchTerm}`);
         const data = await res.json();
-        console.log(data);
         if (data.length === 0 || data.length < 8) {
           setHasMore(false);
         }

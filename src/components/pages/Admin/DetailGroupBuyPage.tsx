@@ -136,8 +136,8 @@ export default function DetailGroupBuyPage({user}:{user:UserType}) {
                 <div className="mb-4">
                   <div className="flex justify-between text-sm mb-1">
                     <span>Progress Group Buy</span>
-                    <span className="font-medium">
-                      {currentOrder}/{targetOrder} order
+                    <span className="font-medium" title="Minimum Order Quantity">
+                      {currentOrder}/{targetOrder} MOQ
                     </span>
                   </div>
                   <Progress value={progressPercentage} className="h-2" />

@@ -18,7 +18,7 @@ const ProductDetailPage = ({ product }: { product: ProductType }) => {
           {/* Product Image */}
           <div className="bg-gray-200 rounded-lg aspect-square md:aspect-auto md:h-96 overflow-hidden">
             <Image
-              src="https://placehold.co/400x400"
+              src={product?.img ||"https://placehold.co/400x400"}
               alt="Indomie Goreng"
               width={400}
               height={400}
