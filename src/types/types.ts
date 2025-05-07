@@ -95,6 +95,7 @@ export type ProducerType = {
     email: string;
     address: string;
   };
+  products?: ProductType[]
   createdAt?: Date;
   updatedAt?: Date;
 };

@@ -30,9 +30,9 @@ class ProducerModel {
       id: producer._id,
       name: producer.name,
       contact: {
-        phone: producer.phone,
-        email: producer.email,
-        address: producer.address
+        phone: producer.contact.phone,
+        email: producer.contact.email,
+        address: producer.contact.address
       }
     }));
   }

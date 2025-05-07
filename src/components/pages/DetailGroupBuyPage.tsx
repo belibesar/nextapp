@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useParams } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import Link from "next/link"
 import Image from "next/image"
 import { ArrowLeft, Calendar, Clock, Info, MapPin, Minus, Plus, ShoppingBag, Users } from "lucide-react"
@@ -14,12 +14,104 @@ import { Progress } from "@/components/ui/Progress"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/Tooltip"
 import { GroupBuy, ProductType, UserType } from "@/types/types"
 
-export default function DetailGroupBuyPage({user}:{user:UserType}) {    
+export default function DetailGroupBuyPage({user}:{user:UserType}) {
     const params = useParams()
+    const navigate = useRouter()
     const [groupBuy, setGroupBuy] = useState<GroupBuy | null>(null)
     const [product, setProduct] = useState<ProductType | null>(null) 
     const [loading, setLoading] = useState(true)
     const [isModalOpen, setIsModalOpen] = useState(false)
+
+    //cloudinary setup
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    const [uploading, setUploading] = useState(false);
+    const [uploadError, setUploadError] = useState('');
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files ? e.target.files[0] : null;
+      if (file) {
+          setSelectedFile(file);
+      }
+    }
+
+    // Handle file upload to Cloudinary
+    const uploadFileToCloudinary = async (file: File) => {
+      setUploading(true)
+      setUploadError('')
+      const formData = new FormData()
+      formData.append('file', file)
+      formData.append('upload_preset', process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || 'your-upload-preset')
+  
+      try {
+        const response = await fetch(`https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`, {
+          method: 'POST',
+          body: formData,
+        })
+        
+        const data = await response.json()
+        if (data.secure_url) {
+          return data.secure_url
+        } else {
+          throw new Error('Failed to upload file.')
+        }
+      } catch (error) {
+        console.error('Upload failed:', error)
+        setUploadError('Upload failed. Please try again.')
+      } finally {
+        setUploading(false)
+      }
+    }
+  
+    // Handle submit of payment and upload the file to Cloudinary
+    const handleUploadClick = async () => {
+      if (!selectedFile) {
+        alert('Please select a file first.')
+        return
+      }
+  
+      const paymentProofUrl = await uploadFileToCloudinary(selectedFile)
+      if (!paymentProofUrl) {
+        alert('Failed to upload payment proof. Please try again.')
+        return
+      }
+  
+      const res = await fetch(`http://localhost:3000/api/orders`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          distributorId: user._id,
+          supplierId: '',
+          items: [
+            {
+              productId: groupBuy?.productId,
+              productName: groupBuy?.productName,
+              quantity: quantity,
+              price: groupBuy?.price
+            }
+          ],
+          totalPrice: totalPrice,
+          currentStatus: 'pending',
+          isGroupBuy: true,
+          groupBuyId: groupBuy?._id,
+          paymentproof: paymentProofUrl,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        })
+      })
+  
+      if (!res.ok) {
+        alert('Failed to upload payment proof. Please try again.')
+        return
+      }
+  
+      const data = await res.json()
+  
+      navigate.push('/groupbuy')
+      alert('Payment proof uploaded successfully!')
+      closeModal()
+    }  
 
     const openModal = () => {
         setIsModalOpen(true); // Set modal visibility to true when button is clicked
@@ -361,13 +453,23 @@ export default function DetailGroupBuyPage({user}:{user:UserType}) {
                 </div>
 
                 <div className="flex flex-col justify-center mt-2">
-                    <p className="text-sm font-semibold text-center mt-5">Upload your transfer note</p>
-                    <button className="self-center w-50 items-center text-center bg-gray-600 text-sm text-white p-1 rounded-md hover:cursor-pointer hover:bg-gray-700">Choose your file</button>
+                  <p className="text-sm font-semibold text-center mt-5">Upload your transfer note</p>
+                  <div className="flex flex-row items-center justify-center mt-2">
+                    <input 
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileChange} 
+                      className="self-center w-50 items-center text-center bg-gray-600 text-sm text-white p-1 rounded-md hover:cursor-pointer hover:bg-gray-700" />
+                  </div>
+                
+                  {uploading && <p className="text-center text-sm text-blue-600">Uploading...</p>}
+                  {uploadError && <p className="text-center text-sm text-red-600">{uploadError}</p>}
                 </div>
 
                 <div className="flex flex-col justify-center mt-5">
                     <p className="text-xs text-center">Press this button if payment process already finished</p>
-                    <button className="self-center w-30 bg-blue-400 rounded-md hover:bg-blue-300 hover:cursor-pointer text-sm font-semibold text-white mt-1 pt-1 pb-1">Pay</button>
+                    <button className="self-center w-30 bg-blue-400 rounded-md hover:bg-blue-500 hover:cursor-pointer text-sm font-semibold text-white mt-1 pt-1 pb-1"
+                    onClick={handleUploadClick}>Pay</button>
                 </div>
             </div>
           </div>

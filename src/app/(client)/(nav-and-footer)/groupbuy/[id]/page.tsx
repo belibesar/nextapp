@@ -1,5 +1,5 @@
 import React from 'react';
-import DetailGroupBuy from '@/components/pages/Admin/DetailGroupBuyPage';
+import DetailGroupBuy from '@/components/pages/DetailGroupBuyPage';
 import { getLoggedInUserFromRequest } from '@/lib/getLoggedInUserFromRequest';
 
 const GroupBuyId = async() => {
