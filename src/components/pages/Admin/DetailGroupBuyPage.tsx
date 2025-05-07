@@ -112,7 +112,7 @@ export default function DetailGroupBuyPage({user}:{user:UserType}) {
           <div>
             <div className="bg-white rounded-xl overflow-hidden shadow-md mb-6">
               <div className="relative aspect-square">
-                <Image src="https://placehold.co/600x600" alt="Product Image" fill className="object-cover" />
+                <Image src={product?.img ||"https://placehold.co/600x600"} alt="Product Image" fill className="object-cover" />
                 <Badge className="absolute top-4 right-4 bg-blue-600 text-white">Group Buy</Badge>
               </div>
 

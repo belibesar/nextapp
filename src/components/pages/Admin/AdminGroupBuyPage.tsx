@@ -9,13 +9,19 @@ const GroupBuyPage = async () => {
   const fetchGroupBuys = await fetch('http://localhost:3000/api/group-buys');
   const groupBuys = await fetchGroupBuys.json();
 
+  const products = await Promise.all(
+    groupBuys.map((groupBuy: GroupBuy) =>
+      fetch(`http://localhost:3000/api/products/${groupBuy.productId}`)
+        .then(res => res.json())
+    )
+  );
+
   return (
     <div className="flex flex-col min-h-screen">
       {/* Main Content */}
       <main className="container mx-auto px-4 py-6 flex-grow">
         {/* Action Buttons */}
-        <div className="flex justify-between mb-6">
-          <GoBackButton />
+        <div className="flex justify-end mb-6">
           <Link
             href={'/groupbuy/create'}
             className="btn btn-sm bg-[#0099cc] hover:bg-[#0088bb] text-white border-none rounded-md px-6"
@@ -33,6 +39,7 @@ const GroupBuyPage = async () => {
             <GroupBuyCard
               key={index}
               groupBuy={groupBuy}
+              product={products[index]}
             />
           ))}
         </div>

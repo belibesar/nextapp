@@ -1,10 +1,10 @@
 // "use client";
 
 import Image from 'next/image';
-import { GroupBuy } from '@/types/types';
+import { GroupBuy, ProductType } from '@/types/types';
 import Link from 'next/link';
 
-export default function GroupBuyCard({ groupBuy }: { groupBuy: GroupBuy }) {
+export default function GroupBuyCard({ groupBuy,product }: { groupBuy: GroupBuy, product: ProductType }) {
   // console.log(groupBuy, "groupBuy card");
   // const bundlePrice = groupBuy.productDetails
   //   ? new Intl.NumberFormat("id-ID", {
@@ -27,7 +27,7 @@ export default function GroupBuyCard({ groupBuy }: { groupBuy: GroupBuy }) {
       <Link href={`/groupbuy/${groupBuy._id}`}>
         <div className="h-48 bg-gray-200">
           <Image
-            src="https://placehold.co/400x400"
+            src={product.img ||"https://placehold.co/400x400"}
             alt={groupBuy.productDetails ? groupBuy.productDetails.name : ''}
             height={400}
             width={400}
