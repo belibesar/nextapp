@@ -127,8 +127,8 @@ export type OrderType = {
   distributorId?: string | ObjectId;
   items?: OrderItemType[];
   totalPrice?: number;
-  currentStatus?: ORDER_STATUS;
-  fullPaymentsStatus?: ORDER_STATUS;
+  currentStatus?: keyof typeof ORDER_STATUS;
+  fullPaymentsStatus?: keyof typeof ORDER_STATUS;
   isGroupBuy?: boolean;
   groupBuyId?: string | ObjectId;
   paymentProof?: string;

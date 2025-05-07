@@ -60,7 +60,7 @@ export async function POST(request: Request) {
       "fullPayment.paymentProof": paymentProofUrl
     };
 
-    const updateStatus = await OrderModel.updateStatus(id, updateData);
+    const updateStatus = await OrderModel.updateStatus(id, updateData as Partial<OrderType>);
 
     return Response.json({ updateStatus }, { status: 200 });
   } catch (error) {
