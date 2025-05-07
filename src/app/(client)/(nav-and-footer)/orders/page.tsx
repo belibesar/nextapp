@@ -30,14 +30,13 @@ const Orders = async () => {
               </button>
             ))}
           </div>
-          {orders.map((order)=>(
-          (user as UserType).role === 'admin' ? (
-            <AdminOrderPage key={order._id.toString()} order={order} />
+          {(user as UserType).role === 'admin' ? (
+            <AdminOrderPage/>
           ) : (
-            <UserOrderPage key={order._id.toString()} order={order} />
-          )
-        ))}
-          
+            orders.map((order) =>(
+              <UserOrderPage key={order._id.toString()} order={order} />
+            ))
+          )}
         </main> 
       </div>
     );
