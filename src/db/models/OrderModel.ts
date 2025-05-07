@@ -8,18 +8,25 @@ class OrderModel {
   }
 
   static async create(order: OrderType) {
-    // console.log(order, "ini order dari model");
-    order.distributorId = new ObjectId(order.distributorId);
-    if (order._id && typeof order._id === "string") {
-      order._id = new ObjectId(order._id);
-    }
-    const orderToInsert = {
-      ...order,
-      _id: order._id instanceof ObjectId ? order._id : new ObjectId(order._id),
+    const { _id: _, ...orderWithoutId } = order; // Destructure to remove _id if present
+    // Prepare a new object to avoid mutating the original
+    const orderData = {
+      ...orderWithoutId,
+      distributorId: new ObjectId(order.distributorId),
+      groupBuyId: new ObjectId(order.groupBuyId),
+      items: {
+        productId: new ObjectId(order.items.productId),
+        quantity: order.items.quantity
+      },
       createdAt: new Date(),
       updatedAt: new Date()
     };
-    return await this.collection().insertOne(orderToInsert);
+    // Ensure _id is removed if present (let MongoDB generate it)
+    if ("_id" in orderData) {
+      delete orderData._id;
+    }
+    // return orderData;
+    return await this.collection().insertOne(orderData);
   }
 
   static async getOrderById(orderId: string) {
@@ -27,7 +34,9 @@ class OrderModel {
   }
 
   static async getOrderbyUser(distributorId: string) {
-    const cursor = this.collection().find({ distributorId: new ObjectId(distributorId) });
+    const cursor = this.collection().find({
+      distributorId: new ObjectId(distributorId)
+    });
     return await cursor.toArray();
   }
 
@@ -74,9 +83,9 @@ class OrderModel {
   }
 
   static async getOrdersByUserId(distributorId: string) {
-      return await this.collection()
-        .find({ distributorId: new ObjectId(distributorId)})
-        .toArray();
+    return await this.collection()
+      .find({ distributorId: new ObjectId(distributorId) })
+      .toArray();
   }
 
   static async getAllOrders() {
