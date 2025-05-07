@@ -62,6 +62,15 @@ class OrderModel {
     return !!existingOrder; 
   }
 
+  static async getOrdersByUserId(distributorId: string) {
+      return await this.collection()
+        .find({ distributorId: new ObjectId(distributorId)})
+        .toArray();
+  }
+
+  static async getAllOrders() {
+    return await this.collection().find({}).toArray();
+  }
 }
 
 export default OrderModel;
