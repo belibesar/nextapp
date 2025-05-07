@@ -1,7 +1,7 @@
 import GroupBuyModel from "@/db/models/GroupBuyModel";
+import NotificationModel from "@/db/models/NotificationModel";
 import OrderModel from "@/db/models/OrderModel";
 import errorHandler from "@/lib/errorHandler";
-import { ObjectId } from "mongodb";
 
 export async function PATCH(request: Request) {
     try {
@@ -53,6 +53,13 @@ export async function PATCH(request: Request) {
 
                 await GroupBuyModel.updateGroupBuy(order.groupBuyId, distributorId, order.items[0].quantity);
             }
+
+            await NotificationModel.create({
+                userId: order.userId,
+                title: "Order Confirmed",
+                message: `Your order with ID ${id} has been confirmed.`,
+                groupBuyId: order.groupBuyId,
+            });
 
             return Response.json({
                 success: true,

@@ -3,7 +3,7 @@ import OrderModel from "@/db/models/OrderModel";
 import NotificationModel from "@/db/models/NotificationModel";
 import { NextResponse } from "next/server";
 import errorHandler from "@/lib/errorHandler";
-import { GroupBuyStatus, OrderType } from "@/types/types";
+import { GroupBuyStatus } from "@/types/types";
 
 export async function PATCH(request: Request) {
   try {
