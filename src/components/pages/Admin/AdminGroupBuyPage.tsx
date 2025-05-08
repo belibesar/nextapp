@@ -84,6 +84,16 @@ export default function GroupBuyPage() {
             Waiting Payment
           </button>
           <button
+            onClick={() => setActiveFilter(GroupBuyStatus.SHIPPED)}
+            className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
+              activeFilter === GroupBuyStatus.SHIPPED
+                ? "bg-blue-600 text-white"
+                : "bg-blue-100 text-blue-800 hover:bg-blue-200"
+            }`}
+          >
+            Shipped
+          </button>
+          <button
             onClick={() => setActiveFilter(GroupBuyStatus.PROCESSING)}
             className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
               activeFilter === GroupBuyStatus.PROCESSING

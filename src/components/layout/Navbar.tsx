@@ -18,21 +18,7 @@ const Navbar = async () => {
           </Link>
         </div>
         <div className="navbar-center hidden lg:flex">
-          {/* <ul className="menu menu-horizontal px-1">
-            <li>
-              <details>
-                <summary>Parent</summary>
-                <ul className="p-2">
-                  <li>
-                    <a>Submenu 1</a>
-                  </li>
-                  <li>
-                    <a>Submenu 2</a>
-                  </li>
-                </ul>
-              </details>
-            </li>
-          </ul> */}
+
         </div>
         <div className="hidden lg:flex navbar-end">
           <div className="flex flex-col relative w-auto h-10 ml-3 mr-3">

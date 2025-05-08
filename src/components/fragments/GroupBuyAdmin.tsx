@@ -25,6 +25,8 @@ export default function GroupBuyAdmin({ groupBuy, onStatusChange }: GroupBuyCard
         return "bg-yellow-100 text-yellow-800"
       case GroupBuyStatus.PROCESSING:
         return "bg-blue-100 text-blue-800"
+      case GroupBuyStatus.SHIPPED:
+        return "bg-blue-100 text-blue-800"
       case GroupBuyStatus.DONE:
         return "bg-purple-100 text-purple-800"
       case GroupBuyStatus.FAILED:
@@ -41,6 +43,8 @@ export default function GroupBuyAdmin({ groupBuy, onStatusChange }: GroupBuyCard
       case GroupBuyStatus.WAITING_FULL_PAYMENT:
         return "Waiting Payment"
       case GroupBuyStatus.PROCESSING:
+        return "Processing"
+      case GroupBuyStatus.SHIPPED:
         return "Processing"
       case GroupBuyStatus.DONE:
         return "Done"
@@ -258,6 +262,7 @@ export default function GroupBuyAdmin({ groupBuy, onStatusChange }: GroupBuyCard
             <option value={GroupBuyStatus.OPEN}>Open</option>
             <option value={GroupBuyStatus.WAITING_FULL_PAYMENT}>Waiting Full Payment</option>
             <option value={GroupBuyStatus.PROCESSING}>Processing</option>
+            <option value={GroupBuyStatus.SHIPPED}>Shipped</option>
             <option value={GroupBuyStatus.DONE}>Done</option>
             <option value={GroupBuyStatus.FAILED}>Failed</option>
           </select>

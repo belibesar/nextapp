@@ -37,6 +37,9 @@ export async function PATCH(request: Request) {
       case GroupBuyStatus.PROCESSING:
         notifMessage = "Pembayaran telah dikonfirmasi. Pesanan sedang diproses ke supplier.";
         break;
+      case GroupBuyStatus.SHIPPED:
+        notifMessage = "Produk sedang dalam pengiriman.";
+        break;
       case GroupBuyStatus.DONE:
         notifMessage = "Group Buy selesai. Barang akan dikirim.";
         break;
