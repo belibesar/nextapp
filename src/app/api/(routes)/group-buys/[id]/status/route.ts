@@ -18,7 +18,15 @@ export async function GET() {
 export async function PATCH(request: Request) {
   try {
     const id = new URL(request.url).pathname.split("/").slice(-2)[0];
-    const { status } = await request.json();  
+    const { status } = await request.json();
+
+    const validStatuses = Object.values(GroupBuyStatus);
+    if (!validStatuses.includes(status)) {
+      return NextResponse.json(
+        { success: false, message: "Invalid status" },
+        { status: 400 }
+      );
+    }
 
     const success = await GroupBuyModel.updateById(id, { status });
 
@@ -35,7 +43,8 @@ export async function PATCH(request: Request) {
         notifMessage = "MOQ terpenuhi. Silakan lakukan pembayaran penuh.";
         break;
       case GroupBuyStatus.PROCESSING:
-        notifMessage = "Pembayaran telah dikonfirmasi. Pesanan sedang diproses ke supplier.";
+        notifMessage =
+          "Pembayaran telah dikonfirmasi. Pesanan sedang diproses ke supplier.";
         break;
       case GroupBuyStatus.SHIPPED:
         notifMessage = "Produk sedang dalam pengiriman.";
@@ -48,24 +57,24 @@ export async function PATCH(request: Request) {
         break;
     }
 
-    await Promise.all(
-      orders.map((order) => {
-        NotificationModel.create({
-          userId: order.distributorId, 
-          title: notifTitle,  
-          message: notifMessage, 
-          groupBuyId: id, 
-        })
-      })
-    );
+    // await Promise.all(
+    orders.forEach((order) => {
+      NotificationModel.create({
+        userId: order.distributorId,
+        title: notifTitle,
+        message: notifMessage,
+        groupBuyId: id
+      });
+    });
+    // );
 
-    return NextResponse.json({ 
+    return NextResponse.json({
       success: true,
       message: notifMessage,
       groupBuyId: id,
       status: status,
-      title: notifTitle,
-     });
+      title: notifTitle
+    });
   } catch (error) {
     console.error("Error updating group buy status:", error);
     return errorHandler(error);
