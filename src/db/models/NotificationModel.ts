@@ -19,26 +19,27 @@ class NotificationModel {
   }
 
   static async create(notification: Omit<Notification, "createdAt">) {
+    const groupBuyId = new ObjectId(notification.groupBuyId);
     const userId =
       typeof notification.userId === "string"
         ? new ObjectId(notification.userId)
         : notification.userId;
-  
+
     const notifData = {
       ...notification,
+      groupBuyId,
       userId,
       createdAt: new Date()
     };
-  
+
     console.log("📨 Inserting notif to user_notifications:", notifData);
-  
+
     const result = await this.collection().insertOne(notifData);
-  
+
     console.log("✅ Notif inserted with ID:", result.insertedId);
-  
+
     return result.insertedId;
   }
-  
 
   static async createAdmin(notification: Omit<Notification, "createdAt">) {
     notification.userId = new ObjectId(notification.userId);
