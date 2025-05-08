@@ -19,6 +19,7 @@ class NotificationModel {
   }
 
   static async create(notification: Omit<Notification, "createdAt">) {
+    const groupBuyId = new ObjectId(notification.groupBuyId)
     const userId =
       typeof notification.userId === "string"
         ? new ObjectId(notification.userId)
@@ -26,6 +27,7 @@ class NotificationModel {
   
     const notifData = {
       ...notification,
+      groupBuyId,
       userId,
       createdAt: new Date()
     };

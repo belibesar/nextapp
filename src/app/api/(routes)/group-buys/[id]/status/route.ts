@@ -10,6 +10,14 @@ export async function PATCH(request: Request) {
     const id = new URL(request.url).pathname.split("/").slice(-2)[0];
     const { status } = await request.json();
 
+    const validStatuses = Object.values(GroupBuyStatus);
+    if (!validStatuses.includes(status)) {
+      return NextResponse.json(
+        { success: false, message: "Invalid status" },
+        { status: 400 }
+      );
+    }
+
     const success = await GroupBuyModel.updateById(id, { status });
 
     if (!success) {
@@ -39,25 +47,16 @@ export async function PATCH(request: Request) {
         break;
     }
 
-    await Promise.all(
-      orders.map(async (order) => {
-        try {
-          if (!order.distributorId) {
-            console.warn("Missing distributorId on order:", order);
-            return;
-          }
-    
-          await NotificationModel.create({
-            userId: order.distributorId,
-            title: notifTitle,
-            message: notifMessage,
-            groupBuyId: id,
-          });
-        } catch (err) {
-          console.error("❌ Failed to create notif for order:", order, err);
-        }
-      })
-    );
+    // await Promise.all(
+      orders.forEach((order) => {
+        NotificationModel.create({
+          userId: order.distributorId,
+          title: notifTitle,
+          message: notifMessage,
+          groupBuyId: id
+        });
+      });
+      // );
 
     return NextResponse.json({
       success: true,
