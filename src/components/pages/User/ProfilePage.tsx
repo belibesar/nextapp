@@ -273,7 +273,9 @@ const ProfilePage = ({ user }: { user: UserType }) => {
             </div>
           </div>
 
-          {/* Bank Account Card */}
+          {user.role !== "admin" && (
+            <>
+                      {/* Bank Account Card */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden md:col-span-2">
             <div className="p-6">
               <div className="flex items-center mb-6">
@@ -362,6 +364,8 @@ const ProfilePage = ({ user }: { user: UserType }) => {
             </div>
             </div>
           </div>
+            </>
+          )}
         </div>
       </div>
       {/* Notification Modal */}
