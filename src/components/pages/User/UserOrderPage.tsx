@@ -37,7 +37,7 @@ const UserOrderPage = ({
     const fetchOrders = async () => {
       try {
         const orders = await fetch(
-          `http://localhost:3000/api/orders/${userId}`
+          `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/orders/${userId}`
         );
         const ordersData = await orders.json();
         setOrders(ordersData);
@@ -72,7 +72,7 @@ const UserOrderPage = ({
       // for (const [key, value] of formData.entries()) {
       //   console.log(key, value);
       // }
-      const res = await fetch(`http://localhost:3000/api/orders/${orderId}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/orders/${orderId}`, {
         method: "POST",
         body: formData
       });

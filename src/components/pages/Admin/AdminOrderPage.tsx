@@ -19,7 +19,7 @@ const AdminOrderPage = () => {
   useEffect(()=>{
     const fetchOrders = async () => {
       try {
-        const orders = await fetch('http://localhost:3000/api/orders')
+        const orders = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/orders`)
         const ordersData = await orders.json()
         setOrders(ordersData)
       } catch (error) {

@@ -3,13 +3,13 @@ import ClientDashboard from "./ClientDashboard"
 
 const AdminDashboardPage = async ({ user }: { user: UserType }) => {
   // Fetch data as in the original component
-  const getProducts = await fetch("http://localhost:3000/api/products/all")
+  const getProducts = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/products/all`)
   const productsData = await getProducts.json()
 
-  const getProducers = await fetch("http://localhost:3000/api/producers")
+  const getProducers = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/producers`)
   const producersData = await getProducers.json()
 
-  const getDistributors = await fetch("http://localhost:3000/api/users/all")
+  const getDistributors = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/users/all`)
   const distributorsData = await getDistributors.json()
   console.log(distributorsData)
 

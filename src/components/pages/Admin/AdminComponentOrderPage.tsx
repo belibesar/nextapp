@@ -18,7 +18,7 @@ export default function AdminComponentOrderPage({
     const fetchProduct = async () => {
       try {
         const res = await fetch(
-          `http://localhost:3000/api/products/${order.items?.productId}`
+          `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/products/${order.items?.productId}`
         );
         const productData = await res.json();
 
@@ -65,7 +65,7 @@ export default function AdminComponentOrderPage({
     console.log(nextStatus, "next status");
 
     try {
-      const res = await fetch(`http://localhost:3000/api/orders/${order._id}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/orders/${order._id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -111,7 +111,7 @@ export default function AdminComponentOrderPage({
     try {
       const cancelStatus = "CANCELLED";
 
-      const res = await fetch(`http://localhost:3000/api/orders/${order._id}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/orders/${order._id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -231,8 +231,7 @@ export default function AdminComponentOrderPage({
                             : "bg-green-600 text-white hover:cursor-pointer hover:bg-green-700"
                         }`}
                     onClick={handleNext}
-                    disabled={disabledNextButton}
-                  >
+                    disabled={disabledNextButton}>
                     next
                   </button>
                   <button
@@ -243,16 +242,13 @@ export default function AdminComponentOrderPage({
                             : "bg-red-600 text-white hover:cursor-pointer hover:bg-red-700"
                         }`}
                     onClick={handleCancel}
-                    disabled={order.currentStatus === "CANCELLED"}
-                  >
+                    disabled={order.currentStatus === "CANCELLED"}>
                     cancel
                   </button>
                 </div>
               </div>
             </div>
-
             <div className="divider my-1"></div>
-
             <div className="space-y-4 mt-2">
               {/* First Item */}
               <div className="flex justify-between p-3 bg-gray-50 rounded-lg">

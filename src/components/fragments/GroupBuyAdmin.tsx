@@ -99,7 +99,7 @@ export default function GroupBuyAdmin({ groupBuy, onStatusChange }: GroupBuyCard
   const handleStatusChange = async (newStatus: GroupBuyStatus) => {
     try {
       setIsUpdating(true)
-      const response = await fetch(`http://localhost:3000/api/group-buys/${groupBuy._id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/group-buys/${groupBuy._id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

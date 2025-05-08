@@ -5,7 +5,7 @@ import React from 'react';
 
 const ProductById = async ({ params }: { params: { id: string } }) => {
   const { id } = await params;
-  const getProductById = await fetch(`http://localhost:3000/api/products/${id}`);
+  const getProductById = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/products/${id}`);
   const result = await getProductById.json();
   const data: ProductType = result as ProductType;
   if (!getProductById.ok) {

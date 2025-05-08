@@ -19,7 +19,7 @@ export default function GroupBuyPage() {
   const fetchGroupBuys = async () => {
     try {
       setLoading(true)
-      const response = await fetch("http://localhost:3000/api/group-buys")
+      const response = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/group-buys`)
       const data = await response.json()
       setGroupBuys(data)
     } catch (error) {

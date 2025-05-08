@@ -49,7 +49,7 @@ export default function DetailGroupBuyPage({ user }: { user: UserType }) {
       formData.append("paymentProof", selectedFile)
       formData.append("quantity", quantity?.toString() || "0")
 
-      const res = await fetch(`http://localhost:3000/api/group-buys/${params.id}/join`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/group-buys/${params.id}/join`, {
         method: "POST",
         body: formData,
       })
@@ -102,10 +102,10 @@ export default function DetailGroupBuyPage({ user }: { user: UserType }) {
   useEffect(() => {
     async function fetchGroupBuy() {
       try {
-        const res = await fetch(`http://localhost:3000/api/group-buys/${params.id}`)
+        const res = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/group-buys/${params.id}`)
         const data = await res.json()
 
-        const productRes = await fetch(`http://localhost:3000/api/products/${data[0].productId}`)
+        const productRes = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/products/${data[0].productId}`)
         const productData = await productRes.json()
         setGroupBuy(Array.isArray(data) ? data[0] : data)
         setProduct(Array.isArray(productData) ? productData[0] : productData)

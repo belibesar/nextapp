@@ -13,7 +13,7 @@ const ProfilePage = ({ user }: { user: UserType }) => {
 
   const fetchNotifications = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/api/notifications?userId=${user._id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/notifications?userId=${user._id}`, {
         headers: {
           "x-user-data": JSON.stringify({ _id: user._id }),
         },
@@ -35,7 +35,7 @@ const ProfilePage = ({ user }: { user: UserType }) => {
   const deleteNotification = async (notificationId: string) => {
     try {
       console.log("Deleting notification with ID:", notificationId)
-      const response = await fetch(`http://localhost:3000/api/notifications`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/notifications`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -58,7 +58,7 @@ const ProfilePage = ({ user }: { user: UserType }) => {
 
   const markAllAsRead = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/api/notifications/markAllAsRead`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/notifications/markAllAsRead`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

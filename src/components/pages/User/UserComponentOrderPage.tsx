@@ -22,7 +22,7 @@ export default function UserComponentOrderPage({
     const fetchProduct = async () => {
       try {
         const res = await fetch(
-          `http://localhost:3000/api/products/${orderData.items?.productId}`
+          `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/products/${orderData.items?.productId}`
         );
         const productData = await res.json();
 
@@ -90,7 +90,7 @@ export default function UserComponentOrderPage({
 
     try {
       const res = await fetch(
-        `http://localhost:3000/api/orders/${orderData._id}`,
+        `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/orders/${orderData._id}`,
         {
           method: "PATCH",
           headers: {

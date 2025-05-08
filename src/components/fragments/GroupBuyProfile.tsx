@@ -10,7 +10,7 @@ export default function GroupBuyProfile({ user }: { user: UserType }) {
   const fetchGroupBuys = async () => {
     try {
       console.log("Sending request with user ID:", user._id);
-      const response = await fetch(`http://localhost:3000/api/users/user-group-buy`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/users/user-group-buy`, {
         headers: {
           "x-user-data": JSON.stringify({ _id: user._id }),
         },

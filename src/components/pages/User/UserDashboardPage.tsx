@@ -6,10 +6,10 @@ import GroupBuyCard from "@/components/fragments/GroupBuyCard"
 import { ShoppingCart, Package, Clock, XCircle } from "lucide-react"
 
 const DashboardPage = async ({ user }: { user: UserType }) => {
-  const res = await fetch("http://localhost:3000/api/products")
+  const res = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/products`)
   const data = await res.json()
 
-  const result = await fetch("http://localhost:3000/api/group-buys")
+  const result = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/group-buys`)
   const groups = await result.json()
 
   const plainUser = {

@@ -20,7 +20,7 @@ const Products = () => {
 
       setLoading(true);
       try {
-        const res = await fetch(`http://localhost:3000/api/products?page=${pageNum}&search=${searchTerm}`);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/products?page=${pageNum}&search=${searchTerm}`);
         const data = await res.json();
         if (data.length === 0 || data.length < 8) {
           setHasMore(false);

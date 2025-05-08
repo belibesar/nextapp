@@ -5,7 +5,7 @@ import React from 'react';
 
 const GroupBuyPage = async () => {
   // Sample product data
-  const fetchGroupBuys = await fetch('http://localhost:3000/api/group-buys');
+  const fetchGroupBuys = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/group-buys`);
   const groupBuys = await fetchGroupBuys.json();
 
   return (

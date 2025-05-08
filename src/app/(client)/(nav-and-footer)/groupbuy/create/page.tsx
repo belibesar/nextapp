@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation';
 import React from 'react';
 
 const AddGroupBuy = async () => {
-  const getProducts = await fetch('http://localhost:3000/api/products/all');
+  const getProducts = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/products/all`);
   const productsData = await getProducts.json();
 
   const user = await getLoggedInUserFromRequest();

@@ -13,13 +13,6 @@ const Orders = async () => {
   }
   const user = JSON.parse(JSON.stringify(fetchUser)) as UserType;
   const userId: string = user._id?.toString();
-  // const cookieStore = await cookies();
-  // const cookie = cookieStore.get("Authorization")?.value;
-  // const getOrders = await fetch("http://localhost:3000/api/orders/user", {
-  //   headers: {
-  //     Cookie: `Authorization=${cookie}`
-  //   }
-  // });
 
   try {
     return (
