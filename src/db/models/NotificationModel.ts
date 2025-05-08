@@ -1,9 +1,10 @@
 import { ObjectId } from "mongodb";
 import { database } from "../config/mongodb";
 
-interface Notification {
+export interface Notification {
   userId: string | ObjectId;
   title: string;
+  isRead: boolean;
   message: string;
   groupBuyId?: string;
   createdAt: Date;
@@ -58,8 +59,21 @@ class NotificationModel {
     return notifications;
   }
 
+  static async findByUserAdmin(userId: string) {
+    const notifications = await this.collectionAdmin()
+      .find({ userId: new ObjectId(userId) })
+      .sort({ createdAt: -1 })
+      .toArray();
+    return notifications;
+  }
+
   static async deleteOne(filter: { _id: ObjectId; userId: ObjectId }) {
     const result = await this.collection().deleteOne(filter);
+    return result.deletedCount > 0;
+  }
+
+  static async deleteOneAdmin(filter: { _id: ObjectId; userId: ObjectId }) {
+    const result = await this.collectionAdmin().deleteOne(filter);
     return result.deletedCount > 0;
   }
 }

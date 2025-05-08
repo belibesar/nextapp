@@ -1,90 +1,94 @@
 "use client"
 import GroupBuyProfile from "@/components/fragments/GroupBuyProfile"
 import { handleLogout } from "@/components/layout/LogoutButton"
-import type { GroupBuy, UserType } from "@/types/types"
+import { Notification } from "@/db/models/NotificationModel"
+import type { UserType } from "@/types/types"
 import { useEffect, useState } from "react"
-import { toast } from "react-toastify"
+import { toast, ToastContainer } from "react-toastify"
 
 const ProfilePage = ({ user }: { user: UserType }) => {
   const [showNotificationModal, setShowNotificationModal] = useState(false)
-  const [notifications, setNotifications] = useState<any[]>([]);
+  const [notifications, setNotifications] = useState<any[]>([])
   const [unreadCount, setUnreadCount] = useState(0)
 
-    const fetchNotifications = async () => {
-      try {
-        const response = await fetch(`http://localhost:3000/api/notifications?userId=${user._id}`, {
-          headers: {
-            "x-user-data": JSON.stringify({ _id: user._id }),
-          },
-        });
-        const data = await response.json();
-        if (data.success) {
-          setNotifications(data.data);
-        } else {
-          console.error("Failed to fetch notifications:", data);
-        }
-      } catch (error) {
-        console.error("Error fetching notifications:", error);
+  const fetchNotifications = async () => {
+    try {
+      const response = await fetch(`http://localhost:3000/api/notifications?userId=${user._id}`, {
+        headers: {
+          "x-user-data": JSON.stringify({ _id: user._id }),
+        },
+      })
+      const data = await response.json()
+      if (data.success) {
+        setNotifications(data.data)
+        // Calculate unread count
+        const unreadNotifications = data.data.filter((notification: Notification) => !notification.isRead)
+        setUnreadCount(unreadNotifications.length)
+      } else {
+        console.error("Failed to fetch notifications:", data)
       }
-    };
-  
-    const deleteNotification = async (notificationId: string) => {
-      try {
-        console.log("Deleting notification with ID:", notificationId);
-        const response = await fetch(`http://localhost:3000/api/notifications`, {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            "x-user-data": JSON.stringify({ _id: user._id }),
-          },
-          body: JSON.stringify({ notificationId }),
-        });
-        const data = await response.json();
-        console.log("Response from server:", data); 
-
-        if (data.success) {
-          setNotifications((prev) =>
-            prev.filter((notification) => notification._id !== notificationId)
-          );
-        } else {
-          toast.error("Failed to delete notification:", data);
-        }
-      } catch (error) {
-        console.error("Error deleting notification:", error);
-      }
-    };
-
-    const markAllAsRead = async () => {
-      try {
-        const response = await fetch(`http://localhost:3000/api/notifications/markAllAsRead`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "x-user-data": JSON.stringify({ _id: user._id }),
-          },
-          body: JSON.stringify({ userId: user._id })
-        })
-        const data = await response.json()
-  
-        if (data.success) {
-          setNotifications((prev) =>
-            prev.map((notification) => ({ ...notification, isRead: true }))
-          )
-          setUnreadCount(0)
-        } else {
-          toast.error("Failed to mark notifications as read:", data)
-        }
-      } catch (error) {
-        console.error("Error marking notifications as read:", error)
-      }
+    } catch (error) {
+      console.error("Error fetching notifications:", error)
     }
-  
-    useEffect(() => {
-      if (showNotificationModal) {
-        fetchNotifications();
+  }
+
+  const deleteNotification = async (notificationId: string) => {
+    try {
+      console.log("Deleting notification with ID:", notificationId)
+      const response = await fetch(`http://localhost:3000/api/notifications`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "x-user-data": JSON.stringify({ _id: user._id }),
+        },
+        body: JSON.stringify({ notificationId }),
+      })
+      const data = await response.json()
+      console.log("Response from server:", data)
+
+      if (data.success) {
+        setNotifications((prev) => prev.filter((notification) => notificationId !== notificationId))
+      } else {
+        toast.error("Failed to delete notification:", data)
       }
-    }, [showNotificationModal]);
-  
+    } catch (error) {
+      console.error("Error deleting notification:", error)
+    }
+  }
+
+  const markAllAsRead = async () => {
+    try {
+      const response = await fetch(`http://localhost:3000/api/notifications/markAllAsRead`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-user-data": JSON.stringify({ _id: user._id }),
+        },
+        body: JSON.stringify({ userId: user._id }),
+      })
+      const data = await response.json()
+
+      if (data.success) {
+        setNotifications((prev) => prev.map((notification) => ({ ...notification, isRead: true })))
+        setUnreadCount(0)
+      } else {
+        toast.error("Failed to mark notifications as read:", data)
+      }
+    } catch (error) {
+      console.error("Error marking notifications as read:", error)
+    }
+  }
+
+  useEffect(() => {
+    if (showNotificationModal) {
+      fetchNotifications()
+    }
+  }, [showNotificationModal])
+
+  useEffect(() => {
+    fetchNotifications()
+  }, [])
+
   return (
     <div className="min-h-screen bg-[#f8fafc] py-10 px-4">
       <div className="max-w-5xl mx-auto">
@@ -275,95 +279,97 @@ const ProfilePage = ({ user }: { user: UserType }) => {
 
           {user.role !== "admin" && (
             <>
-                      {/* Bank Account Card */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden md:col-span-2">
-            <div className="p-6">
-              <div className="flex items-center mb-6">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6 text-[#1e3a5f] mr-2"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
-                  />
-                </svg>
-                <h2 className="text-xl font-bold text-[#1e3a5f]">Bank Account</h2>
-              </div>
-
-              <div className="bg-gradient-to-r from-[#1a202c] to-[#2d3748] rounded-xl p-6 text-white relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mt-20 -mr-20"></div>
-                <div className="absolute bottom-0 left-0 w-40 h-40 bg-white/5 rounded-full -mb-10 -ml-10"></div>
-
-                <div className="flex justify-between items-center mb-8 relative z-10">
-                  <div className="text-sm opacity-80 uppercase tracking-wider font-medium">Bank Account</div>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-8 w-8"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                    />
-                  </svg>
-                </div>
-
-                <div className="text-2xl font-bold tracking-widest mb-6 relative z-10">
-                  {user?.bankAccount?.number
-                    ? user.bankAccount.number.replace(/(\d{4})/g, "$1 ").trim()
-                    : "•••• •••• •••• 0123"}
-                </div>
-
-                <div className="flex justify-between items-center relative z-10">
-                  <div>
-                    <div className="text-xs opacity-80 uppercase tracking-wider font-medium mb-1">ACCOUNT HOLDER</div>
-                    <div className="font-medium">{user?.bankAccount?.name || "BRO"}</div>
+              {/* Bank Account Card */}
+              <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden md:col-span-2">
+                <div className="p-6">
+                  <div className="flex items-center mb-6">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-6 w-6 text-[#1e3a5f] mr-2"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+                      />
+                    </svg>
+                    <h2 className="text-xl font-bold text-[#1e3a5f]">Bank Account</h2>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
-                      <span className="text-xl font-bold">{user?.bankAccount?.name?.charAt(0) || "B"}</span>
+
+                  <div className="bg-gradient-to-r from-[#1a202c] to-[#2d3748] rounded-xl p-6 text-white relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mt-20 -mr-20"></div>
+                    <div className="absolute bottom-0 left-0 w-40 h-40 bg-white/5 rounded-full -mb-10 -ml-10"></div>
+
+                    <div className="flex justify-between items-center mb-8 relative z-10">
+                      <div className="text-sm opacity-80 uppercase tracking-wider font-medium">Bank Account</div>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-8 w-8"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                        />
+                      </svg>
+                    </div>
+
+                    <div className="text-2xl font-bold tracking-widest mb-6 relative z-10">
+                      {user?.bankAccount?.number
+                        ? user.bankAccount.number.replace(/(\d{4})/g, "$1 ").trim()
+                        : "•••• •••• •••• 0123"}
+                    </div>
+
+                    <div className="flex justify-between items-center relative z-10">
+                      <div>
+                        <div className="text-xs opacity-80 uppercase tracking-wider font-medium mb-1">
+                          ACCOUNT HOLDER
+                        </div>
+                        <div className="font-medium">{user?.bankAccount?.name || "BRO"}</div>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+                          <span className="text-xl font-bold">{user?.bankAccount?.name?.charAt(0) || "B"}</span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-          {/* Group Buy Participation Card */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden md:col-span-2">
-            <div className="p-6">
-              <div className="flex items-center mb-6">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6 text-[#1e3a5f] mr-2"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-                  />
-                </svg>
-                <h2 className="text-xl font-bold text-[#1e3a5f]">Group Buy Participation</h2>
-              </div>
+              {/* Group Buy Participation Card */}
+              <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden md:col-span-2">
+                <div className="p-6">
+                  <div className="flex items-center mb-6">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-6 w-6 text-[#1e3a5f] mr-2"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                      />
+                    </svg>
+                    <h2 className="text-xl font-bold text-[#1e3a5f]">Group Buy Participation</h2>
+                  </div>
 
-              <div className="space-y-4">
-                <GroupBuyProfile user={user} />
-            </div>
-            </div>
-          </div>
+                  <div className="space-y-4">
+                    <GroupBuyProfile user={user} />
+                  </div>
+                </div>
+              </div>
             </>
           )}
         </div>
@@ -413,21 +419,15 @@ const ProfilePage = ({ user }: { user: UserType }) => {
             </div>
             <div className="space-y-4 mb-6">
               {notifications.map((notification, index) => (
-                  <div
+                <div
                   key={index}
                   className={`p-4 rounded-lg border-l-4 flex justify-between items-center ${
-                    notification.isRead
-                      ? "bg-gray-100 border-gray-300"
-                      : "bg-blue-50 border-[#0099cc]"
+                    notification.isRead ? "bg-gray-100 border-gray-300" : "bg-blue-50 border-[#0099cc]"
                   }`}
-                  >
+                >
                   <div>
-                    <p className="font-medium text-[#1e3a5f]">
-                      {notification.message}
-                    </p>
-                    <p className="text-sm text-gray-500 mt-1">
-                      {new Date(notification.createdAt).toLocaleString()}
-                    </p>
+                    <p className="font-medium text-[#1e3a5f]">{notification.message}</p>
+                    <p className="text-sm text-gray-500 mt-1">{new Date(notification.createdAt).toLocaleString()}</p>
                   </div>
                   <button
                     onClick={() => deleteNotification(notification._id)}
@@ -447,6 +447,7 @@ const ProfilePage = ({ user }: { user: UserType }) => {
           </div>
         </div>
       )}
+      <ToastContainer position="top-center" autoClose={3000} hideProgressBar />
     </div>
   )
 }

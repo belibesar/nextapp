@@ -40,7 +40,7 @@ export async function PATCH(request: Request) {
         notifMessage = "Produk sedang dalam pengiriman.";
         break;
       case GroupBuyStatus.DONE:
-        notifMessage = "Group Buy selesai. Barang akan dikirim.";
+        notifMessage = "Group Buy selesai. Terimakasih sudah mempercayai kami.";
         break;
       case GroupBuyStatus.FAILED:
         notifMessage = "Group Buy gagal. Tidak mencapai MOQ sebelum deadline.";

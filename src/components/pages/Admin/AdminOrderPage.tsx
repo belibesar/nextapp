@@ -5,11 +5,8 @@ import AdminComponentOrderPage from './AdminComponentOrderPage';
 
 const FILTERS = [
   'ALL',
-  'PENDING',
   'AWAITING_ADMIN_CONFIRMATION',
-  'DP_CONFIRMED',
   'AWAITING_ADMIN_CONFIRMATION_FULL',
-  'FULLPAYMENT_CONFIRMED',
   'AWAITING_FULL_PAYMENT',
   'PAID_IN_FULL',
   'CANCELLED',
@@ -41,7 +38,7 @@ const AdminOrderPage = () => {
 
   return (
     <>
-      <div className="mb-5">
+      <div className="h-screen mb-5">
         {FILTERS.map((filters) => (
           <button
             key={filters}
@@ -55,7 +52,7 @@ const AdminOrderPage = () => {
             <AdminComponentOrderPage key={order._id.toString()} order={order} />
           ) : null
         )) : (
-          <p className='text-gray-500'>No orders with selected status</p>
+          <p className='text-gray-500 mt-15 pl-15'>No orders with selected status</p>
         )}
       </div>
     </>
