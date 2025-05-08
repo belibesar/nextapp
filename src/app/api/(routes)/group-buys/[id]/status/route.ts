@@ -5,20 +5,10 @@ import { NextResponse } from "next/server";
 import errorHandler from "@/lib/errorHandler";
 import { GroupBuyStatus } from "@/types/types";
 
-export async function GET() {
-  try {
-    const groupBuys = await GroupBuyModel.findAllWithProducts();
-    return Response.json(groupBuys);
-  } catch (error) {
-    console.error("Error fetching group buys:", error);
-    return errorHandler(error);
-  }
-}
-
 export async function PATCH(request: Request) {
   try {
     const id = new URL(request.url).pathname.split("/").slice(-2)[0];
-    const { status } = await request.json();  
+    const { status } = await request.json();
 
     const success = await GroupBuyModel.updateById(id, { status });
 
@@ -35,7 +25,8 @@ export async function PATCH(request: Request) {
         notifMessage = "MOQ terpenuhi. Silakan lakukan pembayaran penuh.";
         break;
       case GroupBuyStatus.PROCESSING:
-        notifMessage = "Pembayaran telah dikonfirmasi. Pesanan sedang diproses ke supplier.";
+        notifMessage =
+          "Pembayaran telah dikonfirmasi. Pesanan sedang diproses ke supplier.";
         break;
       case GroupBuyStatus.SHIPPED:
         notifMessage = "Produk sedang dalam pengiriman.";
@@ -49,23 +40,32 @@ export async function PATCH(request: Request) {
     }
 
     await Promise.all(
-      orders.map((order) => {
-        NotificationModel.create({
-          userId: order.distributorId, 
-          title: notifTitle,  
-          message: notifMessage, 
-          groupBuyId: id, 
-        })
+      orders.map(async (order) => {
+        try {
+          if (!order.distributorId) {
+            console.warn("Missing distributorId on order:", order);
+            return;
+          }
+    
+          await NotificationModel.create({
+            userId: order.distributorId,
+            title: notifTitle,
+            message: notifMessage,
+            groupBuyId: id,
+          });
+        } catch (err) {
+          console.error("❌ Failed to create notif for order:", order, err);
+        }
       })
     );
 
-    return NextResponse.json({ 
+    return NextResponse.json({
       success: true,
       message: notifMessage,
       groupBuyId: id,
       status: status,
-      title: notifTitle,
-     });
+      title: notifTitle
+    });
   } catch (error) {
     console.error("Error updating group buy status:", error);
     return errorHandler(error);

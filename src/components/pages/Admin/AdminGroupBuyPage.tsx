@@ -29,12 +29,37 @@ export default function GroupBuyPage() {
     }
   }
 
-  const handleStatusChange = (groupBuyId: string, newStatus: GroupBuyStatus) => {
-    // Update the local state to reflect the change
-    setGroupBuys((prevGroupBuys) =>
-      prevGroupBuys.map((gb) => (String(gb._id) === groupBuyId ? { ...gb, status: newStatus } : gb)),
-    )
-  }
+  const handleStatusChange = async (groupBuyId: string, newStatus: GroupBuyStatus) => {
+    try {
+      const response = await fetch(`/api/group-buys/${groupBuyId}/status`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ status: newStatus }),
+      });
+  
+      if (!response.ok) {
+        throw new Error("Failed to update group buy status");
+      }
+  
+      const data = await response.json();
+  
+      setGroupBuys((prevGroupBuys) =>
+        prevGroupBuys.map((gb) =>
+          String(gb._id) === groupBuyId ? { ...gb, status: newStatus } : gb
+        )
+      );
+  
+      if (activeFilter !== "ALL" && activeFilter !== newStatus) {
+        setActiveFilter("ALL");
+      }
+  
+      console.log("Status updated successfully:", data);
+    } catch (error) {
+      console.error("Error updating group buy status:", error);
+    }
+  };
 
   const filteredGroupBuys = activeFilter === "ALL" ? groupBuys : groupBuys.filter((gb) => gb.status === activeFilter)
 

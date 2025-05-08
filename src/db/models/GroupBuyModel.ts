@@ -34,6 +34,11 @@ class GroupBuyModel {
     return this.collection()
       .aggregate([
         {
+          $match: {
+            status: { $in: Object.values(GroupBuyStatus) }
+          }
+        },
+        {
           $lookup: {
             from: "products",
             localField: "productId",
@@ -47,6 +52,7 @@ class GroupBuyModel {
       ])
       .toArray();
   }
+  
 
   static async findByStatus(status: GroupBuyStatus) {
     return this.collection().find({ status });
@@ -65,10 +71,18 @@ class GroupBuyModel {
   }
 
   static async updateById(id: string, updateData: Partial<GroupBuy>) {
-    updateData.productId = new ObjectId(updateData.productId);
+    if (updateData.productId) {
+      updateData.productId = new ObjectId(updateData.productId);
+    }
+  
     const result = await this.collection().updateOne(
       { _id: new ObjectId(id) },
-      { $set: { ...updateData, updatedAt: new Date() } }
+      {
+        $set: {
+          ...updateData,
+          updatedAt: new Date()
+        }
+      }
     );
     return result.modifiedCount > 0;
   }

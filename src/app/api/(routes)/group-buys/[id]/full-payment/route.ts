@@ -58,7 +58,11 @@ export async function POST(request: NextRequest) {
               const paymentProofUrl = result.secure_url;
       
               await OrderModel.updateOrder(order._id.toString(), {
-                fullPaymentProof: paymentProofUrl,
+                fullPayment: {
+                  paymentProof: paymentProofUrl,
+                  status: ORDER_STATUS.AWAITING_ADMIN_CONFIRMATION_FULL,
+                  amount: order.totalPrice - (order.downPayment?.amount || 0),
+                },
                 currentStatus: ORDER_STATUS.AWAITING_ADMIN_CONFIRMATION_FULL,
                 updatedAt: new Date(),
               });
