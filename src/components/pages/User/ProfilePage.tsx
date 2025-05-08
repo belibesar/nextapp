@@ -1,6 +1,7 @@
 "use client"
+import GroupBuyProfile from "@/components/fragments/GroupBuyProfile"
 import { handleLogout } from "@/components/layout/LogoutButton"
-import type { UserType } from "@/types/types"
+import type { GroupBuy, UserType } from "@/types/types"
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
 
@@ -356,166 +357,9 @@ const ProfilePage = ({ user }: { user: UserType }) => {
                 <h2 className="text-xl font-bold text-[#1e3a5f]">Group Buy Participation</h2>
               </div>
 
-              {/* Using dummy data directly */}
               <div className="space-y-4">
-                <div className="bg-gradient-to-r from-[#f0f9ff] to-[#e0f2fe] rounded-xl p-5 relative overflow-hidden">
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-blue-100/50 rounded-full -mt-10 -mr-10"></div>
-
-                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 relative z-10">
-                    <div className="flex-1">
-                      <h3 className="font-bold text-lg text-[#1e3a5f] mb-1">Premium Coffee Maker XL</h3>
-                      <div className="flex items-center text-sm text-gray-600 mb-2">
-                        <svg
-                          className="w-4 h-4 mr-1"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                          ></path>
-                        </svg>
-                        <span>Deadline: {new Date(Date.now() + 15 * 24 * 60 * 60 * 1000).toLocaleDateString()}</span>
-                      </div>
-                      <div className="text-sm text-gray-600">
-                        <span className="font-medium">Distribution:</span> Jakarta Selatan
-                      </div>
-                    </div>
-
-                    <div className="flex flex-col items-end">
-                      <div className="flex items-center mb-2">
-                        <span className="text-sm font-medium text-gray-600 mr-2">Progress:</span>
-                        <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full font-medium">
-                          7/10 orders
-                        </span>
-                      </div>
-                      <div className="w-full bg-gray-200 rounded-full h-2.5">
-                        <div
-                          className="bg-blue-600 h-2.5 rounded-full"
-                          style={{
-                            width: "70%",
-                          }}
-                        ></div>
-                      </div>
-                      <div className="mt-2">
-                        <span className="text-xs font-medium px-2 py-1 rounded-full bg-green-100 text-green-800">
-                          OPEN
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-gradient-to-r from-[#f0f9ff] to-[#e0f2fe] rounded-xl p-5 relative overflow-hidden">
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-blue-100/50 rounded-full -mt-10 -mr-10"></div>
-
-                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 relative z-10">
-                    <div className="flex-1">
-                      <h3 className="font-bold text-lg text-[#1e3a5f] mb-1">Smart Kitchen Scale Pro</h3>
-                      <div className="flex items-center text-sm text-gray-600 mb-2">
-                        <svg
-                          className="w-4 h-4 mr-1"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                          ></path>
-                        </svg>
-                        <span>Deadline: {new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toLocaleDateString()}</span>
-                      </div>
-                      <div className="text-sm text-gray-600">
-                        <span className="font-medium">Distribution:</span> Bandung
-                      </div>
-                    </div>
-
-                    <div className="flex flex-col items-end">
-                      <div className="flex items-center mb-2">
-                        <span className="text-sm font-medium text-gray-600 mr-2">Progress:</span>
-                        <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full font-medium">
-                          12/15 orders
-                        </span>
-                      </div>
-                      <div className="w-full bg-gray-200 rounded-full h-2.5">
-                        <div
-                          className="bg-blue-600 h-2.5 rounded-full"
-                          style={{
-                            width: "80%",
-                          }}
-                        ></div>
-                      </div>
-                      <div className="mt-2">
-                        <span className="text-xs font-medium px-2 py-1 rounded-full bg-yellow-100 text-yellow-800">
-                          PENDING
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-gradient-to-r from-[#f0f9ff] to-[#e0f2fe] rounded-xl p-5 relative overflow-hidden">
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-blue-100/50 rounded-full -mt-10 -mr-10"></div>
-
-                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 relative z-10">
-                    <div className="flex-1">
-                      <h3 className="font-bold text-lg text-[#1e3a5f] mb-1">Wireless Earbuds X200</h3>
-                      <div className="flex items-center text-sm text-gray-600 mb-2">
-                        <svg
-                          className="w-4 h-4 mr-1"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                          ></path>
-                        </svg>
-                        <span>Deadline: {new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toLocaleDateString()}</span>
-                      </div>
-                      <div className="text-sm text-gray-600">
-                        <span className="font-medium">Distribution:</span> Surabaya
-                      </div>
-                    </div>
-
-                    <div className="flex flex-col items-end">
-                      <div className="flex items-center mb-2">
-                        <span className="text-sm font-medium text-gray-600 mr-2">Progress:</span>
-                        <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full font-medium">
-                          25/20 orders
-                        </span>
-                      </div>
-                      <div className="w-full bg-gray-200 rounded-full h-2.5">
-                        <div
-                          className="bg-blue-600 h-2.5 rounded-full"
-                          style={{
-                            width: "100%",
-                          }}
-                        ></div>
-                      </div>
-                      <div className="mt-2">
-                        <span className="text-xs font-medium px-2 py-1 rounded-full bg-red-100 text-red-800">
-                          CLOSED
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              {/* DUMMY END */}
-              
+                <GroupBuyProfile user={user} />
+            </div>
             </div>
           </div>
         </div>

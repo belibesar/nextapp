@@ -109,6 +109,26 @@ class GroupBuyModel {
     const result = await this.collection().deleteOne({ _id: new ObjectId(id) });
     return result.deletedCount > 0;
   }
+
+  static async findByUserId(userId: string) {
+    return this.collection()
+        .aggregate([
+            {
+                $match: { "participants.distributorId": new ObjectId(userId) }
+            },
+            {
+                $lookup: {
+                    from: "products",
+                    localField: "productId",
+                    foreignField: "_id",
+                    as: "productDetails"
+                }
+            },
+            {
+                $unwind: "$productDetails"
+            }
+        ]).toArray();
+}
 }
 
 export default GroupBuyModel;
